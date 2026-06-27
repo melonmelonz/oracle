@@ -68,9 +68,9 @@
 		font-family: var(--mono);
 		font-size: 11px;
 		font-weight: 600;
-		color: var(--violet-bright);
-		background: rgba(139, 108, 255, 0.12);
-		border: 1px solid rgba(139, 108, 255, 0.32);
+		color: var(--amber);
+		background: rgba(233, 178, 74, 0.12);
+		border: 1px solid rgba(233, 178, 74, 0.34);
 		border-radius: 5px;
 		cursor: pointer;
 		transition: all 0.2s;
@@ -78,10 +78,10 @@
 	}
 	.cite:hover,
 	.cite:focus-visible {
-		background: var(--violet);
-		color: #fff;
-		border-color: var(--violet-bright);
-		box-shadow: 0 0 16px rgba(139, 108, 255, 0.6);
+		background: var(--amber);
+		color: #1a1206;
+		border-color: #ffd98a;
+		box-shadow: 0 0 16px rgba(233, 178, 74, 0.6);
 		outline: none;
 	}
 
@@ -97,8 +97,8 @@
 		height: 1.1em;
 		margin-left: 3px;
 		transform: translateY(2px);
-		background: var(--violet-bright);
-		box-shadow: 0 0 12px var(--violet-bright);
+		background: var(--phosphor-bright);
+		box-shadow: 0 0 12px var(--phosphor-bright);
 		animation: blink 1s steps(2) infinite;
 	}
 	@keyframes blink {

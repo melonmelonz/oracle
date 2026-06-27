@@ -1,23 +1,32 @@
 :root {
-	/* The void — cool, deep, never pure black */
-	--void: #08060f;
-	--void-2: #0c0a18;
-	--chamber: #110d20;
-	--edge: #221a3a;
-	--edge-soft: #1a1530;
+	/* The Construct — near-black with a green cast */
+	--void: #040806;
+	--void-2: #06100a;
+	--chamber: #08150d;
+	--edge: #133b22;
+	--edge-soft: #0d2716;
 
-	/* Candlelight on vellum — warm text against the cold dark */
-	--vellum: #ece3d2;
-	--vellum-dim: #b9b09e;
-	--vellum-faint: #6f6a5e;
+	/* Phosphor — the green of the code */
+	--phosphor: #3df08c;
+	--phosphor-bright: #b9ffd1;
+	--phosphor-dim: #4d8a64;
+	--phosphor-deep: #0c5a2f;
 
-	/* The scrying light */
-	--violet: #8b6cff;
-	--violet-bright: #c9b8ff;
-	--violet-deep: #4a32a8;
-	--ember: #e8a87c;
+	/* Her warmth — candlelit kitchen against the cold rain */
+	--cream: #efe7cd;
+	--cream-dim: #b9b39b;
+	--amber: #e9b24a;
+	--amber-dim: #b78a3a;
 
-	--glow: 0 0 40px rgba(139, 108, 255, 0.35);
+	--glow: 0 0 40px rgba(61, 240, 140, 0.3);
+
+	/* Aliases so shared components inherit the Construct palette */
+	--vellum: var(--cream);
+	--vellum-dim: var(--cream-dim);
+	--vellum-faint: var(--phosphor-dim);
+	--violet: var(--phosphor);
+	--violet-bright: var(--phosphor-bright);
+	--violet-deep: var(--phosphor-deep);
 
 	--mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 	--serif: 'Spectral', Georgia, 'Times New Roman', serif;
@@ -35,7 +44,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background: var(--void);
-	color: var(--vellum);
+	color: var(--cream);
 	font-family: var(--serif);
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
@@ -47,17 +56,18 @@ body {
 	overflow-x: hidden;
 }
 
-/* Atmosphere: a cold nebular glow pooled at the top, a vignette pulling the
-   edges into the void, and a fine grain so nothing reads as flat gradient. */
+/* Atmosphere: a green glow pooled high, a vignette pulling into the dark, and a
+   fine grain so nothing reads as a flat fill. The digital rain renders above
+   this, behind the content. */
 body::before {
 	content: '';
 	position: fixed;
 	inset: 0;
 	z-index: -2;
 	background:
-		radial-gradient(120% 80% at 50% -10%, rgba(74, 50, 168, 0.28), transparent 60%),
-		radial-gradient(90% 60% at 50% 0%, rgba(139, 108, 255, 0.12), transparent 55%),
-		radial-gradient(140% 120% at 50% 120%, rgba(0, 0, 0, 0.7), transparent 50%),
+		radial-gradient(120% 80% at 50% -10%, rgba(12, 90, 47, 0.34), transparent 60%),
+		radial-gradient(90% 60% at 50% 0%, rgba(61, 240, 140, 0.08), transparent 55%),
+		radial-gradient(140% 120% at 50% 120%, rgba(0, 0, 0, 0.8), transparent 50%),
 		var(--void);
 }
 
@@ -65,18 +75,17 @@ body::after {
 	content: '';
 	position: fixed;
 	inset: 0;
-	z-index: -1;
+	z-index: 2;
 	pointer-events: none;
-	opacity: 0.05;
+	opacity: 0.045;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 ::selection {
-	background: rgba(139, 108, 255, 0.32);
-	color: #fff;
+	background: rgba(61, 240, 140, 0.3);
+	color: #022;
 }
 
-/* Scrollbar — thin, dim, in-theme */
 * {
 	scrollbar-width: thin;
 	scrollbar-color: var(--edge) transparent;
@@ -91,7 +100,7 @@ body::after {
 }
 
 a {
-	color: var(--violet-bright);
+	color: var(--phosphor-bright);
 	text-decoration: none;
 }
 

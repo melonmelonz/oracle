@@ -1,6 +1,81 @@
 [
 	{
 		"id": "c0",
+		"doc": "ORACLE Itself",
+		"slug": "about-oracle",
+		"section": "What ORACLE is",
+		"tags": [
+			"oracle",
+			"rag",
+			"meta",
+			"cloudflare",
+			"how-it-works"
+		],
+		"text": "ORACLE is a grounded oracle — a question-answering archive that speaks only from\na fixed canon of written knowledge about Penn's universe. You ask it something;\nit finds the passages in its archive that bear on the question, and it answers\nusing only those passages. If the archive holds no answer, ORACLE says the canon\nis silent rather than guessing. It is built by Penn as a demonstration of\nretrieval-augmented generation done honestly.",
+		"embedText": "ORACLE Itself — What ORACLE is\n\nORACLE is a grounded oracle — a question-answering archive that speaks only from\na fixed canon of written knowledge about Penn's universe. You ask it something;\nit finds the passages in its archive that bear on the question, and it answers\nusing only those passages. If the archive holds no answer, ORACLE says the canon\nis silent rather than guessing. It is built by Penn as a demonstration of\nretrieval-augmented generation done honestly."
+	},
+	{
+		"id": "c1",
+		"doc": "ORACLE Itself",
+		"slug": "about-oracle",
+		"section": "How ORACLE answers",
+		"tags": [
+			"oracle",
+			"rag",
+			"meta",
+			"cloudflare",
+			"how-it-works"
+		],
+		"text": "Every question travels the same path. First the question is turned into a vector\n— a string of numbers capturing its meaning — and compared against the vector of\nevery passage in the canon. The closest passages are retrieved. Those passages,\nand nothing else, are handed to a language model along with a strict instruction:\nanswer only from this context, cite each claim, and refuse anything the context\ndoes not support. The answer you read is assembled from the archive, not from the\nmodel's memory of the wider world.",
+		"embedText": "ORACLE Itself — How ORACLE answers\n\nEvery question travels the same path. First the question is turned into a vector\n— a string of numbers capturing its meaning — and compared against the vector of\nevery passage in the canon. The closest passages are retrieved. Those passages,\nand nothing else, are handed to a language model along with a strict instruction:\nanswer only from this context, cite each claim, and refuse anything the context\ndoes not support. The answer you read is assembled from the archive, not from the\nmodel's memory of the wider world."
+	},
+	{
+		"id": "c2",
+		"doc": "ORACLE Itself",
+		"slug": "about-oracle",
+		"section": "Why it can be trusted",
+		"tags": [
+			"oracle",
+			"rag",
+			"meta",
+			"cloudflare",
+			"how-it-works"
+		],
+		"text": "The trust comes from the grounding, not from faith in the model. The model never\nanswers from its own training knowledge; it is fenced inside the retrieved\npassages. Citations point back to the exact fragments used, so any claim can be\nchecked against its source. And when a question falls outside the canon, the\nretrieval step returns nothing strong enough to use, and ORACLE declines instead\nof inventing — the silence is a feature.",
+		"embedText": "ORACLE Itself — Why it can be trusted\n\nThe trust comes from the grounding, not from faith in the model. The model never\nanswers from its own training knowledge; it is fenced inside the retrieved\npassages. Citations point back to the exact fragments used, so any claim can be\nchecked against its source. And when a question falls outside the canon, the\nretrieval step returns nothing strong enough to use, and ORACLE declines instead\nof inventing — the silence is a feature."
+	},
+	{
+		"id": "c3",
+		"doc": "ORACLE Itself",
+		"slug": "about-oracle",
+		"section": "What ORACLE is made of",
+		"tags": [
+			"oracle",
+			"rag",
+			"meta",
+			"cloudflare",
+			"how-it-works"
+		],
+		"text": "ORACLE runs entirely on Cloudflare. The interface is a SvelteKit application\nserved from Cloudflare Pages. The thinking happens in Cloudflare Workers AI: one\nmodel turns text into vectors for search, another writes the grounded answer. The\npassage vectors are computed once and kept in Cloudflare KV so that every\nquestion after the first is answered instantly. There are no outside services and\nno API keys — the whole oracle lives at the edge.",
+		"embedText": "ORACLE Itself — What ORACLE is made of\n\nORACLE runs entirely on Cloudflare. The interface is a SvelteKit application\nserved from Cloudflare Pages. The thinking happens in Cloudflare Workers AI: one\nmodel turns text into vectors for search, another writes the grounded answer. The\npassage vectors are computed once and kept in Cloudflare KV so that every\nquestion after the first is answered instantly. There are no outside services and\nno API keys — the whole oracle lives at the edge."
+	},
+	{
+		"id": "c4",
+		"doc": "ORACLE Itself",
+		"slug": "about-oracle",
+		"section": "The canon",
+		"tags": [
+			"oracle",
+			"rag",
+			"meta",
+			"cloudflare",
+			"how-it-works"
+		],
+		"text": "ORACLE's archive is a collection of written documents about Penn's projects — the\nGoolz hegemony, Wanderlost, the Rust kernel quest, the point-cloud server, PEEK\nand MUTE, and the rest. Each document is split into sections, and each section is\na passage ORACLE can retrieve. To teach ORACLE something new, you add a document\nto the canon; it knows nothing beyond what is written there, and that is the\npoint.",
+		"embedText": "ORACLE Itself — The canon\n\nORACLE's archive is a collection of written documents about Penn's projects — the\nGoolz hegemony, Wanderlost, the Rust kernel quest, the point-cloud server, PEEK\nand MUTE, and the rest. Each document is split into sections, and each section is\na passage ORACLE can retrieve. To teach ORACLE something new, you add a document\nto the canon; it knows nothing beyond what is written there, and that is the\npoint."
+	},
+	{
+		"id": "c5",
 		"doc": "About Penn",
 		"slug": "about-penn",
 		"section": "Who he is",
@@ -15,7 +90,7 @@
 		"embedText": "About Penn — Who he is\n\nPenn is a systems-track graduate-school applicant — a kernel and Rust learner who\nthinks and talks at the level of design tradeoffs rather than recipes. His work\nspans low-level systems (Rust-for-Linux kernel drivers, embedded bring-up) and a\nsprawl of distinctive web projects, most of them deployed to Cloudflare Pages."
 	},
 	{
-		"id": "c1",
+		"id": "c6",
 		"doc": "About Penn",
 		"slug": "about-penn",
 		"section": "How he works",
@@ -30,7 +105,7 @@
 		"embedText": "About Penn — How he works\n\nHe edits in vim, not VS Code — references to editing are in vim's idiom, commands\nand plugins included. He prefers fewer clarifying questions: infer from context\nand ship, and only stop to ask when an ambiguity is genuinely load-bearing. On\nprojects where he has handed over judgment — Wanderlost is the clearest example —\nhe wants continuous additive polish and trusts the design calls to be made\nwithout check-ins."
 	},
 	{
-		"id": "c2",
+		"id": "c7",
 		"doc": "About Penn",
 		"slug": "about-penn",
 		"section": "His prose voice",
@@ -45,7 +120,7 @@
 		"embedText": "About Penn — His prose voice\n\nPenn writes with a varied cadence and concrete specifics, no em dashes, and lets\nhedges and gentle self-deprecation land naturally. A writing sample lives with\nhis applications. His resume is both a local PDF and a live site at\npcporterfield-cv.pages.dev/resume."
 	},
 	{
-		"id": "c3",
+		"id": "c8",
 		"doc": "About Penn",
 		"slug": "about-penn",
 		"section": "Hardware taste",
@@ -60,7 +135,7 @@
 		"embedText": "About Penn — Hardware taste\n\nHe has opinions about gear. The default recommendation leans toward non-Pi\nsingle-board computers — Radxa, BeagleBoard, Pine64 — and quality over price\nwithin a budget, on the principle that the hardware should outlast the project he\nbought it for. For logic analyzers he is a lifelong Saleae loyalist: the Saleae\nLogic is the default rec, and alternatives only come up if he asks for them."
 	},
 	{
-		"id": "c4",
+		"id": "c9",
 		"doc": "About Penn",
 		"slug": "about-penn",
 		"section": "The shape of the portfolio",
@@ -75,7 +150,7 @@
 		"embedText": "About Penn — The shape of the portfolio\n\nAcross everything — Goolz, Wanderlost, PEEK, MUTE, the kernel quest — there is a\nconsistent sensibility: retro and eldritch textures, small voiceless or cursed\nprotagonists, terminals and constraints treated as aesthetic, and a refusal to\nlet interfaces over-explain themselves. The systems work and the art are the same\ntaste pointed at different layers of the stack."
 	},
 	{
-		"id": "c5",
+		"id": "c10",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "The work",
@@ -90,7 +165,7 @@
 		"embedText": "ELS911 and School Safety Mapping — The work\n\nELS911 is school-safety infrastructure work — wayfinding, mapping, and emergency\nfloor plans for large school campuses. There are two distinct things that share\nthe name and should not be confused: the marketing site (els911.com) and a\nseparate portal product."
 	},
 	{
-		"id": "c6",
+		"id": "c11",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "Floor-plan scanning",
@@ -105,7 +180,7 @@
 		"embedText": "ELS911 and School Safety Mapping — Floor-plan scanning\n\nThe scanning rig is an FJD Trion P1 — a SLAM scanner with no GNSS — paired with\nthe Trion Model v2.05 desktop software. The pipeline turns raw scans of big\nschools into 2D floor plans exported as DXF.\n\nA few hard-won software notes:\n\n- **Floor Extract is a filter, not a planning tool** — it isolates a slice, it\n  doesn't author the plan.\n- Hidden cloud returns are recovered through Switch Display rather than lost.\n- Georeferencing goes through Coordinate Transformation, but for indoor school\n  plans it is usually unneeded."
 	},
 	{
-		"id": "c7",
+		"id": "c12",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "The map PDF rendering",
@@ -120,7 +195,7 @@
 		"embedText": "ELS911 and School Safety Mapping — The map PDF rendering\n\nThe deliverable map PDFs follow NFPA conventions. The legend is a vertical list\nwith one row per marker type, and hallway markers collapse into chips. Markers\nrender exactly where they were placed — no automatic separation, no leader lines\n— and icon sizes are kept small so natural clustering reads correctly instead of\nbeing spread artificially."
 	},
 	{
-		"id": "c8",
+		"id": "c13",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "The marketing site",
@@ -135,7 +210,7 @@
 		"embedText": "ELS911 and School Safety Mapping — The marketing site\n\nels911.com is built at github.com/melonmelonz/els911site with a working tree at\n~/dev/els911site. Unlike most of the other Pages projects, it deploys by direct\nwrangler push rather than through git. It must not be confused with the separate\nels911-portal codebase."
 	},
 	{
-		"id": "c9",
+		"id": "c14",
 		"doc": "Fluxcore",
 		"slug": "fluxcore",
 		"section": "What it is",
@@ -150,7 +225,7 @@
 		"embedText": "Fluxcore — What it is\n\nFluxcore is a VPP arbitrage project — a virtual power plant concept built as an\ninterview deliverable. A virtual power plant aggregates many small, distributed\nenergy resources (home batteries, EVs, flexible loads) and operates them as if\nthey were one dispatchable plant; arbitrage is the act of buying and storing\nenergy when it is cheap and discharging when it is expensive."
 	},
 	{
-		"id": "c10",
+		"id": "c15",
 		"doc": "Fluxcore",
 		"slug": "fluxcore",
 		"section": "Status",
@@ -165,7 +240,7 @@
 		"embedText": "Fluxcore — Status\n\nThe Day 1 build is DONE and live at fluxcore-30a.pages.dev — another Cloudflare\nPages deployment. Day 2 of the plan is testing and rehearsal: making sure the\ndemo holds up and that the story around it lands in the room. It is a build with\nan audience, which makes the rehearsal as load-bearing as the code."
 	},
 	{
-		"id": "c11",
+		"id": "c16",
 		"doc": "The Goolz Hegemony",
 		"slug": "goolz-hegemony",
 		"section": "What Goolz is",
@@ -179,7 +254,7 @@
 		"embedText": "The Goolz Hegemony — What Goolz is\n\nGoolz is the umbrella identity that ties Penn's web work together — \"one hegemony\"\nspanning a root society site, a Windows 95 desktop revival, and a small games\narcade. It lives at goolz.org, with source at github.com/melonmelonz/goolz and a\nworking tree at ~/dev/goolz. The whole thing deploys to Cloudflare Pages.\n\nThe name is deliberately ridiculous and a little eldritch. Goolz is less a brand\nthan a vibe: lavender-town dread, dead-mall nostalgia, and the feeling of finding\nsoftware that shouldn't still be running."
 	},
 	{
-		"id": "c12",
+		"id": "c17",
 		"doc": "The Goolz Hegemony",
 		"slug": "goolz-hegemony",
 		"section": "The three faces",
@@ -193,7 +268,7 @@
 		"embedText": "The Goolz Hegemony — The three faces\n\nThe hegemony has three surfaces under one roof:\n\n- **Goolz Society** — the root of goolz.org. The front door to everything.\n- **Next Chapter** — a Windows 95 desktop revival served at /next-chapter. It\n  absorbed the old standalone \"Next Chapter Daily\" project (NCD) in April 2026;\n  NCD no longer ships on its own.\n- **Playing With Goolz** — a games arcade at /games/pwg, also embedded inside the\n  Win95 desktop as a fake executable called GOOLZ.exe."
 	},
 	{
-		"id": "c13",
+		"id": "c18",
 		"doc": "The Goolz Hegemony",
 		"slug": "goolz-hegemony",
 		"section": "Deploy discipline",
@@ -207,7 +282,7 @@
 		"embedText": "The Goolz Hegemony — Deploy discipline\n\nGoolz is a direct-deploy Cloudflare Pages project: the Git provider integration\nis off, so a `git push` does NOT publish anything. Publishing happens with\n`wrangler pages deploy`. A recurring trap: the working tree contains large Rust\n`target/` directories that can total ~80MB, which crashes the wrangler upload.\nThose directories have to be moved out of the tree before deploying, then moved\nback.\n\nCommit messages for Pages projects stay ASCII-only — the wrangler-action deploy\nchokes on Unicode like arrows and approximate-equals symbols, so plain ASCII is\nthe rule."
 	},
 	{
-		"id": "c14",
+		"id": "c19",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "rust-spi-tinydoom",
@@ -223,7 +298,7 @@
 		"embedText": "The Rust Kernel Quest — rust-spi-tinydoom\n\nrust-spi-tinydoom is a three-month Rust-for-Linux kernel project built as a demo\nfor a Slack \"Next Chapter\" talk. The arc is ambitious and concrete: write a\nclean SPI abstraction in Rust, build a panel display driver on top of it, and\nthen get DOOM rendering through that driver. The target hardware is the\nBeaglePlay board, and the scope was locked on 2026-05-10."
 	},
 	{
-		"id": "c15",
+		"id": "c20",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "The dev environment",
@@ -239,7 +314,7 @@
 		"embedText": "The Rust Kernel Quest — The dev environment\n\nThe primary cross-compile box is kdev, a Fedora 41 machine. A second box,\ngentoo-dev, is host-only. The Rust-for-Linux tree sits at 7.1-rc3 with\nCONFIG_RUST enabled and arm64 / TI K3 support configured for the BeaglePlay's\nSoC. A hard rule governs the tree: never push to upstream repos — the kernel\ntree's origin remote is the upstream Rust-for-Linux project, not Penn's fork, so\nevery push gets a `git remote -v` check first."
 	},
 	{
-		"id": "c16",
+		"id": "c21",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "RfL coding patterns",
@@ -255,7 +330,7 @@
 		"embedText": "The Rust Kernel Quest — RfL coding patterns\n\nTwo Rust-for-Linux patterns earned their own notes. Fallible probe setup gets\nwrapped in a `pin_init_scope` so half-built state can't leak on error. And\nbecause `Page::with_page_mapped` is private, reading a page means going through\n`read_raw` into a bounce buffer rather than mapping it directly."
 	},
 	{
-		"id": "c17",
+		"id": "c22",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "BeaglePlay hardware notes",
@@ -271,7 +346,7 @@
 		"embedText": "The Rust Kernel Quest — BeaglePlay hardware notes\n\nThe board fought back in physical ways:\n\n- **Debug UART**: a 3-pin header — pin 1 is GND, pin 2 is the board's RXD, pin 3\n  is the board's TXD. The ritual is to open picocom BEFORE plugging in the PSU so\n  the boot log isn't missed.\n- **Pasting commands**: multi-line heredoc pastes do NOT survive picocom, so\n  verification is done with a single paste-in one-liner that dumps SPI, kernel,\n  and boot state in one shot.\n- **WiFi is broken** on the RfL kernel: the wl18xx driver hits an\n  auth-no-assoc bug under 7.1-rc3, so the board runs on ethernet and wifi configs\n  are simply not retried.\n- **Board helpers**: /usr/local/bin holds wifi-up, overlay-apply, and\n  module-load helpers; an SSH key is authorized; the penn-wifi service is left\n  disabled."
 	},
 	{
-		"id": "c18",
+		"id": "c23",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "The ILI9341 bring-up",
@@ -287,7 +362,7 @@
 		"embedText": "The Rust Kernel Quest — The ILI9341 bring-up\n\nGetting the panel lit is an open thread. The GPIO map is fixed — reset on 12,\ninterrupt on 9, another control on 10 — and the IM mode jumpers are bridged, but\nthe display is STILL dark. The next things to check are the 3Vo voltage rail and\nwhether the IM0 splash even appears."
 	},
 	{
-		"id": "c19",
+		"id": "c24",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "Candy Mountain",
@@ -302,7 +377,7 @@
 		"embedText": "Minor Works and Side Projects — Candy Mountain\n\nCandy Mountain is a co-op \"space-portal\" site: a crowd performs a split ritual\ntogether to open a portal, which reveals a daily curated site. It is zero-UI and\ndiegetic — nothing explains itself, the interface is the fiction. Built with\nPreact, Cloudflare Pages, and a Durable Object Worker. Source at\nmelonmelonz/candy-mountain, working tree at ~/dev/candy-mountain."
 	},
 	{
-		"id": "c20",
+		"id": "c25",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "Hammertime / Warscribe",
@@ -317,7 +392,7 @@
 		"embedText": "Minor Works and Side Projects — Hammertime / Warscribe\n\nHammertime is a Warhammer 40,000 army builder and battle tracker. It lives at\ngithub.com/melonmelonz/hammertime, deploys to warscribe.pages.dev, and works out\nof ~/dev/hammertime."
 	},
 	{
-		"id": "c21",
+		"id": "c26",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "mute-pixel",
@@ -332,7 +407,7 @@
 		"embedText": "Minor Works and Side Projects — mute-pixel\n\nmute-pixel is a pixel-art asset gallery at mute-pixel.pages.dev. It pairs a\npassphrase-gated PixelLab generator with a community gallery backed by Cloudflare\nKV, all served through Pages Functions."
 	},
 	{
-		"id": "c22",
+		"id": "c27",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "MDT — Maud'dib Tek",
@@ -347,7 +422,7 @@
 		"embedText": "Minor Works and Side Projects — MDT — Maud'dib Tek\n\nMDT is a consulting landing site for Maud'dib Tek, at github.com/melonmelonz/\nmdt-landing, live at mdt-landing.pages.dev, working tree ~/dev/mdt-landing."
 	},
 	{
-		"id": "c23",
+		"id": "c28",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "404-pages",
@@ -362,7 +437,7 @@
 		"embedText": "Minor Works and Side Projects — 404-pages\n\nThe 404-pages collection is six drop-in 404.html pages meant to be copied into\nany project — a small library of good-looking dead ends. Source at\ngithub.com/melonmelonz/404-pages and ~/dev/404-pages."
 	},
 	{
-		"id": "c24",
+		"id": "c29",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "A platform note",
@@ -377,7 +452,7 @@
 		"embedText": "Minor Works and Side Projects — A platform note\n\nAlmost everything here is a Cloudflare Pages project, and most of them have the\nGit provider integration turned off — which means a `git push` does not publish.\nPublishing is always an explicit `wrangler pages deploy`. When a Pages project\nneeds a Durable Object, the DO cannot be declared inline in the Pages config; it\ngoes in a sibling Worker and gets bound by script_name. These two facts explain a\nlot of the deploy rituals across the portfolio."
 	},
 	{
-		"id": "c25",
+		"id": "c30",
 		"doc": "Pathfinder",
 		"slug": "pathfinder",
 		"section": "Two halves",
@@ -392,7 +467,7 @@
 		"embedText": "Pathfinder — Two halves\n\nPathfinder is a LiDAR-scanning venture with two web properties: a marketing site\nand an open-core portal. Both are SvelteKit on Cloudflare."
 	},
 	{
-		"id": "c26",
+		"id": "c31",
 		"doc": "Pathfinder",
 		"slug": "pathfinder",
 		"section": "The marketing site",
@@ -407,7 +482,7 @@
 		"embedText": "Pathfinder — The marketing site\n\nThe Pathfinder LiDAR site is a marketing front for scanning services, built in\nSvelteKit with a pure-CSS dark \"scan-field\" aesthetic — the look of a laser\nsweeping a dark room, done without heavy graphics libraries. It carries a Twilio\ninquiry form for leads. The repo is private at melonmelonz/pathfinder-lidar and\nit ships to pathfinder-lidar.pages.dev."
 	},
 	{
-		"id": "c27",
+		"id": "c32",
 		"doc": "Pathfinder",
 		"slug": "pathfinder",
 		"section": "The portal",
@@ -422,7 +497,7 @@
 		"embedText": "Pathfinder — The portal\n\nThe Pathfinder portal is an open-core, white-label revamp of an earlier\nels911-portal codebase. It is SvelteKit on Cloudflare and leans on 3D Gaussian\nsplats to present scanned spaces in the browser. Unlike the marketing site, the\nportal repo is PUBLIC at melonmelonz/pathfinder and lives at\npathfinder-c3o.pages.dev. It ships with a full specification package and six\nbranded PDFs in its docs directory — the white-label kit a customer would\nrebrand and hand to their own clients."
 	},
 	{
-		"id": "c28",
+		"id": "c33",
 		"doc": "PEEK and MUTE",
 		"slug": "peek-and-mute",
 		"section": "PEEK, the capstone",
@@ -438,7 +513,7 @@
 		"embedText": "PEEK and MUTE — PEEK, the capstone\n\nPEEK is Penn's capstone project — a recursive-acronym name in the tradition of\nGNU, where the word stands for itself all the way down. It is offline-first and\nbuilt with a prison context in mind, a constraint that shapes every\nchoice toward working without a network. The first module of PEEK is an\neldritch-tamagotchi: a neon TUI creature you keep alive in the terminal, equal\nparts pet and omen."
 	},
 	{
-		"id": "c29",
+		"id": "c34",
 		"doc": "PEEK and MUTE",
 		"slug": "peek-and-mute",
 		"section": "MUTE, the game",
@@ -454,7 +529,7 @@
 		"embedText": "PEEK and MUTE — MUTE, the game\n\nMUTE is \"a bit that can't speak\" — an Unreal Engine 5 meta-game. The premise is a\nsingle bit, a creature without a voice, navigating a world that keeps changing\nthe rules on it. The structure is five sessions, each its own dimension, threaded\nwith programming puzzles, and the whole thing is pitched in a Cowboy-Bebop tone:\nmelancholy, cool, a little jazzy, never self-serious.\n\nDevelopment happens in a dedicated VM at ~/dev/peek-vm, the spec lives under the\nsuperpowers specs directory, and the repository is melonmelonz/mute."
 	},
 	{
-		"id": "c30",
+		"id": "c35",
 		"doc": "PEEK and MUTE",
 		"slug": "peek-and-mute",
 		"section": "The shared thread",
@@ -470,7 +545,7 @@
 		"embedText": "PEEK and MUTE — The shared thread\n\nBoth projects share a sensibility: small voiceless protagonists, terminals and\nconstraints treated as aesthetic rather than limitation, and a refusal to make\nthe interface explain itself. They are about what a tiny thing can do when the\nworld is bigger than it and won't slow down."
 	},
 	{
-		"id": "c31",
+		"id": "c36",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "Origin and reskin",
@@ -484,7 +559,7 @@
 		"embedText": "Playing With Goolz — Origin and reskin\n\nPlaying With Goolz (PWG) started life as a project called PWF3. It was renamed\nand reskinned in May 2026: the gameplay took on a Bomberman shape, and the look\nbecame a ghostly, Lavender-Town-inspired theme — sickly purples, a haunted\nchiptune mood, the sense that the cartridge is cursed. The old PWF3 standalone\nrepository and its Worker were deprecated in the move."
 	},
 	{
-		"id": "c32",
+		"id": "c37",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "Where it lives",
@@ -498,7 +573,7 @@
 		"embedText": "Playing With Goolz — Where it lives\n\nPWG ships in two places at once. It stands alone at /games/pwg, and it is also\nembedded inside the Next Chapter Windows 95 desktop as a fake executable named\nGOOLZ.exe — double-click the icon on the retro desktop and the game boots inside\nthe bit."
 	},
 	{
-		"id": "c33",
+		"id": "c38",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "The Bomberman bones",
@@ -512,7 +587,7 @@
 		"embedText": "Playing With Goolz — The Bomberman bones\n\nThe game is grid-based, Bomberman-style: drop bombs, blow through soft blocks,\ntrap the enemy in the blast cross. The tuning that matters lives in a validated\nAI bundle — the opponent's behavior was carefully dialed in rather than left to\nchance."
 	},
 	{
-		"id": "c34",
+		"id": "c39",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "The AI opponent",
@@ -526,7 +601,7 @@
 		"embedText": "Playing With Goolz — The AI opponent\n\nThe PWG enemy AI runs on a validated parameter bundle, and the guiding rule for\ntuning it is to err on the side of caution — a beatable, readable opponent beats\na brutal one. The validated bundle settled on a movement speed of 0.62, a bomb\ncooldown to stop spam, body-aware pathfinding (a breadth-first search that\naccounts for the bot's own body so it doesn't trap itself), and a fix for an\narrival-time off-by-one error that previously made the bot mistime threats. The\nresult is an opponent that plays fair and legible — dangerous enough to respect,\nnever cheap."
 	},
 	{
-		"id": "c35",
+		"id": "c40",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "What it is",
@@ -541,7 +616,7 @@
 		"embedText": "The Point Cloud Processing Server — What it is\n\nThe point-cloud processing server is Penn's work build: a Threadripper PRO\nworkstation for processing LiDAR scan data into usable point clouds and floor\nplans. The real build diverged from the original v5.1 spec PDF — the document is\na starting point, not the source of truth."
 	},
 	{
-		"id": "c36",
+		"id": "c41",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "The spec",
@@ -556,7 +631,7 @@
 		"embedText": "The Point Cloud Processing Server — The spec\n\n- **CPU**: Threadripper PRO 9965WX, 24 cores\n- **Platform**: WRX90 motherboard\n- **Memory**: 192GB ECC\n- **GPU**: an RTX 5080 paired with a 3080\n- **Cooling**: Noctua NH-U12S — air, not liquid\n- **Chassis**: a Fractal 9000D full tower\n- **Networking**: MikroTik 10G"
 	},
 	{
-		"id": "c37",
+		"id": "c42",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "The backup box",
@@ -571,7 +646,7 @@
 		"embedText": "The Point Cloud Processing Server — The backup box\n\nAlongside the workstation sits a ZFS backup box: 64GB of RAM and three 16TB\ndrives in RAIDZ1, giving roughly two drives' worth of usable capacity with\nsingle-drive fault tolerance. Point-cloud datasets are large and slow to\nregenerate, so the backup target is part of the build, not an afterthought."
 	},
 	{
-		"id": "c38",
+		"id": "c43",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "The fleet and access",
@@ -586,7 +661,7 @@
 		"embedText": "The Point Cloud Processing Server — The fleet and access\n\nThe machines are part of a small home fleet with a desert-coded naming scheme.\nOperators reach the fleet through a jump host called thopter. ARRAKIS is a\nWindows VM (guest 100) on the fleet carrying an RTX 5080, driven remotely; SIETCH\nis reachable for passwordless root over SSH. The fleet is segmented across VLANs,\nand the workflow leans on `qm guest-exec` to drive the Windows guest and Proxmox\ntooling under the hood."
 	},
 	{
-		"id": "c39",
+		"id": "c44",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "ARRAKIS streaming",
@@ -601,7 +676,7 @@
 		"embedText": "The Point Cloud Processing Server — ARRAKIS streaming\n\nARRAKIS streams its desktop from the RTX 5080 Windows VM to a Bazzite client\nusing Sunshine and Moonlight over Tailscale. Sunshine runs as the host; the one\nrecurring snag is that Tailscale needs a one-time manual auth before the tunnel\ncomes up clean."
 	},
 	{
-		"id": "c40",
+		"id": "c45",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "The pitch",
@@ -615,7 +690,7 @@
 		"embedText": "Wanderlost — The pitch\n\nWanderlost is a browser-based pixel-art walking sim — a small, quiet game about\nmoving through an authored world on foot. It runs on Cloudflare Pages with a\ncompanion Worker, and the whole thing is built to feel handmade rather than\nprocedurally sprawling."
 	},
 	{
-		"id": "c41",
+		"id": "c46",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "World overhaul",
@@ -629,7 +704,7 @@
 		"embedText": "Wanderlost — World overhaul\n\nThe project's center of gravity is the world-overhaul branch, which replaces\nearlier open-ended sprawl with a finite, authored map — a deliberately bounded\nworld a player can actually learn. The current build is a SHORT demo on purpose;\nthe priority is not size but solidity."
 	},
 	{
-		"id": "c42",
+		"id": "c47",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "The one priority",
@@ -643,7 +718,7 @@
 		"embedText": "Wanderlost — The one priority\n\nAbove everything else, the game-loop solidity is priority number one. A walking\nsim lives or dies on whether movement feels right — collision, footstep cadence,\nthe camera, the way the world reacts. Polish on the core loop beats new acreage\nevery time."
 	},
 	{
-		"id": "c43",
+		"id": "c48",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "Working style",

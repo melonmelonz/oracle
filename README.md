@@ -1,8 +1,15 @@
 # ORACLE
 
-A **grounded oracle over Penn's universe** — ask a question, and ORACLE answers
-*only* from the canon: a hand-authored knowledge base of Penn's projects. If the
-archive doesn't contain the answer, the oracle says so rather than inventing one.
+> _Temet nosce._ Know thyself.
+
+A **grounded oracle over Penn's universe** — ask a question, and the Oracle
+answers *only* from the canon: a hand-authored knowledge base of Penn's projects.
+If the archive doesn't contain the answer, she says so rather than inventing one.
+
+Styled as a love letter to **The Oracle from The Matrix** — green-phosphor
+Construct aesthetic, falling code, and a warm, wry, existential voice that speaks
+only from what is written. (The portrait is a transformed green-duotone CRT
+homage of the film still, not a raw screenshot.)
 
 Live: **https://oracle-4ld.pages.dev**
 
@@ -80,8 +87,9 @@ loss.
 | `scripts/build-corpus.mjs` | Chunks the canon into `src/lib/corpus.json` (pure Node, runs at build). |
 | `src/lib/rag.ts` | Pure RAG helpers: cosine, retrieve, the grounding prompt. |
 | `src/routes/api/ask/+server.ts` | The endpoint: seed embeddings → retrieve → ground → stream. |
-| `src/routes/+page.svelte` | The scrying-chamber UI. |
-| `src/lib/components/` | `Orb`, `Answer` (citation linking), `SourceCard`. |
+| `src/routes/+page.svelte` | The Construct UI — Oracle screen, rotating quotes, query, sources. |
+| `src/lib/components/` | `Rain` (digital rain), `OracleScreen` (CRT portrait), `Answer` (citation linking), `SourceCard`. |
+| `static/oracle.png` | Green-duotone CRT homage portrait (transformed from the film still). |
 
 ## Develop
 

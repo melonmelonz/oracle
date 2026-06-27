@@ -65,7 +65,7 @@ async function typeOut(text: string, send: (obj: unknown) => void) {
 }
 
 const SILENT =
-	'The canon is silent on that. Nothing in the archive speaks to your question — ask me about the works themselves, and I will answer from what is written.';
+	"Mm-mm. That one isn't written in this kitchen, so I won't pretend to know it. Ask me about the work itself — Goolz, the kernel, the games, any of it — and I'll give it to you straight.";
 
 export const POST: RequestHandler = async ({ request, platform }) => {
 	const env = platform?.env;
