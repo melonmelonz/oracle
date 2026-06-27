@@ -65,7 +65,7 @@ async function typeOut(text: string, send: (obj: unknown) => void) {
 }
 
 const SILENT =
-	"Mm-mm. That one isn't written in this kitchen, so I won't pretend to know it. Ask me about the work itself — Goolz, the kernel, the games, any of it — and I'll give it to you straight.";
+	"That one is not written in the archive, as far as I can see, so I will not guess at it. Ask me about the work itself, Goolz or the kernel or any of the rest, and I can tell you what is there.";
 
 export const POST: RequestHandler = async ({ request, platform }) => {
 	const env = platform?.env;

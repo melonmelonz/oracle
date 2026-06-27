@@ -1,15 +1,14 @@
 # ORACLE
 
-> _Temet nosce._ Know thyself.
+A **grounded oracle over Penn's universe** — ask a question, and it answers
+*only* from the canon: a hand-authored knowledge base of Penn's projects. If the
+archive doesn't contain the answer, it says so rather than inventing one.
 
-A **grounded oracle over Penn's universe** — ask a question, and the Oracle
-answers *only* from the canon: a hand-authored knowledge base of Penn's projects.
-If the archive doesn't contain the answer, she says so rather than inventing one.
-
-Styled as a love letter to **The Oracle from The Matrix** — green-phosphor
-Construct aesthetic, falling code, and a warm, wry, existential voice that speaks
-only from what is written. (The portrait is a transformed green-duotone CRT
-homage of the film still, not a raw screenshot.)
+The voice is Penn's own prose with a little of the Oracle's calm underneath:
+plain, concrete, varied cadence, hedges that double as honesty, no theatrics. A
+restrained, filmic still of The Oracle presides (a quiet, muted homage, regraded
+from the film frame, not a raw screenshot). Editorial palette — ink, warm bone,
+muted sage, a little aged gold.
 
 Live: **https://oracle-4ld.pages.dev**
 
@@ -87,9 +86,9 @@ loss.
 | `scripts/build-corpus.mjs` | Chunks the canon into `src/lib/corpus.json` (pure Node, runs at build). |
 | `src/lib/rag.ts` | Pure RAG helpers: cosine, retrieve, the grounding prompt. |
 | `src/routes/api/ask/+server.ts` | The endpoint: seed embeddings → retrieve → ground → stream. |
-| `src/routes/+page.svelte` | The Construct UI — Oracle screen, rotating quotes, query, sources. |
-| `src/lib/components/` | `Rain` (digital rain), `OracleScreen` (CRT portrait), `Answer` (citation linking), `SourceCard`. |
-| `static/oracle.png` | Green-duotone CRT homage portrait (transformed from the film still). |
+| `src/routes/+page.svelte` | The UI — portrait, query, answer, sources. |
+| `src/lib/components/` | `OracleScreen` (filmic portrait), `Answer` (citation linking), `SourceCard`. |
+| `static/oracle.png` | Muted, regraded homage portrait (from the film frame, not a raw screenshot). |
 
 ## Develop
 

@@ -68,9 +68,9 @@
 		font-family: var(--mono);
 		font-size: 11px;
 		font-weight: 600;
-		color: var(--amber);
-		background: rgba(233, 178, 74, 0.12);
-		border: 1px solid rgba(233, 178, 74, 0.34);
+		color: var(--gold);
+		background: rgba(205, 162, 94, 0.1);
+		border: 1px solid rgba(205, 162, 94, 0.3);
 		border-radius: 5px;
 		cursor: pointer;
 		transition: all 0.2s;
@@ -78,10 +78,10 @@
 	}
 	.cite:hover,
 	.cite:focus-visible {
-		background: var(--amber);
-		color: #1a1206;
-		border-color: #ffd98a;
-		box-shadow: 0 0 16px rgba(233, 178, 74, 0.6);
+		background: var(--gold);
+		color: #160f04;
+		border-color: #e3c388;
+		box-shadow: 0 0 14px rgba(205, 162, 94, 0.5);
 		outline: none;
 	}
 
