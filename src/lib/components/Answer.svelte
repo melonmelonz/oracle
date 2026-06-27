@@ -47,41 +47,31 @@
 
 <style>
 	.answer {
-		font-family: var(--serif);
-		font-size: 21px;
-		line-height: 1.72;
-		color: var(--vellum);
-		letter-spacing: 0.1px;
+		font-family: var(--mono);
+		font-size: 15.5px;
+		line-height: 1.78;
+		color: var(--paper);
 		white-space: pre-wrap;
 		word-break: break-word;
 	}
 
 	.cite {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-width: 19px;
-		height: 19px;
-		padding: 0 4px;
-		margin: 0 2px;
-		transform: translateY(-2px);
+		display: inline;
+		padding: 0 2px;
 		font-family: var(--mono);
-		font-size: 11px;
+		font-size: 0.86em;
 		font-weight: 600;
-		color: var(--gold);
-		background: rgba(205, 162, 94, 0.1);
-		border: 1px solid rgba(205, 162, 94, 0.3);
-		border-radius: 5px;
+		color: var(--amber-bright);
+		background: none;
+		border: 0;
 		cursor: pointer;
-		transition: all 0.2s;
-		vertical-align: middle;
+		transition: text-shadow 0.18s, color 0.18s;
+		vertical-align: baseline;
 	}
 	.cite:hover,
 	.cite:focus-visible {
-		background: var(--gold);
-		color: #160f04;
-		border-color: #e3c388;
-		box-shadow: 0 0 14px rgba(205, 162, 94, 0.5);
+		color: #fff;
+		text-shadow: 0 0 12px rgba(246, 205, 132, 0.8);
 		outline: none;
 	}
 

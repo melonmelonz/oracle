@@ -1,47 +1,48 @@
 :root {
-	/* Ink — near-black with the faintest green-gray cast */
-	--ink: #0a0d0c;
-	--ink-2: #0e1311;
-	--chamber: #10160f;
-	--edge: #1e2723;
-	--edge-soft: #151c18;
+	/* Warm near-black, amber phosphor. An old terminal, not a green console. */
+	--bg: #0c0b08;
+	--bg-2: #110f0a;
+	--chamber: #14110b;
+	--edge: #2a2212;
+	--edge-soft: #1b1710;
 
-	/* Warm paper, for the prose */
-	--bone: #e8e2d4;
-	--bone-dim: #a8a395;
-	--bone-faint: #6c6b60;
+	--amber: #d9a85e;
+	--amber-bright: #f6cd84;
+	--amber-dim: #8a6c3c;
+	--amber-deep: #3e2f16;
+	--paper: #ecd9b4; /* readable body text */
+	--paper-dim: #a99873;
 
-	/* Muted sage — a quiet thread of her world, not a neon console */
-	--sage: #8fb29c;
-	--sage-bright: #c0d6c8;
-	--sage-dim: #5d7668;
-	--sage-deep: #2f4a3b;
+	--glow: 0 0 24px rgba(217, 168, 94, 0.22);
 
-	/* Aged gold, for citations and small warmths */
-	--gold: #cda25e;
-	--gold-dim: #9c7c46;
+	--mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
+	/* Everything is mono here; keep these aliases pointed at it so any component
+	   that still asks for a serif/display face stays on theme. */
+	--serif: var(--mono);
+	--display: var(--mono);
 
-	--glow: 0 0 36px rgba(143, 178, 156, 0.22);
-
-	/* Aliases so shared components inherit the palette */
-	--cream: var(--bone);
-	--cream-dim: var(--bone-dim);
-	--vellum: var(--bone);
-	--vellum-dim: var(--bone-dim);
-	--vellum-faint: var(--bone-faint);
-	--phosphor: var(--sage);
-	--phosphor-bright: var(--sage-bright);
-	--phosphor-dim: var(--sage-dim);
-	--phosphor-deep: var(--sage-deep);
-	--violet: var(--sage);
-	--violet-bright: var(--sage-bright);
-	--violet-deep: var(--sage-deep);
-	--amber: var(--gold);
-	--amber-dim: var(--gold-dim);
-
-	--mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-	--serif: 'Spectral', Georgia, 'Times New Roman', serif;
-	--display: 'Cinzel', 'Spectral', serif;
+	/* Aliases so shared components inherit the amber palette */
+	--cream: var(--paper);
+	--cream-dim: var(--paper-dim);
+	--vellum: var(--paper);
+	--vellum-dim: var(--paper-dim);
+	--vellum-faint: var(--amber-dim);
+	--bone: var(--paper);
+	--bone-dim: var(--paper-dim);
+	--bone-faint: var(--amber-dim);
+	--sage: var(--amber);
+	--sage-bright: var(--amber-bright);
+	--sage-dim: var(--amber-dim);
+	--sage-deep: var(--amber-deep);
+	--phosphor: var(--amber);
+	--phosphor-bright: var(--amber-bright);
+	--phosphor-dim: var(--amber-dim);
+	--phosphor-deep: var(--amber-deep);
+	--violet: var(--amber);
+	--violet-bright: var(--amber-bright);
+	--violet-deep: var(--amber-deep);
+	--gold: var(--amber-bright);
+	--gold-dim: var(--amber);
 
 	--maxw: 720px;
 }
@@ -54,9 +55,9 @@ html,
 body {
 	margin: 0;
 	padding: 0;
-	background: var(--ink);
-	color: var(--bone);
-	font-family: var(--serif);
+	background: var(--bg);
+	color: var(--paper);
+	font-family: var(--mono);
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 }
@@ -67,32 +68,38 @@ body {
 	overflow-x: hidden;
 }
 
-/* Quiet atmosphere: a soft glow high on the page, a vignette settling the
-   edges, and a whisper of grain so nothing reads as flat. No spectacle. */
+/* A faint amber glow up top and a vignette settling the edges. */
 body::before {
 	content: '';
 	position: fixed;
 	inset: 0;
 	z-index: -2;
 	background:
-		radial-gradient(105% 70% at 50% -8%, rgba(47, 74, 59, 0.32), transparent 62%),
-		radial-gradient(150% 120% at 50% 118%, rgba(0, 0, 0, 0.65), transparent 55%),
-		var(--ink);
+		radial-gradient(100% 60% at 50% -10%, rgba(217, 168, 94, 0.12), transparent 62%),
+		radial-gradient(150% 120% at 50% 120%, rgba(0, 0, 0, 0.6), transparent 55%),
+		var(--bg);
 }
 
+/* CRT scanlines — very faint, the whole point of a retro terminal. */
 body::after {
 	content: '';
 	position: fixed;
 	inset: 0;
-	z-index: 2;
+	z-index: 3;
 	pointer-events: none;
-	opacity: 0.04;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+	background: repeating-linear-gradient(
+		0deg,
+		rgba(0, 0, 0, 0) 0px,
+		rgba(0, 0, 0, 0) 2px,
+		rgba(0, 0, 0, 0.16) 3px
+	);
+	opacity: 0.5;
+	mix-blend-mode: multiply;
 }
 
 ::selection {
-	background: rgba(143, 178, 156, 0.26);
-	color: #fff;
+	background: rgba(217, 168, 94, 0.28);
+	color: #120d05;
 }
 
 * {
@@ -109,14 +116,14 @@ body::after {
 }
 
 a {
-	color: var(--sage-bright);
+	color: var(--amber-bright);
 	text-decoration: none;
 }
 
 @keyframes rise {
 	from {
 		opacity: 0;
-		transform: translateY(12px);
+		transform: translateY(10px);
 	}
 	to {
 		opacity: 1;

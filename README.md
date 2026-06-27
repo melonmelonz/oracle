@@ -1,20 +1,22 @@
-# ORACLE
+# oracle
 
-A **grounded oracle over Penn's universe** — ask a question, and it answers
-*only* from the canon: a hand-authored knowledge base of Penn's projects. If the
-archive doesn't contain the answer, it says so rather than inventing one.
+A **grounded oracle** over a hand-authored archive: some of Penn's own work, and
+the subjects he cares about (Rust for Linux, the Linux kernel, distributed
+systems, Zelda speedrunning, Neuromancer). Ask a question and it answers *only*
+from the canon. If the archive doesn't contain the answer, it says so rather than
+inventing one.
 
-The voice is Penn's own prose with a little of the Oracle's calm underneath:
-plain, concrete, varied cadence, hedges that double as honesty, no theatrics. A
-restrained, filmic still of The Oracle presides (a quiet, muted homage, regraded
-from the film frame, not a raw screenshot). Editorial palette — ink, warm bone,
-muted sage, a little aged gold.
+A minimal amber-phosphor terminal. The Oracle presides as ASCII art (a posterized
+homage rendered entirely in text). The voice is Penn's own prose with a little of
+the Oracle's calm underneath: plain, concrete, varied cadence, hedges that double
+as honesty, no theatrics, no em dashes.
 
 Live: **https://oracle-4ld.pages.dev**
 
-It's a small, honest RAG (retrieval-augmented generation) system: retrieve the
-most relevant passages, hand them to a language model, and force the model to
-speak only from what was retrieved — with every claim cited back to its source.
+It's a small, honest RAG (retrieval-augmented generation) system with a modern
+retrieval stack: **hybrid search (dense vectors + BM25) fused with Reciprocal Rank
+Fusion, then a cross-encoder reranker**. The model is handed only the survivors
+and forced to speak only from them, with every claim cited back to its source.
 
 ---
 
@@ -22,14 +24,17 @@ speak only from what was retrieved — with every claim cited back to its source
 
 - **Custom knowledge base** — markdown docs in [`knowledge/`](./knowledge), one
   per subject, chunked by section.
-- **Retrieval** — semantic search over Cloudflare Workers AI embeddings, ranked
-  by cosine similarity.
+- **Hybrid retrieval** — dense vector search (Workers AI embeddings) and a
+  lexical BM25 score, fused with Reciprocal Rank Fusion. The lexical half catches
+  exact tokens (`SRM`, `EEVDF`, `ILI9341`) that pure vectors miss.
+- **Cross-encoder reranking** — a `bge-reranker-base` model reads the question and
+  each shortlisted passage together and scores true relevance. This is also the
+  honesty gate: off-topic questions score below threshold and retrieve nothing.
 - **AI-generated answer** — streamed live with a typewriter effect.
-- **Grounded answer** — the model is given only the retrieved passages and is
-  instructed to refuse anything outside them ("the canon is silent on that").
-- **Source display** — every answer shows the canon fragments it drew from, with
-  a "resonance" score; inline `[n]` citations highlight the matching fragment on
-  hover.
+- **Grounded answer** — the model is given only the reranked passages and is
+  instructed to refuse anything outside them, in its own voice.
+- **Source display** — every answer lists the passages it drew from with their
+  reranker score; inline `[n]` citations highlight the matching passage on hover.
 - **Deployed** — Cloudflare Pages + Workers AI, no external API keys.
 
 ## Architecture
@@ -37,38 +42,42 @@ speak only from what was retrieved — with every claim cited back to its source
 ```
 knowledge/*.md  ──build──▶  src/lib/corpus.json   (chunked text + metadata)
                                    │
-                          first request seeds:
+                          first request seeds embeddings -> KV
                                    ▼
    query ──▶ /api/ask ──▶ embed query (bge) ─┐
-                          embed corpus once ──┼─▶ cosine top-k (≥0.55)
-                          cached in KV  ──────┘            │
-                                                           ▼
-                                      grounded prompt ─▶ Llama 4 Scout
-                                                           │
+                          dense cosine  ──────┼─▶ RRF fuse ─▶ shortlist (14)
+                          BM25 lexical  ──────┘                   │
+                                                                  ▼
+                                              cross-encoder rerank (bge-reranker)
+                                                  top-k ≥ 0.20, else "not written"
+                                                                  │
+                                              grounded prompt ─▶ Llama 4 Scout
+                                                                  │
                               NDJSON stream: {sources} → {token}… → {done}
-                                                           ▼
-                                              SvelteKit UI (the scrying chamber)
+                                                                  ▼
+                                                  SvelteKit amber-TTY UI
 ```
 
-### Why brute-force cosine instead of Vectorize?
+### Why brute-force in the Worker instead of Vectorize?
 
-The corpus is a few dozen chunks. Brute-force cosine over them is instant, has
-**zero indexing delay** (no waiting for a vector index to become queryable), and
-can't fail on stage. The chunk embeddings are computed once via a single batched
-Workers AI call and cached in KV; every query after that is pure arithmetic.
+The corpus is well under a hundred chunks. Dense cosine and BM25 over them run in
+microseconds with **zero indexing delay** (no waiting for a vector index to become
+queryable) and can't fail on stage. The chunk embeddings are computed once via a
+single batched Workers AI call and cached in KV; every query after that is pure
+arithmetic plus one reranker call.
 
-**Scale path:** past a few thousand chunks, swap the KV-cached array for
-[Cloudflare Vectorize](https://developers.cloudflare.com/vectorize/) — create an
-index with `--dimensions=768 --metric=cosine`, upsert the same embeddings, and
-replace the `retrieve()` call with `env.VECTORIZE.query()`. The rest is unchanged.
+**Scale path:** past a few thousand chunks, move the dense half to
+[Cloudflare Vectorize](https://developers.cloudflare.com/vectorize/) (create an
+index with `--dimensions=768 --metric=cosine`, upsert the same embeddings) and
+keep the BM25 + RRF + rerank stages as they are.
 
-### Grounding
+### Grounding and the honesty gate
 
-`src/lib/rag.ts` holds the system prompt: use only the numbered CONTEXT
-passages, cite with `[n]`, and say the canon is silent when the answer isn't
-there. The retrieval threshold (0.55) is tuned to the bge-base similarity floor
-so off-topic questions retrieve **nothing** — the endpoint then short-circuits to
-an honest refusal without even calling the model.
+`src/lib/rag.ts` holds the system prompt: use only the numbered CONTEXT passages,
+cite with `[n]`, and say plainly when the answer is not written. The reranker is
+the gate — relevant passages score near 1.0, off-topic noise scores below 0.2, so
+an off-topic question retrieves nothing and the endpoint short-circuits to an
+honest refusal without calling the chat model at all.
 
 ### A note on fidelity
 
@@ -84,11 +93,10 @@ loss.
 |------|---------|
 | `knowledge/*.md` | The canon. Add a file here to teach the oracle something new. |
 | `scripts/build-corpus.mjs` | Chunks the canon into `src/lib/corpus.json` (pure Node, runs at build). |
-| `src/lib/rag.ts` | Pure RAG helpers: cosine, retrieve, the grounding prompt. |
-| `src/routes/api/ask/+server.ts` | The endpoint: seed embeddings → retrieve → ground → stream. |
-| `src/routes/+page.svelte` | The UI — portrait, query, answer, sources. |
-| `src/lib/components/` | `OracleScreen` (filmic portrait), `Answer` (citation linking), `SourceCard`. |
-| `static/oracle.png` | Muted, regraded homage portrait (from the film frame, not a raw screenshot). |
+| `src/lib/rag.ts` | Pure RAG helpers: cosine, BM25, RRF fusion, the grounding prompt. |
+| `src/routes/api/ask/+server.ts` | The endpoint: hybrid shortlist → rerank → ground → stream. |
+| `src/routes/+page.svelte` | The amber-TTY UI — ascii portrait, shell prompt, answer, refs. |
+| `src/lib/components/` | `AsciiPortrait`, `Answer` (citation linking), `SourceCard`. |
 
 ## Develop
 
@@ -125,6 +133,6 @@ deploy. If you change the chunking, prompt, or embedding model, bump
 
 ---
 
-Built with SvelteKit, Cloudflare Pages, and Workers AI
-(`@cf/baai/bge-base-en-v1.5` for embeddings, `@cf/meta/llama-4-scout-17b-16e-instruct`
-for generation).
+Built with SvelteKit, Cloudflare Pages, and Workers AI: `@cf/baai/bge-base-en-v1.5`
+for embeddings, `@cf/baai/bge-reranker-base` for reranking, and
+`@cf/meta/llama-4-scout-17b-16e-instruct` for generation.

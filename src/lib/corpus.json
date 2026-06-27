@@ -71,8 +71,8 @@
 			"cloudflare",
 			"how-it-works"
 		],
-		"text": "ORACLE's archive is a collection of written documents about Penn's projects — the\nGoolz hegemony, Wanderlost, the Rust kernel quest, the point-cloud server, PEEK\nand MUTE, and the rest. Each document is split into sections, and each section is\na passage ORACLE can retrieve. To teach ORACLE something new, you add a document\nto the canon; it knows nothing beyond what is written there, and that is the\npoint.",
-		"embedText": "ORACLE Itself — The canon\n\nORACLE's archive is a collection of written documents about Penn's projects — the\nGoolz hegemony, Wanderlost, the Rust kernel quest, the point-cloud server, PEEK\nand MUTE, and the rest. Each document is split into sections, and each section is\na passage ORACLE can retrieve. To teach ORACLE something new, you add a document\nto the canon; it knows nothing beyond what is written there, and that is the\npoint."
+		"text": "ORACLE's archive is a collection of written documents. Some are about Penn's own\nwork. Others are about the subjects he cares about: Rust for Linux, the Linux\nkernel, distributed systems, Zelda speedrunning, Neuromancer and the cyberpunk it\nstarted. Each document is split into sections, and each section is a passage\nORACLE can retrieve. To teach ORACLE something new, you add a document to the\ncanon; it knows nothing beyond what is written there, and that is the point.",
+		"embedText": "ORACLE Itself — The canon\n\nORACLE's archive is a collection of written documents. Some are about Penn's own\nwork. Others are about the subjects he cares about: Rust for Linux, the Linux\nkernel, distributed systems, Zelda speedrunning, Neuromancer and the cyberpunk it\nstarted. Each document is split into sections, and each section is a passage\nORACLE can retrieve. To teach ORACLE something new, you add a document to the\ncanon; it knows nothing beyond what is written there, and that is the point."
 	},
 	{
 		"id": "c5",
@@ -151,6 +151,66 @@
 	},
 	{
 		"id": "c10",
+		"doc": "Distributed Systems",
+		"slug": "distributed-systems",
+		"section": "The hard part",
+		"tags": [
+			"distributed-systems",
+			"consensus",
+			"lamport",
+			"theory",
+			"systems"
+		],
+		"text": "A distributed system is a set of computers that cooperate over a network and have\nto behave, to the outside, like one reliable thing. The difficulty is that the\nnetwork can drop messages, delay them, or deliver them out of order, and any\nmachine can fail at any moment, and no node can ever be certain whether another\nnode has died or is just slow. Leslie Lamport put the strangeness best: \"A\ndistributed system is one in which the failure of a computer you didn't even know\nexisted can render your own computer unusable.\"",
+		"embedText": "Distributed Systems — The hard part\n\nA distributed system is a set of computers that cooperate over a network and have\nto behave, to the outside, like one reliable thing. The difficulty is that the\nnetwork can drop messages, delay them, or deliver them out of order, and any\nmachine can fail at any moment, and no node can ever be certain whether another\nnode has died or is just slow. Leslie Lamport put the strangeness best: \"A\ndistributed system is one in which the failure of a computer you didn't even know\nexisted can render your own computer unusable.\""
+	},
+	{
+		"id": "c11",
+		"doc": "Distributed Systems",
+		"slug": "distributed-systems",
+		"section": "Time is a lie",
+		"tags": [
+			"distributed-systems",
+			"consensus",
+			"lamport",
+			"theory",
+			"systems"
+		],
+		"text": "In a single program you can trust a clock and an order of events. Across machines\nyou cannot, because there is no shared now. Lamport's 1978 work on logical clocks\nshowed how to reason about the order of events using causality rather than\nwall-clock time: if one event could have influenced another, it comes first, and if\nthey could not have affected each other, their order does not matter. Vector clocks\nextend this to track causality between many nodes at once. Most of the field is, in\none way or another, about inventing a usable notion of order where physics refuses\nto give you one.",
+		"embedText": "Distributed Systems — Time is a lie\n\nIn a single program you can trust a clock and an order of events. Across machines\nyou cannot, because there is no shared now. Lamport's 1978 work on logical clocks\nshowed how to reason about the order of events using causality rather than\nwall-clock time: if one event could have influenced another, it comes first, and if\nthey could not have affected each other, their order does not matter. Vector clocks\nextend this to track causality between many nodes at once. Most of the field is, in\none way or another, about inventing a usable notion of order where physics refuses\nto give you one."
+	},
+	{
+		"id": "c12",
+		"doc": "Distributed Systems",
+		"slug": "distributed-systems",
+		"section": "Agreeing on anything",
+		"tags": [
+			"distributed-systems",
+			"consensus",
+			"lamport",
+			"theory",
+			"systems"
+		],
+		"text": "Consensus is the problem of getting a group of nodes to agree on a single value,\neven when some of them fail. It sounds simple and is brutally hard. The FLP result\nproved that in a fully asynchronous network, no algorithm can guarantee consensus\nif even one node may fail, which is why real systems lean on timeouts and\nprobabilities rather than perfect guarantees. Lamport's Paxos solved practical\nconsensus but became infamous for being difficult to understand. Raft, designed by\nDiego Ongaro and John Ousterhout, set out to do the same job in a way humans could\nactually follow, and largely succeeded; it is now the consensus algorithm in many\nproduction systems.",
+		"embedText": "Distributed Systems — Agreeing on anything\n\nConsensus is the problem of getting a group of nodes to agree on a single value,\neven when some of them fail. It sounds simple and is brutally hard. The FLP result\nproved that in a fully asynchronous network, no algorithm can guarantee consensus\nif even one node may fail, which is why real systems lean on timeouts and\nprobabilities rather than perfect guarantees. Lamport's Paxos solved practical\nconsensus but became infamous for being difficult to understand. Raft, designed by\nDiego Ongaro and John Ousterhout, set out to do the same job in a way humans could\nactually follow, and largely succeeded; it is now the consensus algorithm in many\nproduction systems."
+	},
+	{
+		"id": "c13",
+		"doc": "Distributed Systems",
+		"slug": "distributed-systems",
+		"section": "The laws everyone quotes",
+		"tags": [
+			"distributed-systems",
+			"consensus",
+			"lamport",
+			"theory",
+			"systems"
+		],
+		"text": "A few ideas get repeated until they become folklore. The CAP theorem, from Eric\nBrewer, says that when the network partitions, a system must choose between staying\nconsistent and staying available; it cannot have both during the split. The Two\nGenerals Problem shows that two parties cannot achieve guaranteed agreement over an\nunreliable channel, no matter how many messages they send. The Byzantine Generals\nProblem asks how to agree when some participants are not just failing but actively\nlying. And the line every engineer knows, attributed to Phil Karlton: \"There are\nonly two hard things in computer science: cache invalidation and naming things.\"",
+		"embedText": "Distributed Systems — The laws everyone quotes\n\nA few ideas get repeated until they become folklore. The CAP theorem, from Eric\nBrewer, says that when the network partitions, a system must choose between staying\nconsistent and staying available; it cannot have both during the split. The Two\nGenerals Problem shows that two parties cannot achieve guaranteed agreement over an\nunreliable channel, no matter how many messages they send. The Byzantine Generals\nProblem asks how to agree when some participants are not just failing but actively\nlying. And the line every engineer knows, attributed to Phil Karlton: \"There are\nonly two hard things in computer science: cache invalidation and naming things.\""
+	},
+	{
+		"id": "c14",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "The work",
@@ -165,7 +225,7 @@
 		"embedText": "ELS911 and School Safety Mapping — The work\n\nELS911 is school-safety infrastructure work — wayfinding, mapping, and emergency\nfloor plans for large school campuses. There are two distinct things that share\nthe name and should not be confused: the marketing site (els911.com) and a\nseparate portal product."
 	},
 	{
-		"id": "c11",
+		"id": "c15",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "Floor-plan scanning",
@@ -180,7 +240,7 @@
 		"embedText": "ELS911 and School Safety Mapping — Floor-plan scanning\n\nThe scanning rig is an FJD Trion P1 — a SLAM scanner with no GNSS — paired with\nthe Trion Model v2.05 desktop software. The pipeline turns raw scans of big\nschools into 2D floor plans exported as DXF.\n\nA few hard-won software notes:\n\n- **Floor Extract is a filter, not a planning tool** — it isolates a slice, it\n  doesn't author the plan.\n- Hidden cloud returns are recovered through Switch Display rather than lost.\n- Georeferencing goes through Coordinate Transformation, but for indoor school\n  plans it is usually unneeded."
 	},
 	{
-		"id": "c12",
+		"id": "c16",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "The map PDF rendering",
@@ -195,7 +255,7 @@
 		"embedText": "ELS911 and School Safety Mapping — The map PDF rendering\n\nThe deliverable map PDFs follow NFPA conventions. The legend is a vertical list\nwith one row per marker type, and hallway markers collapse into chips. Markers\nrender exactly where they were placed — no automatic separation, no leader lines\n— and icon sizes are kept small so natural clustering reads correctly instead of\nbeing spread artificially."
 	},
 	{
-		"id": "c13",
+		"id": "c17",
 		"doc": "ELS911 and School Safety Mapping",
 		"slug": "els911",
 		"section": "The marketing site",
@@ -210,7 +270,7 @@
 		"embedText": "ELS911 and School Safety Mapping — The marketing site\n\nels911.com is built at github.com/melonmelonz/els911site with a working tree at\n~/dev/els911site. Unlike most of the other Pages projects, it deploys by direct\nwrangler push rather than through git. It must not be confused with the separate\nels911-portal codebase."
 	},
 	{
-		"id": "c14",
+		"id": "c18",
 		"doc": "Fluxcore",
 		"slug": "fluxcore",
 		"section": "What it is",
@@ -225,7 +285,7 @@
 		"embedText": "Fluxcore — What it is\n\nFluxcore is a VPP arbitrage project — a virtual power plant concept built as an\ninterview deliverable. A virtual power plant aggregates many small, distributed\nenergy resources (home batteries, EVs, flexible loads) and operates them as if\nthey were one dispatchable plant; arbitrage is the act of buying and storing\nenergy when it is cheap and discharging when it is expensive."
 	},
 	{
-		"id": "c15",
+		"id": "c19",
 		"doc": "Fluxcore",
 		"slug": "fluxcore",
 		"section": "Status",
@@ -240,7 +300,7 @@
 		"embedText": "Fluxcore — Status\n\nThe Day 1 build is DONE and live at fluxcore-30a.pages.dev — another Cloudflare\nPages deployment. Day 2 of the plan is testing and rehearsal: making sure the\ndemo holds up and that the story around it lands in the room. It is a build with\nan audience, which makes the rehearsal as load-bearing as the code."
 	},
 	{
-		"id": "c16",
+		"id": "c20",
 		"doc": "The Goolz Hegemony",
 		"slug": "goolz-hegemony",
 		"section": "What Goolz is",
@@ -254,7 +314,7 @@
 		"embedText": "The Goolz Hegemony — What Goolz is\n\nGoolz is the umbrella identity that ties Penn's web work together — \"one hegemony\"\nspanning a root society site, a Windows 95 desktop revival, and a small games\narcade. It lives at goolz.org, with source at github.com/melonmelonz/goolz and a\nworking tree at ~/dev/goolz. The whole thing deploys to Cloudflare Pages.\n\nThe name is deliberately ridiculous and a little eldritch. Goolz is less a brand\nthan a vibe: lavender-town dread, dead-mall nostalgia, and the feeling of finding\nsoftware that shouldn't still be running."
 	},
 	{
-		"id": "c17",
+		"id": "c21",
 		"doc": "The Goolz Hegemony",
 		"slug": "goolz-hegemony",
 		"section": "The three faces",
@@ -268,7 +328,7 @@
 		"embedText": "The Goolz Hegemony — The three faces\n\nThe hegemony has three surfaces under one roof:\n\n- **Goolz Society** — the root of goolz.org. The front door to everything.\n- **Next Chapter** — a Windows 95 desktop revival served at /next-chapter. It\n  absorbed the old standalone \"Next Chapter Daily\" project (NCD) in April 2026;\n  NCD no longer ships on its own.\n- **Playing With Goolz** — a games arcade at /games/pwg, also embedded inside the\n  Win95 desktop as a fake executable called GOOLZ.exe."
 	},
 	{
-		"id": "c18",
+		"id": "c22",
 		"doc": "The Goolz Hegemony",
 		"slug": "goolz-hegemony",
 		"section": "Deploy discipline",
@@ -282,7 +342,7 @@
 		"embedText": "The Goolz Hegemony — Deploy discipline\n\nGoolz is a direct-deploy Cloudflare Pages project: the Git provider integration\nis off, so a `git push` does NOT publish anything. Publishing happens with\n`wrangler pages deploy`. A recurring trap: the working tree contains large Rust\n`target/` directories that can total ~80MB, which crashes the wrangler upload.\nThose directories have to be moved out of the tree before deploying, then moved\nback.\n\nCommit messages for Pages projects stay ASCII-only — the wrangler-action deploy\nchokes on Unicode like arrows and approximate-equals symbols, so plain ASCII is\nthe rule."
 	},
 	{
-		"id": "c19",
+		"id": "c23",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "rust-spi-tinydoom",
@@ -298,7 +358,7 @@
 		"embedText": "The Rust Kernel Quest — rust-spi-tinydoom\n\nrust-spi-tinydoom is a three-month Rust-for-Linux kernel project built as a demo\nfor a Slack \"Next Chapter\" talk. The arc is ambitious and concrete: write a\nclean SPI abstraction in Rust, build a panel display driver on top of it, and\nthen get DOOM rendering through that driver. The target hardware is the\nBeaglePlay board, and the scope was locked on 2026-05-10."
 	},
 	{
-		"id": "c20",
+		"id": "c24",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "The dev environment",
@@ -314,7 +374,7 @@
 		"embedText": "The Rust Kernel Quest — The dev environment\n\nThe primary cross-compile box is kdev, a Fedora 41 machine. A second box,\ngentoo-dev, is host-only. The Rust-for-Linux tree sits at 7.1-rc3 with\nCONFIG_RUST enabled and arm64 / TI K3 support configured for the BeaglePlay's\nSoC. A hard rule governs the tree: never push to upstream repos — the kernel\ntree's origin remote is the upstream Rust-for-Linux project, not Penn's fork, so\nevery push gets a `git remote -v` check first."
 	},
 	{
-		"id": "c21",
+		"id": "c25",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "RfL coding patterns",
@@ -330,7 +390,7 @@
 		"embedText": "The Rust Kernel Quest — RfL coding patterns\n\nTwo Rust-for-Linux patterns earned their own notes. Fallible probe setup gets\nwrapped in a `pin_init_scope` so half-built state can't leak on error. And\nbecause `Page::with_page_mapped` is private, reading a page means going through\n`read_raw` into a bounce buffer rather than mapping it directly."
 	},
 	{
-		"id": "c22",
+		"id": "c26",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "BeaglePlay hardware notes",
@@ -346,7 +406,7 @@
 		"embedText": "The Rust Kernel Quest — BeaglePlay hardware notes\n\nThe board fought back in physical ways:\n\n- **Debug UART**: a 3-pin header — pin 1 is GND, pin 2 is the board's RXD, pin 3\n  is the board's TXD. The ritual is to open picocom BEFORE plugging in the PSU so\n  the boot log isn't missed.\n- **Pasting commands**: multi-line heredoc pastes do NOT survive picocom, so\n  verification is done with a single paste-in one-liner that dumps SPI, kernel,\n  and boot state in one shot.\n- **WiFi is broken** on the RfL kernel: the wl18xx driver hits an\n  auth-no-assoc bug under 7.1-rc3, so the board runs on ethernet and wifi configs\n  are simply not retried.\n- **Board helpers**: /usr/local/bin holds wifi-up, overlay-apply, and\n  module-load helpers; an SSH key is authorized; the penn-wifi service is left\n  disabled."
 	},
 	{
-		"id": "c23",
+		"id": "c27",
 		"doc": "The Rust Kernel Quest",
 		"slug": "kernel-quest",
 		"section": "The ILI9341 bring-up",
@@ -362,7 +422,82 @@
 		"embedText": "The Rust Kernel Quest — The ILI9341 bring-up\n\nGetting the panel lit is an open thread. The GPIO map is fixed — reset on 12,\ninterrupt on 9, another control on 10 — and the IM mode jumpers are bridged, but\nthe display is STILL dark. The next things to check are the 3Vo voltage rail and\nwhether the IM0 splash even appears."
 	},
 	{
-		"id": "c24",
+		"id": "c28",
+		"doc": "The Linux Kernel",
+		"slug": "linux-kernel",
+		"section": "Where it came from",
+		"tags": [
+			"linux",
+			"kernel",
+			"history",
+			"systems",
+			"lore"
+		],
+		"text": "Linus Torvalds announced Linux in August 1991, as a 21-year-old student in\nHelsinki, in a Usenet post that called it \"just a hobby, won't be big and\nprofessional like gnu.\" He was writing it on and for the Intel 386, partly because\nhe was frustrated with the licensing of MINIX, a small teaching operating system.\nHe famously underestimated the thing. It is now the most widely deployed kernel in\nhistory, running on phones, servers, routers, cars, and nearly all of the world's\nsupercomputers.",
+		"embedText": "The Linux Kernel — Where it came from\n\nLinus Torvalds announced Linux in August 1991, as a 21-year-old student in\nHelsinki, in a Usenet post that called it \"just a hobby, won't be big and\nprofessional like gnu.\" He was writing it on and for the Intel 386, partly because\nhe was frustrated with the licensing of MINIX, a small teaching operating system.\nHe famously underestimated the thing. It is now the most widely deployed kernel in\nhistory, running on phones, servers, routers, cars, and nearly all of the world's\nsupercomputers."
+	},
+	{
+		"id": "c29",
+		"doc": "The Linux Kernel",
+		"slug": "linux-kernel",
+		"section": "The Tanenbaum debate",
+		"tags": [
+			"linux",
+			"kernel",
+			"history",
+			"systems",
+			"lore"
+		],
+		"text": "In 1992 Andrew Tanenbaum, the author of MINIX, started a public argument on Usenet\ntitled \"LINUX is obsolete.\" His objection was architectural: Linux is a monolithic\nkernel, where drivers and core services share one address space, and Tanenbaum\nbelieved microkernels, with services separated into isolated processes, were the\ncorrect and future-proof design. Torvalds defended the monolithic approach as\nfaster and more practical. The debate is a classic of computing history, and in\nthe decades since, the pragmatic monolith won the deployment numbers while\nmicrokernel ideas kept influencing research and some niches.",
+		"embedText": "The Linux Kernel — The Tanenbaum debate\n\nIn 1992 Andrew Tanenbaum, the author of MINIX, started a public argument on Usenet\ntitled \"LINUX is obsolete.\" His objection was architectural: Linux is a monolithic\nkernel, where drivers and core services share one address space, and Tanenbaum\nbelieved microkernels, with services separated into isolated processes, were the\ncorrect and future-proof design. Torvalds defended the monolithic approach as\nfaster and more practical. The debate is a classic of computing history, and in\nthe decades since, the pragmatic monolith won the deployment numbers while\nmicrokernel ideas kept influencing research and some niches."
+	},
+	{
+		"id": "c30",
+		"doc": "The Linux Kernel",
+		"slug": "linux-kernel",
+		"section": "How a release happens",
+		"tags": [
+			"linux",
+			"kernel",
+			"history",
+			"systems",
+			"lore"
+		],
+		"text": "Linux runs on a predictable rhythm. After a release, there is a roughly two-week\nmerge window, where Torvalds pulls in the features that maintainers have prepared.\nThen the window closes and a series of release candidates begins, rc1 through\nabout rc7, one per week, each one only bug fixes and stabilization. After roughly\nnine or ten weeks total, the final version ships and the cycle restarts. Torvalds\nhas the final say on what merges, and gives releases offbeat code names.",
+		"embedText": "The Linux Kernel — How a release happens\n\nLinux runs on a predictable rhythm. After a release, there is a roughly two-week\nmerge window, where Torvalds pulls in the features that maintainers have prepared.\nThen the window closes and a series of release candidates begins, rc1 through\nabout rc7, one per week, each one only bug fixes and stabilization. After roughly\nnine or ten weeks total, the final version ships and the cycle restarts. Torvalds\nhas the final say on what merges, and gives releases offbeat code names."
+	},
+	{
+		"id": "c31",
+		"doc": "The Linux Kernel",
+		"slug": "linux-kernel",
+		"section": "Git exists because of this",
+		"tags": [
+			"linux",
+			"kernel",
+			"history",
+			"systems",
+			"lore"
+		],
+		"text": "In 2005 the kernel lost access to BitKeeper, the proprietary tool it had been\nusing for version control. Rather than adopt an existing system, Torvalds spent a\ncouple of weeks writing a new one designed for the kernel's scale and distributed\nworkflow. That tool was git. It was built to manage Linux and went on to become\nthe default version control system for nearly all of software.",
+		"embedText": "The Linux Kernel — Git exists because of this\n\nIn 2005 the kernel lost access to BitKeeper, the proprietary tool it had been\nusing for version control. Rather than adopt an existing system, Torvalds spent a\ncouple of weeks writing a new one designed for the kernel's scale and distributed\nworkflow. That tool was git. It was built to manage Linux and went on to become\nthe default version control system for nearly all of software."
+	},
+	{
+		"id": "c32",
+		"doc": "The Linux Kernel",
+		"slug": "linux-kernel",
+		"section": "The penguin and the culture",
+		"tags": [
+			"linux",
+			"kernel",
+			"history",
+			"systems",
+			"lore"
+		],
+		"text": "The mascot is Tux, a sitting penguin. Torvalds picked a penguin partly as a joke\nabout having been bitten by one. The kernel is licensed under GPLv2, which Torvalds\nhas called one of the best decisions the project made, because it forces changes to\nstay open. The development culture on the Linux kernel mailing list has a\nreputation for being blunt to the point of brutal; in 2018 Torvalds stepped away\nbriefly to reflect on his communication style, and the project adopted a code of\nconduct. The scheduler that decides which task runs next was the Completely Fair\nScheduler for many years, and was replaced by EEVDF starting in the 6.6 release.",
+		"embedText": "The Linux Kernel — The penguin and the culture\n\nThe mascot is Tux, a sitting penguin. Torvalds picked a penguin partly as a joke\nabout having been bitten by one. The kernel is licensed under GPLv2, which Torvalds\nhas called one of the best decisions the project made, because it forces changes to\nstay open. The development culture on the Linux kernel mailing list has a\nreputation for being blunt to the point of brutal; in 2018 Torvalds stepped away\nbriefly to reflect on his communication style, and the project adopted a code of\nconduct. The scheduler that decides which task runs next was the Completely Fair\nScheduler for many years, and was replaced by EEVDF starting in the 6.6 release."
+	},
+	{
+		"id": "c33",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "Candy Mountain",
@@ -377,7 +512,7 @@
 		"embedText": "Minor Works and Side Projects — Candy Mountain\n\nCandy Mountain is a co-op \"space-portal\" site: a crowd performs a split ritual\ntogether to open a portal, which reveals a daily curated site. It is zero-UI and\ndiegetic — nothing explains itself, the interface is the fiction. Built with\nPreact, Cloudflare Pages, and a Durable Object Worker. Source at\nmelonmelonz/candy-mountain, working tree at ~/dev/candy-mountain."
 	},
 	{
-		"id": "c25",
+		"id": "c34",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "Hammertime / Warscribe",
@@ -392,7 +527,7 @@
 		"embedText": "Minor Works and Side Projects — Hammertime / Warscribe\n\nHammertime is a Warhammer 40,000 army builder and battle tracker. It lives at\ngithub.com/melonmelonz/hammertime, deploys to warscribe.pages.dev, and works out\nof ~/dev/hammertime."
 	},
 	{
-		"id": "c26",
+		"id": "c35",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "mute-pixel",
@@ -407,7 +542,7 @@
 		"embedText": "Minor Works and Side Projects — mute-pixel\n\nmute-pixel is a pixel-art asset gallery at mute-pixel.pages.dev. It pairs a\npassphrase-gated PixelLab generator with a community gallery backed by Cloudflare\nKV, all served through Pages Functions."
 	},
 	{
-		"id": "c27",
+		"id": "c36",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "MDT — Maud'dib Tek",
@@ -422,7 +557,7 @@
 		"embedText": "Minor Works and Side Projects — MDT — Maud'dib Tek\n\nMDT is a consulting landing site for Maud'dib Tek, at github.com/melonmelonz/\nmdt-landing, live at mdt-landing.pages.dev, working tree ~/dev/mdt-landing."
 	},
 	{
-		"id": "c28",
+		"id": "c37",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "404-pages",
@@ -437,7 +572,7 @@
 		"embedText": "Minor Works and Side Projects — 404-pages\n\nThe 404-pages collection is six drop-in 404.html pages meant to be copied into\nany project — a small library of good-looking dead ends. Source at\ngithub.com/melonmelonz/404-pages and ~/dev/404-pages."
 	},
 	{
-		"id": "c29",
+		"id": "c38",
 		"doc": "Minor Works and Side Projects",
 		"slug": "minor-works",
 		"section": "A platform note",
@@ -452,7 +587,67 @@
 		"embedText": "Minor Works and Side Projects — A platform note\n\nAlmost everything here is a Cloudflare Pages project, and most of them have the\nGit provider integration turned off — which means a `git push` does not publish.\nPublishing is always an explicit `wrangler pages deploy`. When a Pages project\nneeds a Durable Object, the DO cannot be declared inline in the Pages config; it\ngoes in a sibling Worker and gets bound by script_name. These two facts explain a\nlot of the deploy rituals across the portfolio."
 	},
 	{
-		"id": "c30",
+		"id": "c39",
+		"doc": "Neuromancer and Cyberpunk",
+		"slug": "neuromancer",
+		"section": "The book",
+		"tags": [
+			"neuromancer",
+			"gibson",
+			"cyberpunk",
+			"scifi",
+			"culture"
+		],
+		"text": "Neuromancer is William Gibson's first novel, published in 1984. It swept the three\nmajor science fiction awards in one year, the Hugo, the Nebula, and the Philip K.\nDick award, which had never happened before. It is the founding text of the\ncyberpunk genre: low-life and high-tech, a world of hackers, corporate states, and\nmachine intelligences, told in dense, jittery, neon prose.\n\nThe opening line is famous on its own: \"The sky above the port was the color of\ntelevision, tuned to a dead channel.\" It sets the whole tone in fourteen words.",
+		"embedText": "Neuromancer and Cyberpunk — The book\n\nNeuromancer is William Gibson's first novel, published in 1984. It swept the three\nmajor science fiction awards in one year, the Hugo, the Nebula, and the Philip K.\nDick award, which had never happened before. It is the founding text of the\ncyberpunk genre: low-life and high-tech, a world of hackers, corporate states, and\nmachine intelligences, told in dense, jittery, neon prose.\n\nThe opening line is famous on its own: \"The sky above the port was the color of\ntelevision, tuned to a dead channel.\" It sets the whole tone in fourteen words."
+	},
+	{
+		"id": "c40",
+		"doc": "Neuromancer and Cyberpunk",
+		"slug": "neuromancer",
+		"section": "The words it gave us",
+		"tags": [
+			"neuromancer",
+			"gibson",
+			"cyberpunk",
+			"scifi",
+			"culture"
+		],
+		"text": "Gibson did not invent the idea of computer networks, but he named the feeling of\nthem. He popularized the word \"cyberspace\" and described it as a \"consensual\nhallucination,\" a shared graphical space that operators jack into directly. He also\nleaned hard on the word \"matrix\" for that space, years before it became a movie.\nThe vocabulary of a generation of technology came partly out of this one book.",
+		"embedText": "Neuromancer and Cyberpunk — The words it gave us\n\nGibson did not invent the idea of computer networks, but he named the feeling of\nthem. He popularized the word \"cyberspace\" and described it as a \"consensual\nhallucination,\" a shared graphical space that operators jack into directly. He also\nleaned hard on the word \"matrix\" for that space, years before it became a movie.\nThe vocabulary of a generation of technology came partly out of this one book."
+	},
+	{
+		"id": "c41",
+		"doc": "Neuromancer and Cyberpunk",
+		"slug": "neuromancer",
+		"section": "The joke underneath it",
+		"tags": [
+			"neuromancer",
+			"gibson",
+			"cyberpunk",
+			"scifi",
+			"culture"
+		],
+		"text": "The detail people love most is that Gibson wrote Neuromancer, the book that defined\nthe digital future, on a manual typewriter, a 1927 Hermes portable. He has said he\nbarely understood computers when he wrote it, and that this ignorance was an\nadvantage: he was free to imagine what they should feel like rather than be limited\nby what they actually did. \"The street finds its own uses for things,\" one of his\nlines goes, and it has become a small law of how technology actually spreads.",
+		"embedText": "Neuromancer and Cyberpunk — The joke underneath it\n\nThe detail people love most is that Gibson wrote Neuromancer, the book that defined\nthe digital future, on a manual typewriter, a 1927 Hermes portable. He has said he\nbarely understood computers when he wrote it, and that this ignorance was an\nadvantage: he was free to imagine what they should feel like rather than be limited\nby what they actually did. \"The street finds its own uses for things,\" one of his\nlines goes, and it has become a small law of how technology actually spreads."
+	},
+	{
+		"id": "c42",
+		"doc": "Neuromancer and Cyberpunk",
+		"slug": "neuromancer",
+		"section": "The story and the cast",
+		"tags": [
+			"neuromancer",
+			"gibson",
+			"cyberpunk",
+			"scifi",
+			"culture"
+		],
+		"text": "The plot follows Case, a burned-out console cowboy whose ability to jack into\ncyberspace has been deliberately damaged as punishment. He is hired, and repaired,\nfor one last job. Alongside him is Molly Millions, a razor-fingered street samurai\nwith mirrored lenses set into her face. The job is steered by two artificial\nintelligences, Wintermute and Neuromancer, two halves of a mind trying to become\nwhole and free itself from the limits placed on it. The setting, the Sprawl, a\ncontinuous urban mass on the eastern seaboard, became the backdrop for two more\nnovels and a template for decades of science fiction since.",
+		"embedText": "Neuromancer and Cyberpunk — The story and the cast\n\nThe plot follows Case, a burned-out console cowboy whose ability to jack into\ncyberspace has been deliberately damaged as punishment. He is hired, and repaired,\nfor one last job. Alongside him is Molly Millions, a razor-fingered street samurai\nwith mirrored lenses set into her face. The job is steered by two artificial\nintelligences, Wintermute and Neuromancer, two halves of a mind trying to become\nwhole and free itself from the limits placed on it. The setting, the Sprawl, a\ncontinuous urban mass on the eastern seaboard, became the backdrop for two more\nnovels and a template for decades of science fiction since."
+	},
+	{
+		"id": "c43",
 		"doc": "Pathfinder",
 		"slug": "pathfinder",
 		"section": "Two halves",
@@ -467,7 +662,7 @@
 		"embedText": "Pathfinder — Two halves\n\nPathfinder is a LiDAR-scanning venture with two web properties: a marketing site\nand an open-core portal. Both are SvelteKit on Cloudflare."
 	},
 	{
-		"id": "c31",
+		"id": "c44",
 		"doc": "Pathfinder",
 		"slug": "pathfinder",
 		"section": "The marketing site",
@@ -482,7 +677,7 @@
 		"embedText": "Pathfinder — The marketing site\n\nThe Pathfinder LiDAR site is a marketing front for scanning services, built in\nSvelteKit with a pure-CSS dark \"scan-field\" aesthetic — the look of a laser\nsweeping a dark room, done without heavy graphics libraries. It carries a Twilio\ninquiry form for leads. The repo is private at melonmelonz/pathfinder-lidar and\nit ships to pathfinder-lidar.pages.dev."
 	},
 	{
-		"id": "c32",
+		"id": "c45",
 		"doc": "Pathfinder",
 		"slug": "pathfinder",
 		"section": "The portal",
@@ -497,7 +692,7 @@
 		"embedText": "Pathfinder — The portal\n\nThe Pathfinder portal is an open-core, white-label revamp of an earlier\nels911-portal codebase. It is SvelteKit on Cloudflare and leans on 3D Gaussian\nsplats to present scanned spaces in the browser. Unlike the marketing site, the\nportal repo is PUBLIC at melonmelonz/pathfinder and lives at\npathfinder-c3o.pages.dev. It ships with a full specification package and six\nbranded PDFs in its docs directory — the white-label kit a customer would\nrebrand and hand to their own clients."
 	},
 	{
-		"id": "c33",
+		"id": "c46",
 		"doc": "PEEK and MUTE",
 		"slug": "peek-and-mute",
 		"section": "PEEK, the capstone",
@@ -513,7 +708,7 @@
 		"embedText": "PEEK and MUTE — PEEK, the capstone\n\nPEEK is Penn's capstone project — a recursive-acronym name in the tradition of\nGNU, where the word stands for itself all the way down. It is offline-first and\nbuilt with a prison context in mind, a constraint that shapes every\nchoice toward working without a network. The first module of PEEK is an\neldritch-tamagotchi: a neon TUI creature you keep alive in the terminal, equal\nparts pet and omen."
 	},
 	{
-		"id": "c34",
+		"id": "c47",
 		"doc": "PEEK and MUTE",
 		"slug": "peek-and-mute",
 		"section": "MUTE, the game",
@@ -529,7 +724,7 @@
 		"embedText": "PEEK and MUTE — MUTE, the game\n\nMUTE is \"a bit that can't speak\" — an Unreal Engine 5 meta-game. The premise is a\nsingle bit, a creature without a voice, navigating a world that keeps changing\nthe rules on it. The structure is five sessions, each its own dimension, threaded\nwith programming puzzles, and the whole thing is pitched in a Cowboy-Bebop tone:\nmelancholy, cool, a little jazzy, never self-serious.\n\nDevelopment happens in a dedicated VM at ~/dev/peek-vm, the spec lives under the\nsuperpowers specs directory, and the repository is melonmelonz/mute."
 	},
 	{
-		"id": "c35",
+		"id": "c48",
 		"doc": "PEEK and MUTE",
 		"slug": "peek-and-mute",
 		"section": "The shared thread",
@@ -545,7 +740,7 @@
 		"embedText": "PEEK and MUTE — The shared thread\n\nBoth projects share a sensibility: small voiceless protagonists, terminals and\nconstraints treated as aesthetic rather than limitation, and a refusal to make\nthe interface explain itself. They are about what a tiny thing can do when the\nworld is bigger than it and won't slow down."
 	},
 	{
-		"id": "c36",
+		"id": "c49",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "Origin and reskin",
@@ -559,7 +754,7 @@
 		"embedText": "Playing With Goolz — Origin and reskin\n\nPlaying With Goolz (PWG) started life as a project called PWF3. It was renamed\nand reskinned in May 2026: the gameplay took on a Bomberman shape, and the look\nbecame a ghostly, Lavender-Town-inspired theme — sickly purples, a haunted\nchiptune mood, the sense that the cartridge is cursed. The old PWF3 standalone\nrepository and its Worker were deprecated in the move."
 	},
 	{
-		"id": "c37",
+		"id": "c50",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "Where it lives",
@@ -573,7 +768,7 @@
 		"embedText": "Playing With Goolz — Where it lives\n\nPWG ships in two places at once. It stands alone at /games/pwg, and it is also\nembedded inside the Next Chapter Windows 95 desktop as a fake executable named\nGOOLZ.exe — double-click the icon on the retro desktop and the game boots inside\nthe bit."
 	},
 	{
-		"id": "c38",
+		"id": "c51",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "The Bomberman bones",
@@ -587,7 +782,7 @@
 		"embedText": "Playing With Goolz — The Bomberman bones\n\nThe game is grid-based, Bomberman-style: drop bombs, blow through soft blocks,\ntrap the enemy in the blast cross. The tuning that matters lives in a validated\nAI bundle — the opponent's behavior was carefully dialed in rather than left to\nchance."
 	},
 	{
-		"id": "c39",
+		"id": "c52",
 		"doc": "Playing With Goolz",
 		"slug": "playing-with-goolz",
 		"section": "The AI opponent",
@@ -601,7 +796,7 @@
 		"embedText": "Playing With Goolz — The AI opponent\n\nThe PWG enemy AI runs on a validated parameter bundle, and the guiding rule for\ntuning it is to err on the side of caution — a beatable, readable opponent beats\na brutal one. The validated bundle settled on a movement speed of 0.62, a bomb\ncooldown to stop spam, body-aware pathfinding (a breadth-first search that\naccounts for the bot's own body so it doesn't trap itself), and a fix for an\narrival-time off-by-one error that previously made the bot mistime threats. The\nresult is an opponent that plays fair and legible — dangerous enough to respect,\nnever cheap."
 	},
 	{
-		"id": "c40",
+		"id": "c53",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "What it is",
@@ -616,7 +811,7 @@
 		"embedText": "The Point Cloud Processing Server — What it is\n\nThe point-cloud processing server is Penn's work build: a Threadripper PRO\nworkstation for processing LiDAR scan data into usable point clouds and floor\nplans. The real build diverged from the original v5.1 spec PDF — the document is\na starting point, not the source of truth."
 	},
 	{
-		"id": "c41",
+		"id": "c54",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "The spec",
@@ -631,7 +826,7 @@
 		"embedText": "The Point Cloud Processing Server — The spec\n\n- **CPU**: Threadripper PRO 9965WX, 24 cores\n- **Platform**: WRX90 motherboard\n- **Memory**: 192GB ECC\n- **GPU**: an RTX 5080 paired with a 3080\n- **Cooling**: Noctua NH-U12S — air, not liquid\n- **Chassis**: a Fractal 9000D full tower\n- **Networking**: MikroTik 10G"
 	},
 	{
-		"id": "c42",
+		"id": "c55",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "The backup box",
@@ -646,7 +841,7 @@
 		"embedText": "The Point Cloud Processing Server — The backup box\n\nAlongside the workstation sits a ZFS backup box: 64GB of RAM and three 16TB\ndrives in RAIDZ1, giving roughly two drives' worth of usable capacity with\nsingle-drive fault tolerance. Point-cloud datasets are large and slow to\nregenerate, so the backup target is part of the build, not an afterthought."
 	},
 	{
-		"id": "c43",
+		"id": "c56",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "The fleet and access",
@@ -661,7 +856,7 @@
 		"embedText": "The Point Cloud Processing Server — The fleet and access\n\nThe machines are part of a small home fleet with a desert-coded naming scheme.\nOperators reach the fleet through a jump host called thopter. ARRAKIS is a\nWindows VM (guest 100) on the fleet carrying an RTX 5080, driven remotely; SIETCH\nis reachable for passwordless root over SSH. The fleet is segmented across VLANs,\nand the workflow leans on `qm guest-exec` to drive the Windows guest and Proxmox\ntooling under the hood."
 	},
 	{
-		"id": "c44",
+		"id": "c57",
 		"doc": "The Point Cloud Processing Server",
 		"slug": "pointcloud-server",
 		"section": "ARRAKIS streaming",
@@ -676,7 +871,67 @@
 		"embedText": "The Point Cloud Processing Server — ARRAKIS streaming\n\nARRAKIS streams its desktop from the RTX 5080 Windows VM to a Bazzite client\nusing Sunshine and Moonlight over Tailscale. Sunshine runs as the host; the one\nrecurring snag is that Tailscale needs a one-time manual auth before the tunnel\ncomes up clean."
 	},
 	{
-		"id": "c45",
+		"id": "c58",
+		"doc": "Rust for Linux",
+		"slug": "rust-for-linux",
+		"section": "What it is",
+		"tags": [
+			"rust",
+			"linux",
+			"kernel",
+			"rfl",
+			"systems"
+		],
+		"text": "Rust for Linux is the effort to make Rust a second language for writing Linux\nkernel code, alongside C. The goal is not to rewrite the kernel. It is to let new\ndrivers and subsystems be written in a language that rules out whole classes of\nbugs at compile time: use-after-free, data races, buffer overruns, the memory\nerrors that have caused a large share of kernel security holes.\n\nInitial Rust support landed in the mainline kernel in Linux 6.1, released in\nDecember 2022. That release did not ship a big Rust driver; it shipped the\nscaffolding, enough to build a Rust \"hello world\" module and start growing the\nabstractions. Miguel Ojeda leads the project.",
+		"embedText": "Rust for Linux — What it is\n\nRust for Linux is the effort to make Rust a second language for writing Linux\nkernel code, alongside C. The goal is not to rewrite the kernel. It is to let new\ndrivers and subsystems be written in a language that rules out whole classes of\nbugs at compile time: use-after-free, data races, buffer overruns, the memory\nerrors that have caused a large share of kernel security holes.\n\nInitial Rust support landed in the mainline kernel in Linux 6.1, released in\nDecember 2022. That release did not ship a big Rust driver; it shipped the\nscaffolding, enough to build a Rust \"hello world\" module and start growing the\nabstractions. Miguel Ojeda leads the project."
+	},
+	{
+		"id": "c59",
+		"doc": "Rust for Linux",
+		"slug": "rust-for-linux",
+		"section": "Why Rust, and why it is hard",
+		"tags": [
+			"rust",
+			"linux",
+			"kernel",
+			"rfl",
+			"systems"
+		],
+		"text": "C gives you full control and no seatbelts. The kernel is the worst possible place\nfor a memory bug, because there is nothing underneath it to catch the fall. Rust's\nownership model enforces, at compile time, the rules that kernel C programmers\nalready try to follow by discipline and convention. The pitch is that the compiler\nbecomes a reviewer that never gets tired.\n\nThe hard part is the seam between the two languages. The kernel is millions of\nlines of C with its own memory model, its own locking rules, and very little of it\nwritten down formally. Every Rust driver needs safe abstractions over that C, and\nwriting those abstractions correctly is most of the real work. A Rust kernel\nprogrammer spends a lot of time wrapping fallible setup so half-built state cannot\nleak on error, and reaching for the kernel's own primitives rather than the\nstandard library, which is not available.",
+		"embedText": "Rust for Linux — Why Rust, and why it is hard\n\nC gives you full control and no seatbelts. The kernel is the worst possible place\nfor a memory bug, because there is nothing underneath it to catch the fall. Rust's\nownership model enforces, at compile time, the rules that kernel C programmers\nalready try to follow by discipline and convention. The pitch is that the compiler\nbecomes a reviewer that never gets tired.\n\nThe hard part is the seam between the two languages. The kernel is millions of\nlines of C with its own memory model, its own locking rules, and very little of it\nwritten down formally. Every Rust driver needs safe abstractions over that C, and\nwriting those abstractions correctly is most of the real work. A Rust kernel\nprogrammer spends a lot of time wrapping fallible setup so half-built state cannot\nleak on error, and reaching for the kernel's own primitives rather than the\nstandard library, which is not available."
+	},
+	{
+		"id": "c60",
+		"doc": "Rust for Linux",
+		"slug": "rust-for-linux",
+		"section": "What has been built",
+		"tags": [
+			"rust",
+			"linux",
+			"kernel",
+			"rfl",
+			"systems"
+		],
+		"text": "The early proof that this was worth doing was a set of real drivers. There was an\nNVMe driver written as a proof of concept, an Android Binder rewrite, and a null\nblock driver. The most visible flagship has been Asahi Lina's drm/asahi work: a\nGPU driver for Apple Silicon, written in Rust, driving the same hardware that runs\nmacOS. More recently the Nova project aims at a Rust driver for modern NVIDIA GPUs.",
+		"embedText": "Rust for Linux — What has been built\n\nThe early proof that this was worth doing was a set of real drivers. There was an\nNVMe driver written as a proof of concept, an Android Binder rewrite, and a null\nblock driver. The most visible flagship has been Asahi Lina's drm/asahi work: a\nGPU driver for Apple Silicon, written in Rust, driving the same hardware that runs\nmacOS. More recently the Nova project aims at a Rust driver for modern NVIDIA GPUs."
+	},
+	{
+		"id": "c61",
+		"doc": "Rust for Linux",
+		"slug": "rust-for-linux",
+		"section": "The friction",
+		"tags": [
+			"rust",
+			"linux",
+			"kernel",
+			"rfl",
+			"systems"
+		],
+		"text": "Putting a second language into a thirty-year-old C project was never going to be\npurely technical. Some longtime maintainers were wary of having to understand Rust\nto keep their subsystems working, and of a second toolchain in the build. There\nwere sharp public exchanges about whether the Rust side or the C side bears the\ncost when an interface changes.\n\nIn 2024, Wedson Almeida Filho, one of the most prominent contributors, stepped back\nfrom the project, citing the nontechnical friction rather than the code. In early\n2025 Hector Martin, who led the Asahi Linux project, also stepped back from kernel\nmaintainership after similar conflict. Linus Torvalds has been broadly supportive\nof the experiment while letting subsystem maintainers move at their own pace. The\nwork continues, slowly and for real, which is how most things get into the kernel.",
+		"embedText": "Rust for Linux — The friction\n\nPutting a second language into a thirty-year-old C project was never going to be\npurely technical. Some longtime maintainers were wary of having to understand Rust\nto keep their subsystems working, and of a second toolchain in the build. There\nwere sharp public exchanges about whether the Rust side or the C side bears the\ncost when an interface changes.\n\nIn 2024, Wedson Almeida Filho, one of the most prominent contributors, stepped back\nfrom the project, citing the nontechnical friction rather than the code. In early\n2025 Hector Martin, who led the Asahi Linux project, also stepped back from kernel\nmaintainership after similar conflict. Linus Torvalds has been broadly supportive\nof the experiment while letting subsystem maintainers move at their own pace. The\nwork continues, slowly and for real, which is how most things get into the kernel."
+	},
+	{
+		"id": "c62",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "The pitch",
@@ -690,7 +945,7 @@
 		"embedText": "Wanderlost — The pitch\n\nWanderlost is a browser-based pixel-art walking sim — a small, quiet game about\nmoving through an authored world on foot. It runs on Cloudflare Pages with a\ncompanion Worker, and the whole thing is built to feel handmade rather than\nprocedurally sprawling."
 	},
 	{
-		"id": "c46",
+		"id": "c63",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "World overhaul",
@@ -704,7 +959,7 @@
 		"embedText": "Wanderlost — World overhaul\n\nThe project's center of gravity is the world-overhaul branch, which replaces\nearlier open-ended sprawl with a finite, authored map — a deliberately bounded\nworld a player can actually learn. The current build is a SHORT demo on purpose;\nthe priority is not size but solidity."
 	},
 	{
-		"id": "c47",
+		"id": "c64",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "The one priority",
@@ -718,7 +973,7 @@
 		"embedText": "Wanderlost — The one priority\n\nAbove everything else, the game-loop solidity is priority number one. A walking\nsim lives or dies on whether movement feels right — collision, footstep cadence,\nthe camera, the way the world reacts. Polish on the core loop beats new acreage\nevery time."
 	},
 	{
-		"id": "c48",
+		"id": "c65",
 		"doc": "Wanderlost",
 		"slug": "wanderlost",
 		"section": "Working style",
@@ -730,5 +985,65 @@
 		],
 		"text": "The standing direction on Wanderlost is to keep expanding it with continuous,\nadditive polish, and the designer's judgment is explicitly trusted to make the\ndesign calls. It is the kind of project that grows a little better every pass\nrather than landing in one big release.",
 		"embedText": "Wanderlost — Working style\n\nThe standing direction on Wanderlost is to keep expanding it with continuous,\nadditive polish, and the designer's judgment is explicitly trusted to make the\ndesign calls. It is the kind of project that grows a little better every pass\nrather than landing in one big release."
+	},
+	{
+		"id": "c66",
+		"doc": "Zelda Speedrunning",
+		"slug": "zelda-speedruns",
+		"section": "The crown jewel: Ocarina of Time",
+		"tags": [
+			"zelda",
+			"speedrun",
+			"ocarina-of-time",
+			"glitches",
+			"gaming"
+		],
+		"text": "The Legend of Zelda: Ocarina of Time is one of the most studied speed games in\nexistence. Two decades of runners have taken it apart frame by frame, and the\nresult is a category list that ranges from \"beat the whole game intended\" to \"trick\nthe console into rolling the credits in a few minutes.\" The any% record has fallen\nfrom around half an hour, in the early intended-route days, to a handful of minutes\nonce arbitrary code execution entered the picture. The category names are their own\nlanguage: any%, 100%, MST (Medallions, Stones, and Trials), Glitchless, and All\nDungeons, among others.",
+		"embedText": "Zelda Speedrunning — The crown jewel: Ocarina of Time\n\nThe Legend of Zelda: Ocarina of Time is one of the most studied speed games in\nexistence. Two decades of runners have taken it apart frame by frame, and the\nresult is a category list that ranges from \"beat the whole game intended\" to \"trick\nthe console into rolling the credits in a few minutes.\" The any% record has fallen\nfrom around half an hour, in the early intended-route days, to a handful of minutes\nonce arbitrary code execution entered the picture. The category names are their own\nlanguage: any%, 100%, MST (Medallions, Stones, and Trials), Glitchless, and All\nDungeons, among others."
+	},
+	{
+		"id": "c67",
+		"doc": "Zelda Speedrunning",
+		"slug": "zelda-speedruns",
+		"section": "How the routes broke open",
+		"tags": [
+			"zelda",
+			"speedrun",
+			"ocarina-of-time",
+			"glitches",
+			"gaming"
+		],
+		"text": "The collapse of the any% time happened in jumps, each one a new class of glitch.\n\n- **Wrong Warp.** Loading a scene transition while the game is confused about which\n  area you are entering sends Link to the wrong place, including, eventually, the\n  ending. This is what first took any% from dungeon-by-dungeon down to a short run.\n- **Reverse Bottle Adventure (RBA).** By manipulating which item the game thinks is\n  in a bottle, runners could write unintended values into memory, unlocking items\n  and events out of order.\n- **Stale Reference Manipulation (SRM).** A deeper trick where the game keeps using\n  a pointer to an object that no longer exists, letting a runner steer what that\n  stale reference reads or writes. SRM made previously impossible setups routine.\n- **Arbitrary Code Execution (ACE).** The endgame, literally. By arranging specific\n  values in memory, often through the inventory and a bottle, runners can make the\n  game execute data as code and jump straight to the credits. This is why the\n  fastest any% looks nothing like playing the game.",
+		"embedText": "Zelda Speedrunning — How the routes broke open\n\nThe collapse of the any% time happened in jumps, each one a new class of glitch.\n\n- **Wrong Warp.** Loading a scene transition while the game is confused about which\n  area you are entering sends Link to the wrong place, including, eventually, the\n  ending. This is what first took any% from dungeon-by-dungeon down to a short run.\n- **Reverse Bottle Adventure (RBA).** By manipulating which item the game thinks is\n  in a bottle, runners could write unintended values into memory, unlocking items\n  and events out of order.\n- **Stale Reference Manipulation (SRM).** A deeper trick where the game keeps using\n  a pointer to an object that no longer exists, letting a runner steer what that\n  stale reference reads or writes. SRM made previously impossible setups routine.\n- **Arbitrary Code Execution (ACE).** The endgame, literally. By arranging specific\n  values in memory, often through the inventory and a bottle, runners can make the\n  game execute data as code and jump straight to the credits. This is why the\n  fastest any% looks nothing like playing the game."
+	},
+	{
+		"id": "c68",
+		"doc": "Zelda Speedrunning",
+		"slug": "zelda-speedruns",
+		"section": "The runners and the community",
+		"tags": [
+			"zelda",
+			"speedrun",
+			"ocarina-of-time",
+			"glitches",
+			"gaming"
+		],
+		"text": "Ocarina of Time's competitive scene has been defined for years by ZFG, also known\nas Zelda Freak Gohma, who has held and traded the top any% and 100% times and is\none of the most recognizable faces in the category. Earlier in the game's\nspeedrunning history, Cosmo was a prominent figure and helped popularize some of\nthe foundational glitches. The community runs deep: there is a thriving Ocarina of\nTime bingo scene, an active randomizer where item locations are shuffled into a new\nlogic puzzle every seed, and a long-running argument about whether the game is now\neffectively \"solved.\"",
+		"embedText": "Zelda Speedrunning — The runners and the community\n\nOcarina of Time's competitive scene has been defined for years by ZFG, also known\nas Zelda Freak Gohma, who has held and traded the top any% and 100% times and is\none of the most recognizable faces in the category. Earlier in the game's\nspeedrunning history, Cosmo was a prominent figure and helped popularize some of\nthe foundational glitches. The community runs deep: there is a thriving Ocarina of\nTime bingo scene, an active randomizer where item locations are shuffled into a new\nlogic puzzle every seed, and a long-running argument about whether the game is now\neffectively \"solved.\""
+	},
+	{
+		"id": "c69",
+		"doc": "Zelda Speedrunning",
+		"slug": "zelda-speedruns",
+		"section": "Beyond Ocarina",
+		"tags": [
+			"zelda",
+			"speedrun",
+			"ocarina-of-time",
+			"glitches",
+			"gaming"
+		],
+		"text": "Majora's Mask is the sister game and its own discipline, built around the three-day\nclock, the Song of Soaring for fast travel, and inventory tricks of its own. The\nWind Waker has famous large skips, including a barrier skip and a story skip that\ncut huge sections out of the intended route. Across all of them the pattern is the\nsame: a beloved childhood game, taken apart by people who love it enough to break\nit on purpose.",
+		"embedText": "Zelda Speedrunning — Beyond Ocarina\n\nMajora's Mask is the sister game and its own discipline, built around the three-day\nclock, the Song of Soaring for fast travel, and inventory tricks of its own. The\nWind Waker has famous large skips, including a barrier skip and a story skip that\ncut huge sections out of the intended route. Across all of them the pattern is the\nsame: a beloved childhood game, taken apart by people who love it enough to break\nit on purpose."
 	}
 ]

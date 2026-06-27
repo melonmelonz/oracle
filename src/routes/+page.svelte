@@ -1,9 +1,10 @@
 <script>
-	import OracleScreen from '$lib/components/OracleScreen.svelte';
+	import AsciiPortrait from '$lib/components/AsciiPortrait.svelte';
 	import Answer from '$lib/components/Answer.svelte';
 	import SourceCard from '$lib/components/SourceCard.svelte';
 
 	let question = $state('');
+	let asked = $state('');
 	/** @type {'idle' | 'divining' | 'answering' | 'spent' | 'error'} */
 	let status = $state('idle');
 	let answer = $state('');
@@ -16,19 +17,20 @@
 	const busy = $derived(status === 'divining' || status === 'answering');
 	const screenState = $derived(busy ? 'divining' : status === 'spent' ? 'spent' : 'idle');
 
-	const INCANTATIONS = [
-		'What are you?',
-		'How do you know what you know?',
-		'What is the Goolz hegemony?',
-		'How does the Playing With Goolz enemy AI behave?',
-		'Why is the BeaglePlay wifi broken?',
-		'What is MUTE about?'
+	const SUGGESTIONS = [
+		'what are you?',
+		'what is rust for linux?',
+		'how was ocarina of time speedrunning broken?',
+		'why put rust in the linux kernel?',
+		'what did neuromancer invent?',
+		'how does a linux release happen?'
 	];
 
 	async function ask() {
 		const q = question.trim();
 		if (!q || busy) return;
 
+		asked = q;
 		status = 'divining';
 		answer = '';
 		sources = [];
@@ -43,14 +45,14 @@
 				body: JSON.stringify({ question: q })
 			});
 		} catch {
-			errorMsg = 'The connection dropped. Try again.';
+			errorMsg = 'connection dropped. try again.';
 			status = 'error';
 			return;
 		}
 
 		if (!res.ok || !res.body) {
-			const e = await res.json().catch(() => ({ error: 'No answer came back.' }));
-			errorMsg = e.error ?? 'No answer came back.';
+			const e = await res.json().catch(() => ({ error: 'no answer came back.' }));
+			errorMsg = e.error ?? 'no answer came back.';
 			status = 'error';
 			return;
 		}
@@ -58,7 +60,6 @@
 		const reader = res.body.getReader();
 		const decoder = new TextDecoder();
 		let buffer = '';
-
 		while (true) {
 			const { value, done } = await reader.read();
 			if (done) break;
@@ -81,7 +82,7 @@
 					if (status === 'divining') status = 'answering';
 					answer += msg.text;
 				} else if (msg.type === 'error') {
-					errorMsg = msg.message ?? 'Something went wrong.';
+					errorMsg = msg.message ?? 'something went wrong.';
 					status = 'error';
 				} else if (msg.type === 'done') {
 					status = 'spent';
@@ -102,41 +103,38 @@
 </script>
 
 <svelte:head>
-	<title>The Oracle — an archive of the work</title>
+	<title>oracle — an archive of the work</title>
 </svelte:head>
 
 <main>
 	<section class="hero" class:compact={status !== 'idle'}>
-		<OracleScreen state={screenState} />
+		<AsciiPortrait state={screenState} />
 
-		<h1 class="wordmark">ORACLE</h1>
+		<div class="id">
+			<span class="name">oracle</span>
+			<span class="ver">v1</span>
+		</div>
+		<p class="tagline"># an archive of the work. answers only from what is written.</p>
 
-		<p class="tagline">
-			An archive of the work. It answers only from what is written, and it tells you when something
-			is not there.
-		</p>
-
-		<form class="query" onsubmit={(e) => (e.preventDefault(), ask())}>
-			<span class="sigil">&gt;</span>
+		<form class="prompt" onsubmit={(e) => (e.preventDefault(), ask())}>
+			<span class="ps1">oracle:~$</span>
 			<input
 				use:autofocus
 				bind:value={question}
-				placeholder="ask about the work&hellip;"
+				placeholder="ask&hellip;"
 				spellcheck="false"
 				autocomplete="off"
 				maxlength="500"
 				aria-label="Your question"
 			/>
-			<button class="cast" type="submit" disabled={busy}>
-				{busy ? 'reading…' : 'ask'}
-			</button>
+			<button class="run" type="submit" disabled={busy}>{busy ? '[…]' : '[run]'}</button>
 		</form>
 
 		{#if status === 'idle'}
-			<div class="incantations">
-				{#each INCANTATIONS as q, i}
-					<button class="incant" style="animation-delay:{120 + i * 70}ms" onclick={() => askWith(q)}>
-						{q}
+			<div class="suggest">
+				{#each SUGGESTIONS as q, i}
+					<button class="sug" style="animation-delay:{100 + i * 60}ms" onclick={() => askWith(q)}>
+						<span class="caret">&rsaquo;</span> {q}
 					</button>
 				{/each}
 			</div>
@@ -144,34 +142,34 @@
 	</section>
 
 	{#if errorMsg}
-		<div class="error">{errorMsg}</div>
+		<div class="error"># {errorMsg}</div>
 	{/if}
 
 	{#if busy || answer || sources.length}
 		<section class="response">
-			<div class="panel answer-panel">
-				<div class="label">
-					<span class="dot" class:live={status === 'answering'}></span>
-					{status === 'divining' ? 'looking through the archive…' : 'the answer'}
-				</div>
-				{#if answer || status !== 'divining'}
+			{#if asked}
+				<div class="echo"><span class="ps1">oracle:~$</span> <span class="cmd">{asked}</span></div>
+			{/if}
+
+			<div class="out">
+				{#if status === 'divining'}
+					<span class="working">reading the archive<span class="blink">_</span></span>
+				{:else}
 					<Answer
 						text={answer}
 						streaming={status === 'answering'}
 						maxCite={sources.length}
 						onhovercite={(n) => (hoveredCite = n)}
 					/>
-				{:else}
-					<div class="scrying"><span></span><span></span><span></span></div>
 				{/if}
 			</div>
 
 			{#if sources.length}
-				<div class="panel sources">
-					<div class="label sources-label">what is written · {sources.length}</div>
-					<div class="source-list">
+				<div class="refs">
+					<div class="refs-head">refs/ &middot; {sources.length} matched</div>
+					<div class="ref-list">
 						{#each sources as s, i (s.n)}
-							<SourceCard source={s} highlighted={hoveredCite === s.n} delay={i * 60} />
+							<SourceCard source={s} highlighted={hoveredCite === s.n} delay={i * 50} />
 						{/each}
 					</div>
 				</div>
@@ -179,7 +177,7 @@
 		</section>
 	{/if}
 
-	<footer>grounded retrieval &middot; Cloudflare Workers&nbsp;AI &middot; answers only from what is written</footer>
+	<footer># grounded retrieval &middot; hybrid search + cross-encoder rerank &middot; cloudflare workers ai</footer>
 </main>
 
 <style>
@@ -188,7 +186,7 @@
 		z-index: 1;
 		max-width: var(--maxw);
 		margin: 0 auto;
-		padding: clamp(2.4rem, 6vh, 5rem) 1.4rem 5rem;
+		padding: clamp(2rem, 5vh, 4rem) 1.3rem 5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -202,239 +200,199 @@
 		width: 100%;
 	}
 
-	.wordmark {
-		font-family: var(--display);
+	.id {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		margin-top: 1.3rem;
+		animation: rise 0.7s both 0.05s;
+	}
+	.name {
+		font-size: clamp(1.6rem, 5vw, 2.3rem);
 		font-weight: 600;
-		font-size: clamp(2.5rem, 9vw, 4.4rem);
-		letter-spacing: 0.26em;
-		margin: 1.5rem 0 0;
-		padding-left: 0.26em;
-		background: linear-gradient(180deg, var(--bone) 0%, #cdd6cc 55%, var(--sage) 120%);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-		filter: drop-shadow(0 3px 22px rgba(143, 178, 156, 0.2));
-		animation: rise 0.8s both 0.05s;
+		letter-spacing: 0.42em;
+		padding-left: 0.42em;
+		color: var(--amber-bright);
+		text-shadow: 0 0 18px rgba(246, 205, 132, 0.3);
+	}
+	.ver {
+		font-size: 0.7rem;
+		color: var(--amber-dim);
+		letter-spacing: 0.1em;
 	}
 
 	.tagline {
-		font-family: var(--serif);
-		font-size: clamp(0.98rem, 2.3vw, 1.12rem);
-		line-height: 1.6;
-		color: var(--bone-dim);
-		max-width: 30rem;
-		margin: 1rem 0 0;
-		animation: rise 0.8s both 0.15s;
+		font-size: clamp(0.8rem, 2.1vw, 0.92rem);
+		color: var(--amber-dim);
+		margin: 0.7rem 0 0;
+		animation: rise 0.7s both 0.12s;
 	}
 
-	.query {
+	.prompt {
 		display: flex;
 		align-items: center;
-		gap: 0.6rem;
+		gap: 0.55rem;
 		width: 100%;
 		max-width: 36rem;
-		margin-top: 1.9rem;
-		padding: 0.5rem 0.5rem 0.5rem 1rem;
-		background: linear-gradient(180deg, rgba(143, 178, 156, 0.035), rgba(0, 0, 0, 0.25));
+		margin-top: 1.7rem;
+		padding: 0.7rem 0.8rem;
+		background: var(--bg-2);
 		border: 1px solid var(--edge);
-		border-radius: 13px;
-		box-shadow: inset 0 1px 0 rgba(192, 214, 200, 0.04), 0 16px 44px rgba(0, 0, 0, 0.45);
-		transition: border-color 0.3s, box-shadow 0.3s;
-		animation: rise 0.8s both 0.25s;
+		border-radius: 6px;
+		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2), 0 12px 36px rgba(0, 0, 0, 0.4);
+		transition: border-color 0.25s, box-shadow 0.25s;
+		animation: rise 0.7s both 0.2s;
 	}
-	.query:focus-within {
-		border-color: var(--sage-dim);
-		box-shadow: inset 0 1px 0 rgba(192, 214, 200, 0.06), 0 0 0 1px rgba(143, 178, 156, 0.22),
-			0 16px 50px rgba(143, 178, 156, 0.12);
+	.prompt:focus-within {
+		border-color: var(--amber-dim);
+		box-shadow: 0 0 0 1px rgba(217, 168, 94, 0.25), 0 12px 40px rgba(217, 168, 94, 0.1);
 	}
-	.sigil {
-		color: var(--sage);
-		font-family: var(--mono);
-		font-size: 1rem;
+	.ps1 {
+		color: var(--amber);
 		flex: 0 0 auto;
-		opacity: 0.8;
+		font-size: 0.92rem;
+		user-select: none;
 	}
-	.query input {
+	.prompt input {
 		flex: 1 1 auto;
 		min-width: 0;
 		background: none;
 		border: 0;
 		outline: none;
-		color: var(--bone);
+		color: var(--paper);
+		caret-color: var(--amber-bright);
 		font-family: var(--mono);
-		font-size: 0.96rem;
-		padding: 0.45rem 0;
+		font-size: 0.92rem;
 	}
-	.query input::placeholder {
-		color: var(--bone-faint);
+	.prompt input::placeholder {
+		color: var(--amber-dim);
+		opacity: 0.7;
 	}
-	.cast {
+	.run {
 		flex: 0 0 auto;
 		font-family: var(--mono);
-		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: #0b0f0d;
-		background: linear-gradient(180deg, var(--sage-bright), var(--sage));
+		font-size: 0.82rem;
+		color: var(--amber-bright);
+		background: none;
 		border: 0;
-		border-radius: 9px;
-		padding: 0.7rem 1.25rem;
 		cursor: pointer;
-		transition: transform 0.15s, box-shadow 0.25s, opacity 0.25s;
-		box-shadow: 0 0 18px rgba(143, 178, 156, 0.22);
+		letter-spacing: 0.04em;
+		transition: text-shadow 0.2s, opacity 0.2s;
 	}
-	.cast:hover:not(:disabled) {
-		transform: translateY(-1px);
-		box-shadow: 0 0 26px rgba(143, 178, 156, 0.4);
+	.run:hover:not(:disabled) {
+		text-shadow: 0 0 12px rgba(246, 205, 132, 0.6);
 	}
-	.cast:disabled {
-		opacity: 0.55;
+	.run:disabled {
+		opacity: 0.6;
 		cursor: progress;
 	}
 
-	.incantations {
+	.suggest {
 		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 0.55rem;
-		margin-top: 1.6rem;
-		max-width: 38rem;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.3rem;
+		margin-top: 1.4rem;
+		width: 100%;
+		max-width: 36rem;
 	}
-	.incant {
+	.sug {
 		font-family: var(--mono);
-		font-size: 0.78rem;
-		color: var(--bone-dim);
-		background: rgba(143, 178, 156, 0.025);
-		border: 1px solid var(--edge-soft);
-		border-radius: 100px;
-		padding: 0.5rem 0.95rem;
+		font-size: 0.82rem;
+		color: var(--paper-dim);
+		background: none;
+		border: 0;
+		padding: 0.2rem 0;
 		cursor: pointer;
-		transition: all 0.22s;
-		animation: rise 0.7s both;
+		text-align: left;
+		transition: color 0.18s;
+		animation: rise 0.6s both;
 	}
-	.incant:hover {
-		color: var(--sage-bright);
-		border-color: var(--sage-dim);
-		background: rgba(143, 178, 156, 0.07);
+	.sug .caret {
+		color: var(--amber-dim);
+	}
+	.sug:hover {
+		color: var(--amber-bright);
+	}
+	.sug:hover .caret {
+		color: var(--amber-bright);
 	}
 
 	.error {
 		margin-top: 2rem;
-		font-family: var(--mono);
-		font-size: 0.86rem;
-		color: var(--gold);
-		border: 1px solid rgba(205, 162, 94, 0.3);
-		background: rgba(205, 162, 94, 0.06);
-		padding: 0.85rem 1.1rem;
-		border-radius: 10px;
+		font-size: 0.85rem;
+		color: #e6915a;
 		max-width: 36rem;
-		text-align: center;
+		width: 100%;
 	}
 
 	.response {
 		width: 100%;
-		margin-top: 2.8rem;
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-		animation: rise 0.6s both;
+		margin-top: 2.6rem;
+		animation: rise 0.5s both;
 	}
 
-	.panel {
-		width: 100%;
-	}
-	.label {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-family: var(--mono);
-		font-size: 0.71rem;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		color: var(--sage-dim);
+	.echo {
+		font-size: 0.86rem;
+		color: var(--amber-dim);
 		margin-bottom: 1.1rem;
+		word-break: break-word;
 	}
-	.dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--sage-dim);
-	}
-	.dot.live {
-		background: var(--sage-bright);
-		box-shadow: 0 0 9px rgba(192, 214, 200, 0.7);
-		animation: pulsedot 1.1s ease-in-out infinite;
-	}
-	@keyframes pulsedot {
-		50% {
-			opacity: 0.3;
-		}
+	.echo .cmd {
+		color: var(--paper);
 	}
 
-	.answer-panel {
-		border-left: 2px solid var(--edge);
-		padding-left: clamp(1rem, 4vw, 1.8rem);
+	.out {
+		min-height: 1.5em;
 	}
-
-	.scrying {
-		display: flex;
-		gap: 8px;
-		padding: 0.5rem 0;
+	.working {
+		font-size: 0.92rem;
+		color: var(--amber);
 	}
-	.scrying span {
-		width: 7px;
-		height: 7px;
-		border-radius: 50%;
-		background: var(--sage);
-		opacity: 0.4;
-		animation: scry 1.2s ease-in-out infinite;
+	.blink {
+		animation: blink 1s steps(2) infinite;
 	}
-	.scrying span:nth-child(2) {
-		animation-delay: 0.2s;
-	}
-	.scrying span:nth-child(3) {
-		animation-delay: 0.4s;
-	}
-	@keyframes scry {
+	@keyframes blink {
 		0%,
-		100% {
-			opacity: 0.25;
-			transform: translateY(0);
-		}
 		50% {
 			opacity: 1;
-			transform: translateY(-4px);
+		}
+		50.01%,
+		100% {
+			opacity: 0;
 		}
 	}
 
-	.source-list {
+	.refs {
+		margin-top: 2.4rem;
+	}
+	.refs-head {
+		font-size: 0.71rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--amber-dim);
+		margin-bottom: 0.8rem;
+	}
+	.ref-list {
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
-	}
-	.sources-label {
-		margin-bottom: 0.9rem;
+		gap: 0.3rem;
 	}
 
 	footer {
 		margin-top: 4rem;
-		font-family: var(--mono);
 		font-size: 0.67rem;
-		letter-spacing: 0.08em;
-		color: var(--bone-faint);
+		letter-spacing: 0.04em;
+		color: var(--amber-dim);
 		text-align: center;
-		max-width: 34rem;
+		max-width: 36rem;
 		line-height: 1.7;
 		opacity: 0.7;
 	}
 
 	@media (max-width: 560px) {
-		.query {
-			flex-wrap: wrap;
-		}
-		.wordmark {
-			letter-spacing: 0.18em;
+		.name {
+			letter-spacing: 0.3em;
 		}
 	}
 </style>

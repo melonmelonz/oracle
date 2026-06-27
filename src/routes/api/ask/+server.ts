@@ -4,16 +4,27 @@ import {
 	EMBED_MODEL,
 	CHAT_MODEL,
 	FALLBACK_MODEL,
+	RERANK_MODEL,
 	EMBED_VERSION,
 	retrieve,
 	buildMessages,
+	tokenize,
+	buildBm25Index,
+	hybridCandidates,
 	type Chunk,
+	type Candidate,
 	type Retrieved
 } from '$lib/rag';
 
 const CHUNKS = corpus as Chunk[];
+const BM25 = buildBm25Index(CHUNKS);
 const EMBED_KEY = `emb:${EMBED_VERSION}:${CHUNKS.length}`;
 const EMBED_BATCH = 50;
+
+// Retrieval pipeline knobs.
+const CANDIDATES = 14; // hybrid shortlist sent to the reranker
+const TOP_K = 6; // passages handed to the model
+const RERANK_MIN = 0.2; // reranker relevance gate; below this -> "not written here"
 
 const encoder = new TextEncoder();
 const line = (obj: unknown) => encoder.encode(JSON.stringify(obj) + '\n');
@@ -47,6 +58,37 @@ async function ensureEmbeddings(env: App.Platform['env']): Promise<number[][]> {
 	return vectors;
 }
 
+interface RerankHit {
+	index: number;
+	score: number;
+}
+
+/**
+ * Cross-encoder rerank of the hybrid shortlist. bge-reranker-base reads the
+ * question and each passage together and scores genuine relevance, which the
+ * bi-encoder embedding cannot. Returns candidate-array indices with scores,
+ * sorted best first. Throws on an unexpected response so the caller can fall
+ * back to dense retrieval.
+ */
+async function rerank(
+	env: NonNullable<App.Platform['env']>,
+	query: string,
+	candidates: Candidate[]
+): Promise<RerankHit[]> {
+	const res = (await env.AI.run(RERANK_MODEL, {
+		query,
+		top_k: candidates.length,
+		contexts: candidates.map((c) => ({ text: c.text }))
+	})) as { response?: Array<{ id: number; score: number }> };
+
+	const out = (res.response ?? [])
+		.filter((r) => typeof r?.id === 'number' && typeof r?.score === 'number')
+		.map((r) => ({ index: r.id, score: r.score }));
+	if (!out.length) throw new Error('reranker returned no scores');
+	out.sort((a, b) => b.score - a.score);
+	return out;
+}
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /**
@@ -65,7 +107,7 @@ async function typeOut(text: string, send: (obj: unknown) => void) {
 }
 
 const SILENT =
-	"That one is not written in the archive, as far as I can see, so I will not guess at it. Ask me about the work itself, Goolz or the kernel or any of the rest, and I can tell you what is there.";
+	"That one is not written in the archive, as far as I can see, so I will not guess at it. Ask me about the work, or about Rust for Linux, the kernel, distributed systems, the Zelda runs, any of it, and I can tell you what is there.";
 
 export const POST: RequestHandler = async ({ request, platform }) => {
 	const env = platform?.env;
@@ -103,7 +145,28 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					env.AI.run(EMBED_MODEL, { text: question }) as Promise<{ data: number[][] }>
 				]);
 
-				const passages = retrieve(queryRes.data[0], CHUNKS, embeddings);
+				// 1. Hybrid shortlist: dense vectors + BM25, fused with RRF.
+				const candidates = hybridCandidates(
+					queryRes.data[0],
+					tokenize(question),
+					CHUNKS,
+					embeddings,
+					BM25,
+					{ topN: CANDIDATES }
+				);
+
+				// 2. Cross-encoder rerank for true relevance; fall back to dense-only
+				//    cosine if the reranker is unavailable.
+				let passages: Retrieved[];
+				try {
+					const hits = await rerank(env, question, candidates);
+					passages = hits
+						.filter((h) => h.score >= RERANK_MIN)
+						.slice(0, TOP_K)
+						.map((h) => ({ ...candidates[h.index], score: h.score }));
+				} catch {
+					passages = retrieve(queryRes.data[0], CHUNKS, embeddings, { topK: TOP_K });
+				}
 
 				const sources = passages.map((p: Retrieved, i: number) => ({
 					n: i + 1,

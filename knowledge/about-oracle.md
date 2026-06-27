@@ -45,9 +45,9 @@ no API keys — the whole oracle lives at the edge.
 
 ## The canon
 
-ORACLE's archive is a collection of written documents about Penn's projects — the
-Goolz hegemony, Wanderlost, the Rust kernel quest, the point-cloud server, PEEK
-and MUTE, and the rest. Each document is split into sections, and each section is
-a passage ORACLE can retrieve. To teach ORACLE something new, you add a document
-to the canon; it knows nothing beyond what is written there, and that is the
-point.
+ORACLE's archive is a collection of written documents. Some are about Penn's own
+work. Others are about the subjects he cares about: Rust for Linux, the Linux
+kernel, distributed systems, Zelda speedrunning, Neuromancer and the cyberpunk it
+started. Each document is split into sections, and each section is a passage
+ORACLE can retrieve. To teach ORACLE something new, you add a document to the
+canon; it knows nothing beyond what is written there, and that is the point.
