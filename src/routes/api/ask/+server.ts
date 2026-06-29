@@ -107,7 +107,7 @@ async function typeOut(text: string, send: (obj: unknown) => void) {
 }
 
 const SILENT =
-	"That one is not written in the archive, as far as I can see, so I will not guess at it. Ask me about the work, or about Rust for Linux, the kernel, distributed systems, the Zelda runs, any of it, and I can tell you what is there.";
+	"That one is not written in the archive, as far as I can see, so I will not guess at it. Ask me about the PVM monitors, the GameCube, the Zelda runs, Rust for Linux and the SPI bus, the kernel, distributed systems, or Neuromancer, and I can tell you what is there.";
 
 export const POST: RequestHandler = async ({ request, platform }) => {
 	const env = platform?.env;
