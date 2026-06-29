@@ -42,9 +42,12 @@ function followups(passages: Retrieved[]): string[] {
 	if (cited.length === 0) return [];
 
 	const out: string[] = [];
-	const domains = [...new Set(cited.map((c) => c.domain))];
-	if (cited.length >= 2 && domains.length >= 2) {
-		out.push(`what connects ${cited[0].title.toLowerCase()} and ${cited[1].title.toLowerCase()}?`);
+	// A cross-domain connector reads well only between two real subject topics,
+	// so exclude the meta "About the Oracle" doc from the pairing.
+	const subjects = cited.filter((c) => c.domain !== 'meta');
+	const subjectDomains = [...new Set(subjects.map((c) => c.domain))];
+	if (subjects.length >= 2 && subjectDomains.length >= 2) {
+		out.push(`what connects ${subjects[0].title.toLowerCase()} and ${subjects[1].title.toLowerCase()}?`);
 	}
 	const relatedSlugs = [...new Set(cited.flatMap((c) => c.related))].filter((s) => !citedSlugs.includes(s));
 	for (const s of relatedSlugs) {
