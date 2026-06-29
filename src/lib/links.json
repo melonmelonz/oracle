@@ -24,6 +24,46 @@
 		"domain": "meta"
 	},
 	{
+		"title": "Arbitrary code execution (Bulbapedia)",
+		"url": "https://bulbapedia.bulbagarden.net/wiki/Arbitrary_code_execution",
+		"kind": "wiki",
+		"topic": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games",
+		"domain": "games"
+	},
+	{
+		"title": "Arbitrary code execution (Glitch City Wiki mirror)",
+		"url": "https://nintyconservation.github.io/glitchcity.wiki/glitchcity.wiki/Arbitrary_code_execution.html",
+		"kind": "wiki",
+		"topic": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games",
+		"domain": "games"
+	},
+	{
+		"title": "SRM Overview (ZeldaSpeedRuns)",
+		"url": "https://www.zeldaspeedruns.com/oot/srm/srm-overview",
+		"kind": "reference",
+		"topic": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games",
+		"domain": "games"
+	},
+	{
+		"title": "Reprogramming Super Mario World From Inside The Game (Hackaday)",
+		"url": "https://hackaday.com/2015/01/22/reprogramming-super-mario-world-from-inside-the-game/",
+		"kind": "reference",
+		"topic": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games",
+		"domain": "games"
+	},
+	{
+		"title": "Super Mario World total-control TAS (TASVideos)",
+		"url": "https://tasvideos.org/2513M",
+		"kind": "video",
+		"topic": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games",
+		"domain": "games"
+	},
+	{
 		"title": "BeaglePlay documentation",
 		"url": "https://docs.beagleboard.org/latest/boards/beagleplay/index.html",
 		"kind": "manual",
@@ -64,6 +104,54 @@
 		"domain": "kernel"
 	},
 	{
+		"title": "Cyberpunk",
+		"url": "https://en.wikipedia.org/wiki/Cyberpunk",
+		"kind": "wiki",
+		"topic": "cyberpunk",
+		"topicTitle": "Cyberpunk",
+		"domain": "fiction"
+	},
+	{
+		"title": "Neuromancer",
+		"url": "https://en.wikipedia.org/wiki/Neuromancer",
+		"kind": "wiki",
+		"topic": "cyberpunk",
+		"topicTitle": "Cyberpunk",
+		"domain": "fiction"
+	},
+	{
+		"title": "Blade Runner",
+		"url": "https://en.wikipedia.org/wiki/Blade_Runner",
+		"kind": "wiki",
+		"topic": "cyberpunk",
+		"topicTitle": "Cyberpunk",
+		"domain": "fiction"
+	},
+	{
+		"title": "Mirrorshades: The Cyberpunk Anthology",
+		"url": "https://en.wikipedia.org/wiki/Mirrorshades:_The_Cyberpunk_Anthology",
+		"kind": "wiki",
+		"topic": "cyberpunk",
+		"topicTitle": "Cyberpunk",
+		"domain": "fiction"
+	},
+	{
+		"title": "Ghost in the Shell (1995 film)",
+		"url": "https://en.wikipedia.org/wiki/Ghost_in_the_Shell_(1995_film)",
+		"kind": "wiki",
+		"topic": "cyberpunk",
+		"topicTitle": "Cyberpunk",
+		"domain": "fiction"
+	},
+	{
+		"title": "Akira (1988 film)",
+		"url": "https://en.wikipedia.org/wiki/Akira_(1988_film)",
+		"kind": "wiki",
+		"topic": "cyberpunk",
+		"topicTitle": "Cyberpunk",
+		"domain": "fiction"
+	},
+	{
 		"title": "Raft paper PDF",
 		"url": "https://raft.github.io/raft.pdf",
 		"kind": "paper",
@@ -94,6 +182,190 @@
 		"topic": "distributed-systems",
 		"topicTitle": "Distributed Systems",
 		"domain": "distsys"
+	},
+	{
+		"title": "Doom (1993 video game) — Wikipedia",
+		"url": "https://en.wikipedia.org/wiki/Doom_(1993_video_game)",
+		"kind": "wiki",
+		"topic": "doom",
+		"topicTitle": "DOOM (1993)",
+		"domain": "games"
+	},
+	{
+		"title": "Doom modding — Wikipedia",
+		"url": "https://en.wikipedia.org/wiki/Doom_modding",
+		"kind": "wiki",
+		"topic": "doom",
+		"topicTitle": "DOOM (1993)",
+		"domain": "games"
+	},
+	{
+		"title": "WAD — Doom Wiki",
+		"url": "https://doomwiki.org/wiki/WAD",
+		"kind": "reference",
+		"topic": "doom",
+		"topicTitle": "DOOM (1993)",
+		"domain": "games"
+	},
+	{
+		"title": "Source port — Doom Wiki",
+		"url": "https://doomwiki.org/wiki/Source_port",
+		"kind": "reference",
+		"topic": "doom",
+		"topicTitle": "DOOM (1993)",
+		"domain": "games"
+	},
+	{
+		"title": "id-Software/DOOM source release — GitHub",
+		"url": "https://github.com/id-Software/DOOM",
+		"kind": "source",
+		"topic": "doom",
+		"topicTitle": "DOOM (1993)",
+		"domain": "games"
+	},
+	{
+		"title": "Video game console emulator (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Video_game_console_emulator",
+		"kind": "wiki",
+		"topic": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation",
+		"domain": "hardware"
+	},
+	{
+		"title": "Dolphin emulator (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Dolphin_(emulator)",
+		"kind": "wiki",
+		"topic": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation",
+		"domain": "hardware"
+	},
+	{
+		"title": "bsnes / higan (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Bsnes",
+		"kind": "wiki",
+		"topic": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation",
+		"domain": "hardware"
+	},
+	{
+		"title": "mGBA",
+		"url": "https://mgba.io/",
+		"kind": "official",
+		"topic": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation",
+		"domain": "hardware"
+	},
+	{
+		"title": "MiSTer project wiki",
+		"url": "https://github.com/MiSTer-devel/Wiki_MiSTer/wiki",
+		"kind": "wiki",
+		"topic": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation",
+		"domain": "hardware"
+	},
+	{
+		"title": "DAT-o-MATIC (No-Intro)",
+		"url": "https://datomatic.no-intro.org/",
+		"kind": "reference",
+		"topic": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation",
+		"domain": "hardware"
+	},
+	{
+		"title": "Field-programmable gate array (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Field-programmable_gate_array",
+		"kind": "wiki",
+		"topic": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project",
+		"domain": "hardware"
+	},
+	{
+		"title": "MiSTer FPGA (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/MiSTer_FPGA",
+		"kind": "wiki",
+		"topic": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project",
+		"domain": "hardware"
+	},
+	{
+		"title": "Official MiSTer-devel Wiki",
+		"url": "https://github.com/MiSTer-devel/Wiki_MiSTer/wiki",
+		"kind": "official",
+		"topic": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project",
+		"domain": "hardware"
+	},
+	{
+		"title": "MiSTer Main repository",
+		"url": "https://github.com/MiSTer-devel/Main_MiSTer",
+		"kind": "source",
+		"topic": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project",
+		"domain": "hardware"
+	},
+	{
+		"title": "Analogue Pocket (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Analogue_Pocket",
+		"kind": "wiki",
+		"topic": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project",
+		"domain": "hardware"
+	},
+	{
+		"title": "Analogue Pocket product page",
+		"url": "https://www.analogue.co/pocket",
+		"kind": "official",
+		"topic": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project",
+		"domain": "hardware"
+	},
+	{
+		"title": "Game Boy (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Game_Boy",
+		"kind": "wiki",
+		"topic": "game-boy",
+		"topicTitle": "The Game Boy",
+		"domain": "hardware"
+	},
+	{
+		"title": "Game Boy Color (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Game_Boy_Color",
+		"kind": "wiki",
+		"topic": "game-boy",
+		"topicTitle": "The Game Boy",
+		"domain": "hardware"
+	},
+	{
+		"title": "Game Boy: Complete Technical Reference (gekkio)",
+		"url": "https://gekkio.fi/files/gb-docs/gbctr.pdf",
+		"kind": "reference",
+		"topic": "game-boy",
+		"topicTitle": "The Game Boy",
+		"domain": "hardware"
+	},
+	{
+		"title": "Zilog Z80 (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Zilog_Z80",
+		"kind": "wiki",
+		"topic": "game-boy",
+		"topicTitle": "The Game Boy",
+		"domain": "hardware"
+	},
+	{
+		"title": "Chiptune (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Chiptune",
+		"kind": "wiki",
+		"topic": "game-boy",
+		"topicTitle": "The Game Boy",
+		"domain": "hardware"
+	},
+	{
+		"title": "Little Sound Dj (official site)",
+		"url": "https://www.littlesounddj.com/lsd/index.php",
+		"kind": "official",
+		"topic": "game-boy",
+		"topicTitle": "The Game Boy",
+		"domain": "hardware"
 	},
 	{
 		"title": "GameCube architecture deep dive",
@@ -248,6 +520,38 @@
 		"domain": "fiction"
 	},
 	{
+		"title": "Nintendo 64 (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Nintendo_64",
+		"kind": "wiki",
+		"topic": "nintendo-64",
+		"topicTitle": "The Nintendo 64",
+		"domain": "hardware"
+	},
+	{
+		"title": "Nintendo 64 Architecture: A Practical Analysis",
+		"url": "https://www.copetti.org/writings/consoles/nintendo-64/",
+		"kind": "guide",
+		"topic": "nintendo-64",
+		"topicTitle": "The Nintendo 64",
+		"domain": "hardware"
+	},
+	{
+		"title": "Nintendo 64 controller (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Nintendo_64_controller",
+		"kind": "wiki",
+		"topic": "nintendo-64",
+		"topicTitle": "The Nintendo 64",
+		"domain": "hardware"
+	},
+	{
+		"title": "Nintendo 64 Game Pak (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Nintendo_64_Game_Pak",
+		"kind": "wiki",
+		"topic": "nintendo-64",
+		"topicTitle": "The Nintendo 64",
+		"domain": "hardware"
+	},
+	{
 		"title": "Bulbapedia: Kanto",
 		"url": "https://bulbapedia.bulbagarden.net/wiki/Kanto",
 		"kind": "map",
@@ -344,6 +648,46 @@
 		"domain": "kernel"
 	},
 	{
+		"title": "Dreamcast (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Dreamcast",
+		"kind": "wiki",
+		"topic": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast",
+		"domain": "hardware"
+	},
+	{
+		"title": "Dreamcast Architecture: A Practical Analysis",
+		"url": "https://www.copetti.org/writings/consoles/dreamcast/",
+		"kind": "reference",
+		"topic": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast",
+		"domain": "hardware"
+	},
+	{
+		"title": "Dreamcast VGA (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/Dreamcast_VGA",
+		"kind": "wiki",
+		"topic": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast",
+		"domain": "hardware"
+	},
+	{
+		"title": "SegaNet (Wikipedia)",
+		"url": "https://en.wikipedia.org/wiki/SegaNet",
+		"kind": "wiki",
+		"topic": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast",
+		"domain": "hardware"
+	},
+	{
+		"title": "KallistiOS homebrew SDK",
+		"url": "https://github.com/KallistiOS/KallistiOS",
+		"kind": "source",
+		"topic": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast",
+		"domain": "hardware"
+	},
+	{
 		"title": "Linux SPI summary",
 		"url": "https://docs.kernel.org/spi/spi-summary.html",
 		"kind": "docs",
@@ -373,6 +717,102 @@
 		"kind": "guide",
 		"topic": "spi-bus",
 		"topicTitle": "The SPI Bus",
+		"domain": "kernel"
+	},
+	{
+		"title": "C (programming language) — Wikipedia",
+		"url": "https://en.wikipedia.org/wiki/C_(programming_language)",
+		"kind": "wiki",
+		"topic": "the-c-language",
+		"topicTitle": "The C Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "Undefined behavior — Wikipedia",
+		"url": "https://en.wikipedia.org/wiki/Undefined_behavior",
+		"kind": "wiki",
+		"topic": "the-c-language",
+		"topicTitle": "The C Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "The C Programming Language (K&R) — Wikipedia",
+		"url": "https://en.wikipedia.org/wiki/The_C_Programming_Language",
+		"kind": "wiki",
+		"topic": "the-c-language",
+		"topicTitle": "The C Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "ISO/IEC JTC1/SC22/WG14 (C standards committee)",
+		"url": "https://www.open-std.org/jtc1/sc22/wg14/",
+		"kind": "official",
+		"topic": "the-c-language",
+		"topicTitle": "The C Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "Linux kernel coding style",
+		"url": "https://docs.kernel.org/process/coding-style.html",
+		"kind": "reference",
+		"topic": "the-c-language",
+		"topicTitle": "The C Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "What is memory safety and why does it matter? — Prossimo",
+		"url": "https://www.memorysafety.org/docs/memory-safety/",
+		"kind": "reference",
+		"topic": "the-c-language",
+		"topicTitle": "The C Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "Rust language home",
+		"url": "https://www.rust-lang.org/",
+		"kind": "official",
+		"topic": "the-rust-language",
+		"topicTitle": "The Rust Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "The Rust Book: What Is Ownership?",
+		"url": "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html",
+		"kind": "guide",
+		"topic": "the-rust-language",
+		"topicTitle": "The Rust Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "The Rust Book: References and Borrowing",
+		"url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+		"kind": "guide",
+		"topic": "the-rust-language",
+		"topicTitle": "The Rust Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "The Cargo Book",
+		"url": "https://doc.rust-lang.org/cargo/",
+		"kind": "manual",
+		"topic": "the-rust-language",
+		"topicTitle": "The Rust Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "Rust Edition Guide",
+		"url": "https://doc.rust-lang.org/edition-guide/editions/index.html",
+		"kind": "guide",
+		"topic": "the-rust-language",
+		"topicTitle": "The Rust Language",
+		"domain": "kernel"
+	},
+	{
+		"title": "Rust Foundation",
+		"url": "https://rustfoundation.org/",
+		"kind": "official",
+		"topic": "the-rust-language",
+		"topicTitle": "The Rust Language",
 		"domain": "kernel"
 	},
 	{

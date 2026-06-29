@@ -1,0 +1,43 @@
+---
+title: The Nintendo 64
+domain: hardware
+tags: [nintendo-64, n64, vr4300, reality-coprocessor, rdram, cartridge, anti-aliasing, microcode, ocarina-of-time]
+vocab:
+  - { term: VR4300, def: "The NEC-built 64-bit CPU at the heart of the N64, a binary-compatible variant of the MIPS R4300i running at 93.75 MHz." }
+  - { term: Reality Coprocessor, def: "The 62.5 MHz graphics and audio chip co-designed by Nintendo and SGI, containing the Reality Signal Processor and the Reality Display Processor." }
+  - { term: Microcode, def: "Small programs run on the Reality Signal Processor that define the geometry and audio pipeline, letting studios reshape what the hardware does rather than calling a fixed library." }
+  - { term: Expansion Pak, def: "A plug-in module that doubled the console's RDRAM from 4 MB to 8 MB, required by some late titles and used for higher resolutions." }
+  - { term: Rumble Pak, def: "A force-feedback accessory that slotted into the controller's expansion port, introduced in 1997 alongside Star Fox 64." }
+  - { term: Cartridge, def: "The N64's Game Pak ROM, holding 4 to 64 MB, chosen over CD for near-instant loading and stronger copy protection." }
+  - { term: Anti-aliasing, def: "Edge-smoothing applied by the RCP and video interface that softened jagged polygon borders and contributed to the console's hazy, gentle look." }
+  - { term: Z-buffer, def: "A per-pixel depth buffer the Reality Display Processor maintains so closer surfaces correctly hide farther ones, removing the need for software polygon sorting." }
+related: [majoras-mask, zelda-speedruns, gamecube]
+source: "Wikipedia (Nintendo 64, Nintendo 64 controller, Nintendo 64 Game Pak), copetti.org Nintendo 64 Architecture."
+links:
+  - { title: "Nintendo 64 (Wikipedia)", url: "https://en.wikipedia.org/wiki/Nintendo_64", kind: wiki }
+  - { title: "Nintendo 64 Architecture: A Practical Analysis", url: "https://www.copetti.org/writings/consoles/nintendo-64/", kind: guide }
+  - { title: "Nintendo 64 controller (Wikipedia)", url: "https://en.wikipedia.org/wiki/Nintendo_64_controller", kind: wiki }
+  - { title: "Nintendo 64 Game Pak (Wikipedia)", url: "https://en.wikipedia.org/wiki/Nintendo_64_Game_Pak", kind: wiki }
+---
+# The Nintendo 64
+
+## A 64-bit console arrives, late and powerful
+Nintendo released the Nintendo 64 in Japan on June 23, 1996, in North America on September 29, 1996, and in Europe and Australia on March 1, 1997. It was the company's fifth-generation machine, following the Super Nintendo, and it landed a year or more after Sony's PlayStation and the Sega Saturn. The name advertised its headline feature: a 64-bit processor at a time when rivals ran 32-bit chips. The hardware was a joint effort with Silicon Graphics, the workstation company whose rendering pipelines defined high-end 3D, and the project carried the codename "Project Reality" through development. The console sold about 32.93 million units worldwide over its life, behind the PlayStation but ahead of the Saturn. Its reputation rests less on sales than on a small, sharp library and on a controller that taught a generation what an analog stick felt like.
+
+## The VR4300 and a 32-bit bottleneck
+The CPU is the NEC VR4300, a 64-bit chip running at 93.75 MHz and binary-compatible with the MIPS R4300i. It implements the MIPS III instruction set, carries 24 KB of L1 cache (16 KB instruction, 8 KB data), and uses a five-stage pipeline. The 64-bit width was real but rarely exploited. To cut cost, NEC narrowed the external data bus to 32 bits, so moving 64-bit data across the system burned extra cycles; most studios stayed in 32-bit mode and treated the wider registers as a bonus rather than a default. The chip is quoted at roughly 125 million instructions per second. In practice the CPU was not the limiting factor. The harder constraints sat in memory latency and in the texture pipeline of the graphics chip, which shaped how N64 games actually looked far more than the marketing-friendly "64-bit" label did.
+
+## The Reality Coprocessor: RSP plus RDP
+Almost everything beyond the CPU runs through the Reality Coprocessor, clocked at 62.5 MHz, about two-thirds the CPU speed and co-designed with SGI. It splits into two units. The Reality Signal Processor (RSP) is a cut-down MIPS core paired with a vector unit of thirty-two 128-bit registers, each able to hold eight 16-bit lanes for SIMD-style math; it transforms geometry and can also process audio. The Reality Display Processor (RDP) is the fixed-function rasterizer that fills triangles, applies textures, and writes pixels. The RDP supports perspective-correct mapping, bilinear and trilinear filtering, and mipmapping, though its trilinear filter interpolates between three points rather than the usual four, which produces small visual artifacts. The two units work in a pipeline with the CPU, geometry flowing from VR4300 to RSP to RDP and out to the frame buffer.
+
+## Microcode: a programmable pipeline
+The unusual thing about the RSP is that it is programmable. Rather than a fixed transform-and-lighting block, it runs microcode: small programs, capped near a thousand instructions and held in 4 KB of instruction memory, that define how geometry and audio get processed. Nintendo and SGI shipped standard microcode, but studios could write their own. Doing so was difficult and poorly documented early on, yet teams that managed it pushed far past the default limits. Custom microcode let games reach much higher polygon counts and more advanced lighting, animation, and physics than the stock path allowed. Factor 5, working on the Star Wars titles, became famous for squeezing the RSP this way. This is why N64 hardware aged unevenly: a 1996 launch game and a 2000 title could run on identical silicon yet look generations apart, because the later one was effectively running a different rendering engine on the same chip.
+
+## RDRAM, the Z-buffer, and the smooth blur
+The N64 used 4 MB of Rambus RDRAM in a unified pool shared by CPU, audio, and video, with an optional 4 MB more from the Expansion Pak. RDRAM offered high peak bandwidth, around 500 MB/s, but punishing latency, on the order of hundreds of nanoseconds per transaction, which throttled real performance. The RDP leans on a Z-buffer, a depth value stored per pixel, so nearer surfaces automatically hide farther ones; programmers no longer had to sort polygons in software. The console's signature soft image came from two compounding choices. First, the RCP and video interface applied anti-aliasing that smoothed polygon edges into a gentle haze. Second, the RDP held only 4 KB of texture memory (TMEM), and mipmapping halved even that, so textures had to be tiny and were stretched and filtered across surfaces. The result was a low-resolution, blurry, but flicker-free and smooth look that is instantly recognizable.
+
+## The controller and its analog stick
+The N64 controller broke from convention with a three-pronged, trident-shaped body so unusual it was first sculpted in clay because it could not be modeled on a computer. Its centerpiece was the analog stick, Nintendo's first standard thumbstick. The mechanism is technically a digital encoder, a gear-driven chopper wheel interrupting a light beam read by a photodiode, but its precision made it behave like a true analog control. The stick made first-person and free-roaming 3D movement feel natural for the first time on a console. The expansion port on the controller's underside accepted three accessories: the Controller Pak for save data, the Transfer Pak for linking Game Boy cartridges, and the Rumble Pak, a battery-powered force-feedback module released in April 1997 with Star Fox 64 (called Lylat Wars in Europe). Four controller ports built into the console made local four-player split-screen a defining feature.
+
+## Carts over CD, and the two Zeldas
+Nintendo kept ROM cartridges, the Game Pak, while competitors moved to CD-ROM. The reasons were practical: cartridges loaded almost instantly where CD drives crawled at roughly 300 kB/s, and the Game Pak's lockout chip made piracy far harder than copying a disc. The cost was capacity. Game Paks ran from about 4 to 12 MB early on, reached 32 MB by 1998, and topped out at 64 MB from 1999, a fraction of a CD's 650 MB. That ceiling forced compressed assets and MIDI-style sequenced audio instead of streamed music, and it pushed some third parties toward Sony. The library that resulted was small but durable, and its summit is two games from the same engine: The Legend of Zelda: Ocarina of Time in 1998 and Majora's Mask in 2000, the latter requiring the Expansion Pak. Both remain central to speedrunning and to the console's lasting reputation.

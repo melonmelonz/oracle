@@ -8,6 +8,16 @@
 		]
 	},
 	{
+		"slug": "arbitrary-code-execution",
+		"title": "Arbitrary Code Execution in Games",
+		"domain": "games",
+		"related": [
+			"pokemon-gen1",
+			"zelda-speedruns",
+			"doom"
+		]
+	},
+	{
 		"slug": "beagleplay",
 		"title": "The BeaglePlay and SPI Display Bring-up",
 		"domain": "kernel",
@@ -18,12 +28,60 @@
 		]
 	},
 	{
+		"slug": "cyberpunk",
+		"title": "Cyberpunk",
+		"domain": "fiction",
+		"related": [
+			"neuromancer",
+			"distributed-systems"
+		]
+	},
+	{
 		"slug": "distributed-systems",
 		"title": "Distributed Systems",
 		"domain": "distsys",
 		"related": [
 			"linux-kernel",
 			"neuromancer"
+		]
+	},
+	{
+		"slug": "doom",
+		"title": "DOOM (1993)",
+		"domain": "games",
+		"related": [
+			"the-c-language",
+			"arbitrary-code-execution",
+			"emulation-preservation"
+		]
+	},
+	{
+		"slug": "emulation-preservation",
+		"title": "Emulation and Preservation",
+		"domain": "hardware",
+		"related": [
+			"gamecube",
+			"nintendo-64",
+			"game-boy"
+		]
+	},
+	{
+		"slug": "fpga-mister",
+		"title": "FPGA and the MiSTer Project",
+		"domain": "hardware",
+		"related": [
+			"emulation-preservation",
+			"beagleplay",
+			"spi-bus"
+		]
+	},
+	{
+		"slug": "game-boy",
+		"title": "The Game Boy",
+		"domain": "hardware",
+		"related": [
+			"pokemon-gen1",
+			"retro-computing"
 		]
 	},
 	{
@@ -73,6 +131,16 @@
 		]
 	},
 	{
+		"slug": "nintendo-64",
+		"title": "The Nintendo 64",
+		"domain": "hardware",
+		"related": [
+			"majoras-mask",
+			"zelda-speedruns",
+			"gamecube"
+		]
+	},
+	{
 		"slug": "pokemon-gen1",
 		"title": "Pokemon Generation I (Red, Green, Blue)",
 		"domain": "games",
@@ -100,12 +168,42 @@
 		]
 	},
 	{
+		"slug": "sega-dreamcast",
+		"title": "The Sega Dreamcast",
+		"domain": "hardware",
+		"related": [
+			"retro-computing",
+			"emulation-preservation",
+			"monitors-pvm"
+		]
+	},
+	{
 		"slug": "spi-bus",
 		"title": "The SPI Bus",
 		"domain": "kernel",
 		"related": [
 			"rust-for-linux",
 			"linux-kernel"
+		]
+	},
+	{
+		"slug": "the-c-language",
+		"title": "The C Language",
+		"domain": "kernel",
+		"related": [
+			"the-rust-language",
+			"linux-kernel",
+			"rust-for-linux"
+		]
+	},
+	{
+		"slug": "the-rust-language",
+		"title": "The Rust Language",
+		"domain": "kernel",
+		"related": [
+			"rust-for-linux",
+			"the-c-language",
+			"spi-bus"
 		]
 	},
 	{

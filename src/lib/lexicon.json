@@ -28,11 +28,39 @@
 		"topicTitle": "The Nintendo GameCube"
 	},
 	{
+		"term": "8F",
+		"def": "A glitch item in Pokemon Red and Blue (index 0x5D) whose effect pointer sends execution into party data in RAM.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
+	},
+	{
 		"term": "AM625",
 		"def": "A Texas Instruments Sitara application processor with a quad-core Cortex-A53 cluster and several real-time cores.",
 		"domain": "kernel",
 		"slug": "beagleplay",
 		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Analogue",
+		"def": "A company that builds FPGA-based hardware such as the Analogue Pocket handheld for playing original game cartridges.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
+		"term": "ANSI C",
+		"def": "The first formal C standard, ANSI X3.159-1989, also called C89; adopted internationally as ISO C90.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
+		"term": "Anti-aliasing",
+		"def": "Edge-smoothing applied by the RCP and video interface that softened jagged polygon borders and contributed to the console's hazy, gentle look.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
 	},
 	{
 		"term": "Any%",
@@ -50,10 +78,10 @@
 	},
 	{
 		"term": "Arbitrary Code Execution",
-		"def": "Forcing the game to run player-controlled bytes as program code, used to rewrite the game state.",
+		"def": "Steering a program to run instructions the developers never wrote, assembled from data the player controls.",
 		"domain": "games",
-		"slug": "pokemon-gen1",
-		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
 	},
 	{
 		"term": "Asahi",
@@ -98,6 +126,13 @@
 		"topicTitle": "Warhammer 40,000 and the Necrons"
 	},
 	{
+		"term": "Blade Runner",
+		"def": "Ridley Scott's 1982 film whose neon-and-rain noir became cyberpunk's defining look.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
 		"term": "BM25",
 		"def": "A classic lexical ranking function that scores a passage by how well its rare query words match, normalized for length.",
 		"domain": "meta",
@@ -119,11 +154,32 @@
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
+		"term": "Borrow Checker",
+		"def": "The compiler pass that enforces the borrowing rules so references can never outlive their data or alias mutably.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
+	},
+	{
 		"term": "Bottle Adventure",
 		"def": "Equipping a non-sword item onto the B button by selecting it on C-Right and pulling the Master Sword.",
 		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Bruce Bethke",
+		"def": "Minnesota writer who coined the word 'cyberpunk' as the title of a 1980 short story.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
+		"term": "BSP",
+		"def": "Binary space partitioning, a tree built from a level's lines that lets the renderer sort walls back to front quickly without per-frame depth sorting.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
 	},
 	{
 		"term": "C'tan, def: \"Star-gods of pure energy that fed on stellar power and, given necrodermis bodies by the Necrontyr, became their tyrant overlords.\"",
@@ -140,6 +196,27 @@
 		"topicTitle": "Distributed Systems"
 	},
 	{
+		"term": "Cargo",
+		"def": "Rust's build tool and package manager; it resolves dependencies, compiles crates, and talks to the crates.io registry.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
+	},
+	{
+		"term": "Carmack",
+		"def": "John Carmack, id's lead programmer, who wrote the DOOM renderer and later championed the source releases.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
+	},
+	{
+		"term": "Cartridge",
+		"def": "The N64's Game Pak ROM, holding 4 to 64 MB, chosen over CD for near-instant loading and stronger copy protection.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
+	},
+	{
 		"term": "CD-ROM",
 		"def": "A read-only optical disc holding about 650 MB, used to distribute software after floppies ran out of room.",
 		"domain": "hardware",
@@ -152,6 +229,13 @@
 		"domain": "kernel",
 		"slug": "beagleplay",
 		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Chiptune",
+		"def": "Music made with the sound chips of old game hardware, including the Game Boy's four-channel APU.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
 	},
 	{
 		"term": "Component",
@@ -196,6 +280,13 @@
 		"topicTitle": "Sony PVM and Broadcast Monitors"
 	},
 	{
+		"term": "Core",
+		"def": "An HDL design that configures an FPGA to recreate a specific machine, such as a console or arcade board.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
 		"term": "Cortex-A53",
 		"def": "A 64-bit Arm application core designed for power efficiency, used in clusters of up to four on the AM625.",
 		"domain": "kernel",
@@ -231,6 +322,13 @@
 		"topicTitle": "The SPI Bus"
 	},
 	{
+		"term": "Credits Warp",
+		"def": "An ACE setup whose payload jumps straight to the ending sequence, beating the game in minutes.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
+	},
+	{
 		"term": "Cross-Encoder Reranker",
 		"def": "A model that reads a question and a passage together and scores true relevance, sharper than comparing them as separate vectors.",
 		"domain": "meta",
@@ -253,10 +351,17 @@
 	},
 	{
 		"term": "Cyberspace",
-		"def": "A consensual hallucination, a shared graphical data-space that operators enter directly through the nervous system.",
+		"def": "Gibson's term for a consensual hallucination, a navigable graphic representation of networked data.",
 		"domain": "fiction",
-		"slug": "neuromancer",
-		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
+		"term": "Cycle Accuracy",
+		"def": "An emulation goal where each chip is stepped in time the way the real silicon was, so timing-dependent effects behave exactly as on hardware.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
 	},
 	{
 		"term": "Daisy Chain",
@@ -273,11 +378,25 @@
 		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
 	},
 	{
+		"term": "DE10-Nano",
+		"def": "The Terasic development board, built around an Intel Cyclone V SoC FPGA, that the MiSTer project runs on.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
 		"term": "Defragmentation",
 		"def": "Rearranging a disk's file fragments into contiguous order so the drive head seeks less.",
 		"domain": "hardware",
 		"slug": "retro-computing",
 		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
+		"term": "Demo (LMP)",
+		"def": "A recording of player input stored in an .lmp file; replaying the same inputs against the same engine reproduces a playthrough deterministically.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
 	},
 	{
 		"term": "Device Tree",
@@ -315,11 +434,32 @@
 		"topicTitle": "The SPI Bus"
 	},
 	{
+		"term": "DMG",
+		"def": "Dot Matrix Game; the codename and model prefix of the original 1989 Game Boy.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
+		"term": "Dolphin",
+		"def": "An open-source emulator for the Nintendo GameCube, Wii, and Triforce arcade hardware, first released in 2003 and open-sourced in 2008.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
+	},
+	{
 		"term": "Dot Pitch",
 		"def": "Spacing between two same-color phosphor dots on a shadow-mask tube; aperture-grille tubes use stripe pitch instead.",
 		"domain": "monitors",
 		"slug": "monitors-pvm",
 		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Dynamic Recompilation",
+		"def": "A speed technique that translates blocks of the emulated CPU's machine code into the host CPU's native code at runtime and caches the result, rather than interpreting one instruction at a time.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
 	},
 	{
 		"term": "Embedding",
@@ -329,11 +469,25 @@
 		"topicTitle": "About the Oracle"
 	},
 	{
+		"term": "Emulator",
+		"def": "Software that reproduces the behavior of one machine's hardware on a different machine, so programs written for the original run unchanged.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
+	},
+	{
 		"term": "Eventual Consistency",
 		"def": "A weak model where, once writes stop, all replicas converge to the same value after some delay.",
 		"domain": "distsys",
 		"slug": "distributed-systems",
 		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Expansion Pak",
+		"def": "A plug-in module that doubled the console's RDRAM from 4 MB to 8 MB, required by some late titles and used for higher resolutions.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
 	},
 	{
 		"term": "Fierce Deity",
@@ -348,6 +502,13 @@
 		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "FPGA",
+		"def": "A field-programmable gate array, a chip whose logic can be reconfigured after manufacture to behave like arbitrary digital circuitry.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
 	},
 	{
 		"term": "Frame Perfect",
@@ -371,11 +532,25 @@
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
 	},
 	{
+		"term": "Game Link Cable",
+		"def": "A serial cable that connects two (or up to four) Game Boys for trading and multiplayer.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
 		"term": "Gauss Weapons",
 		"def": "Necron arms that strip matter apart molecule by molecule, breaking the bonds of an enemy into energy the Necrons can reuse.",
 		"domain": "fiction",
 		"slug": "warhammer-40k",
 		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
+		"term": "GD-ROM",
+		"def": "Sega's proprietary high-density optical disc holding roughly 1 GB, a cheaper alternative to DVD-ROM.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
 	},
 	{
 		"term": "Gekko",
@@ -399,6 +574,13 @@
 		"topicTitle": "Zelda Speedrunning"
 	},
 	{
+		"term": "Ghost in the Shell",
+		"def": "Masamune Shirow's 1989 manga and Mamoru Oshii's 1995 film exploring identity in a networked, cybernetic body.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
 		"term": "Grimdark",
 		"def": "A term coined from the 40k tagline for a bleak, hopeless far-future tone of unending war.",
 		"domain": "fiction",
@@ -413,6 +595,27 @@
 		"topicTitle": "About the Oracle"
 	},
 	{
+		"term": "HDL",
+		"def": "Hardware description language; code that describes the structure and behavior of digital circuits rather than a sequence of instructions.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
+		"term": "High Tech Low Life",
+		"def": "The genre's core tension: advanced technology embedded in social decay, poverty, and crime.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
+		"term": "Homebrew",
+		"def": "Independent software for the Dreamcast, mostly built with the open KallistiOS SDK and booted from CD-R or storage adapters.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
+	},
+	{
 		"term": "Hybrid Search",
 		"def": "Combining dense vector similarity with lexical keyword matching so both meaning and exact terms are caught.",
 		"domain": "meta",
@@ -425,6 +628,13 @@
 		"domain": "fiction",
 		"slug": "neuromancer",
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "id Tech 1",
+		"def": "id Software's retroactive name for the DOOM engine in its later engine-numbering scheme.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
 	},
 	{
 		"term": "Idempotency",
@@ -469,6 +679,13 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "K&R",
+		"def": "The 1978 book by Kernighan and Ritchie that served as C's de facto definition before standardization, and the pre-standard dialect it described.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
 		"term": "Kanto",
 		"def": "The region where Generation I is set, home to its 151 Pokemon and eight Gyms.",
 		"domain": "games",
@@ -488,6 +705,27 @@
 		"domain": "hardware",
 		"slug": "retro-computing",
 		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
+		"term": "Latency",
+		"def": "The delay between an input and its visible result; FPGA recreations can keep this very low because logic runs in parallel hardware.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
+		"term": "libc",
+		"def": "The C standard library: the runtime implementation of printf, malloc, strcpy, and the other functions the standard defines.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
+		"term": "Lifetime",
+		"def": "A region of code over which a reference is valid, tracked by the compiler so dangling references fail to compile.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
 	},
 	{
 		"term": "Linearizability",
@@ -518,6 +756,27 @@
 		"topicTitle": "The Linux Kernel"
 	},
 	{
+		"term": "Look-Up Table",
+		"def": "A small programmable memory inside an FPGA logic cell that implements any function of a few input bits.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
+		"term": "LR35902",
+		"def": "Sharp's system-on-chip in the Game Boy; its CPU core (the SM83) is a hybrid of the Intel 8080 and Zilog Z80.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
+		"term": "LSDj",
+		"def": "Little Sound Dj; a Game Boy music tracker by Johan Kotlinski that anchored the modern chiptune scene.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
 		"term": "LTS",
 		"def": "A longterm-support kernel chosen for extended maintenance, receiving backported fixes for years rather than months.",
 		"domain": "kernel",
@@ -539,6 +798,34 @@
 		"topicTitle": "Rust for Linux"
 	},
 	{
+		"term": "Manual Memory Management",
+		"def": "The model where the programmer explicitly allocates memory with malloc and releases it with free, with no garbage collector.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
+		"term": "MBC",
+		"def": "Memory Bank Controller; a chip inside cartridges that swaps ROM and RAM banks in and out of the CPU's small address space.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
+		"term": "Megacorporation",
+		"def": "A corporate entity wielding power beyond any nation-state, a stock fixture of cyberpunk worlds.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
+		"term": "Memory Corruption",
+		"def": "Writing values into memory the program assumes hold something else, so later reads or jumps misbehave.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
+	},
+	{
 		"term": "Merge Window",
 		"def": "The roughly two-week period after a release when Linus pulls new features from subsystem maintainers into mainline.",
 		"domain": "kernel",
@@ -551,6 +838,13 @@
 		"domain": "games",
 		"slug": "pokemon-gen1",
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
+		"term": "Microcode",
+		"def": "Small programs run on the Reality Signal Processor that define the geometry and audio pipeline, letting studios reshape what the hardware does rather than calling a fixed library.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
 	},
 	{
 		"term": "Miguel Ojeda",
@@ -567,6 +861,13 @@
 		"topicTitle": "The Nintendo GameCube"
 	},
 	{
+		"term": "Mirrorshades",
+		"def": "Bruce Sterling's 1986 anthology that fixed cyberpunk's canon; also the genre's signature mirrored sunglasses.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
 		"term": "MISO",
 		"def": "Master In Slave Out; the data line carrying bits from the peripheral back to the controller.",
 		"domain": "kernel",
@@ -581,6 +882,13 @@
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
 	},
 	{
+		"term": "MiSTer",
+		"def": "An open-source project that recreates old computers and consoles as FPGA logic on the Terasic DE10-Nano board rather than as software.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
+	},
+	{
 		"term": "Monolithic Kernel",
 		"def": "A kernel design where scheduling, memory, filesystems, networking, and drivers all run in one privileged address space.",
 		"domain": "kernel",
@@ -593,6 +901,13 @@
 		"domain": "kernel",
 		"slug": "spi-bus",
 		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Move Semantics",
+		"def": "Assigning or passing a non-Copy value transfers ownership and invalidates the source, preventing double frees.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
 	},
 	{
 		"term": "MS-DOS",
@@ -630,6 +945,13 @@
 		"topicTitle": "Rust for Linux"
 	},
 	{
+		"term": "No-Intro",
+		"def": "A community database of verified, header-corrected cartridge dumps and their checksums, distributed as DAT files rather than as the games themselves.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
+	},
+	{
 		"term": "Nova",
 		"def": "A Rust driver for GSP-based NVIDIA GPUs (Turing/RTX 20 and newer), intended successor to Nouveau, led by Danilo Krummrich at Red Hat.",
 		"domain": "kernel",
@@ -658,6 +980,13 @@
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
+		"term": "Ownership",
+		"def": "Rust's rule that every value has exactly one owner, and the value is dropped when that owner goes out of scope.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
+	},
+	{
 		"term": "PAL",
 		"def": "The 625-line, 50 Hz analog color standard used across much of Europe and elsewhere.",
 		"domain": "monitors",
@@ -679,6 +1008,13 @@
 		"topicTitle": "Distributed Systems"
 	},
 	{
+		"term": "Payload",
+		"def": "The block of bytes the player has shaped to act as the custom code that finally runs.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
+	},
+	{
 		"term": "Phosphor",
 		"def": "The coating that emits light when struck by the electron beam, arranged as stripes on Trinitron tubes.",
 		"domain": "monitors",
@@ -693,11 +1029,25 @@
 		"topicTitle": "Rust for Linux"
 	},
 	{
+		"term": "Pointer",
+		"def": "A variable that holds the memory address of another value, which the program can read or write by dereferencing it.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
 		"term": "Pokedex",
 		"def": "The in-game catalog of Pokemon that the player fills by seeing and catching each species.",
 		"domain": "games",
 		"slug": "pokemon-gen1",
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
+		"term": "PowerVR2",
+		"def": "The NEC/VideoLogic GPU at 100 MHz using tile-based deferred rendering to cull hidden surfaces before shading.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
 	},
 	{
 		"term": "Progressive Scan",
@@ -721,11 +1071,25 @@
 		"topicTitle": "Distributed Systems"
 	},
 	{
+		"term": "RAM Write",
+		"def": "Storing a chosen byte at a chosen address, the building block that lets a player author a payload in memory.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
+	},
+	{
 		"term": "Razorgirl",
 		"def": "A street mercenary with surgically implanted weapons and combat augmentation, exemplified by Molly Millions.",
 		"domain": "fiction",
 		"slug": "neuromancer",
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Reality Coprocessor",
+		"def": "The 62.5 MHz graphics and audio chip co-designed by Nintendo and SGI, containing the Reality Signal Processor and the Reality Display Processor.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
 	},
 	{
 		"term": "Reanimation Protocols",
@@ -740,6 +1104,13 @@
 		"domain": "meta",
 		"slug": "about-oracle",
 		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "Reconfigurable Logic",
+		"def": "Digital circuitry whose wiring and function can be reprogrammed, as opposed to fixed gates etched at fabrication.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
 	},
 	{
 		"term": "Region Lock",
@@ -763,6 +1134,13 @@
 		"topicTitle": "Distributed Systems"
 	},
 	{
+		"term": "Result",
+		"def": "The Result<T, E> enum that carries either a success value or an error, making fallible operations explicit in the type.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
+	},
+	{
 		"term": "Retrieval-Augmented Generation",
 		"def": "Answering with a language model that is fed passages retrieved from a fixed source, so it speaks from documents rather than memory.",
 		"domain": "meta",
@@ -784,11 +1162,25 @@
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
 	},
 	{
+		"term": "ROM",
+		"def": "A dump of the read-only memory from a cartridge or chip, the program and data image an emulator loads in place of the original media.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
+	},
+	{
 		"term": "RTA",
 		"def": "Real-time attack; a run timed by a real clock from start to finish, as opposed to in-game or tool-assisted timing.",
 		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Rumble Pak",
+		"def": "A force-feedback accessory that slotted into the controller's expansion port, introduced in 1997 alongside Star Fox 64.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
 	},
 	{
 		"term": "S-Video",
@@ -812,6 +1204,13 @@
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
 	},
 	{
+		"term": "Save State",
+		"def": "A snapshot of the entire emulated machine's memory and registers, written to disk so play can resume from that exact instant later.",
+		"domain": "hardware",
+		"slug": "emulation-preservation",
+		"topicTitle": "Emulation and Preservation"
+	},
+	{
 		"term": "Scanline",
 		"def": "One horizontal pass of the electron beam; visible dark gaps between lines define the CRT look.",
 		"domain": "monitors",
@@ -826,11 +1225,39 @@
 		"topicTitle": "The SPI Bus"
 	},
 	{
+		"term": "Sector",
+		"def": "A flat-floored, flat-ceilinged polygonal region of a DOOM map; floor and ceiling heights, light level, and textures are properties of the sector.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
+	},
+	{
+		"term": "SegaNet",
+		"def": "Sega's North American dial-up online gaming service for the Dreamcast, launched September 7, 2000.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
+	},
+	{
+		"term": "Segfault",
+		"def": "A segmentation fault: the OS killing a process for touching memory it is not allowed to access, often from a bad pointer.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
 		"term": "Serial Console",
 		"def": "A text terminal exposed over a UART, giving boot logs and a login shell before any network or display works.",
 		"domain": "kernel",
 		"slug": "beagleplay",
 		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "SH-4",
+		"def": "The Hitachi 32-bit RISC CPU at 200 MHz with a 128-bit vector floating-point unit; the Dreamcast's main processor.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
 	},
 	{
 		"term": "Shadow Mask",
@@ -841,10 +1268,10 @@
 	},
 	{
 		"term": "Shareware",
-		"def": "A distribution model where a free partial version was freely copied to entice purchase of the full registered version.",
-		"domain": "hardware",
-		"slug": "retro-computing",
-		"topicTitle": "Computing in the 1990s and Early 2000s"
+		"def": "A distribution model where the first episode was given away free and copyable, with the remaining episodes sold by mail order.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
 	},
 	{
 		"term": "Simstim",
@@ -868,6 +1295,13 @@
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
+		"term": "Source Port",
+		"def": "A community-maintained build of the released DOOM engine code, ported to new platforms and extended with higher resolutions, mouselook, and new features.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
+	},
+	{
 		"term": "SPI",
 		"def": "Serial Peripheral Interface, a synchronous full-duplex master/slave serial bus introduced by Motorola in the 1980s.",
 		"domain": "kernel",
@@ -887,6 +1321,34 @@
 		"domain": "kernel",
 		"slug": "spi-bus",
 		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Sprawl",
+		"def": "Gibson's Boston-Atlanta Metropolitan Axis, the urban setting of Neuromancer and its trilogy.",
+		"domain": "fiction",
+		"slug": "cyberpunk",
+		"topicTitle": "Cyberpunk"
+	},
+	{
+		"term": "Sprite",
+		"def": "A flat 2D bitmap drawn to face the camera; DOOM's monsters, items, and projectiles are sprites, not polygonal models.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
+	},
+	{
+		"term": "SRAM",
+		"def": "Static RAM on a cartridge, often kept alive by a coin cell to hold save data after power off.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
+		"term": "Stack Smashing",
+		"def": "Overwriting saved return addresses on the call stack so a routine returns to a location the attacker chose.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
 	},
 	{
 		"term": "Stale Reference Manipulation (SRM)",
@@ -938,6 +1400,13 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "The Preprocessor",
+		"def": "A text-substitution pass that runs before compilation, handling #include, #define macros, and #ifdef conditional compilation.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
 		"term": "The Silent King",
 		"def": "Szarekh, last supreme monarch of the Necrons, who sealed the C'tan pact, shattered the star-gods in penance, and exiled himself before returning in the modern era.",
 		"domain": "fiction",
@@ -966,6 +1435,13 @@
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
+		"term": "Tile",
+		"def": "An 8x8-pixel, 2-bits-per-pixel bitmap; the basic unit the Game Boy draws backgrounds and sprites from.",
+		"domain": "hardware",
+		"slug": "game-boy",
+		"topicTitle": "The Game Boy"
+	},
+	{
 		"term": "Tomb World",
 		"def": "A planet honeycombed with stasis crypts where a Necron dynasty slept through the Great Sleep, now waking dynasty by dynasty.",
 		"domain": "fiction",
@@ -973,11 +1449,32 @@
 		"topicTitle": "Warhammer 40,000 and the Necrons"
 	},
 	{
+		"term": "Tool-Assisted Speedrun",
+		"def": "A run built frame by frame with emulator tools, often feeding precise byte streams through the controller ports.",
+		"domain": "games",
+		"slug": "arbitrary-code-execution",
+		"topicTitle": "Arbitrary Code Execution in Games"
+	},
+	{
 		"term": "Tool-Assisted Speedrun (TAS)",
 		"def": "A run built with slowdown, save states, and frame-by-frame input, used to find theoretical limits rather than to compete with human runs.",
 		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Trait",
+		"def": "A named set of methods a type can implement, used for shared behavior, generic bounds, and polymorphism.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
+	},
+	{
+		"term": "Translation Unit",
+		"def": "A single source file plus everything it includes, compiled as one unit into an object file.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
 	},
 	{
 		"term": "Trinitron",
@@ -1001,6 +1498,13 @@
 		"topicTitle": "Distributed Systems"
 	},
 	{
+		"term": "Undefined Behavior",
+		"def": "A program construct the C standard places no requirements on, leaving the compiler free to do anything, including silently miscompile.",
+		"domain": "kernel",
+		"slug": "the-c-language",
+		"topicTitle": "The C Language"
+	},
+	{
 		"term": "Underscan",
 		"def": "A display mode that shrinks the image inward so the full signal and a clean black border are visible.",
 		"domain": "monitors",
@@ -1008,11 +1512,53 @@
 		"topicTitle": "Sony PVM and Broadcast Monitors"
 	},
 	{
+		"term": "Unsafe",
+		"def": "A keyword marking code where the programmer, not the compiler, vouches for memory safety invariants.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
+	},
+	{
+		"term": "Verilog",
+		"def": "A widely used HDL with C-like syntax for describing and simulating digital logic.",
+		"domain": "hardware",
+		"slug": "fpga-mister",
+		"topicTitle": "FPGA and the MiSTer Project"
+	},
+	{
 		"term": "Version Exclusive",
 		"def": "A Pokemon catchable in only one version of a paired release, pushing players to trade.",
 		"domain": "games",
 		"slug": "pokemon-gen1",
 		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
+		"term": "VGA Box",
+		"def": "An accessory that outputs the Dreamcast's 480p progressive-scan signal to a VGA monitor or HDTV.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
+	},
+	{
+		"term": "VMU",
+		"def": "The Visual Memory Unit, a 128 KB memory card with its own monochrome LCD, buttons, and clock that doubles as a tiny handheld.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
+	},
+	{
+		"term": "VR4300",
+		"def": "The NEC-built 64-bit CPU at the heart of the N64, a binary-compatible variant of the MIPS R4300i running at 93.75 MHz.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
+	},
+	{
+		"term": "WAD",
+		"def": "id's archive format (\\\"Where's All the Data?\\\") that bundles levels, sprites, sounds, and textures into named lumps; IWADs hold the base game and PWADs add or replace content.",
+		"domain": "games",
+		"slug": "doom",
+		"topicTitle": "DOOM (1993)"
 	},
 	{
 		"term": "War in Heaven",
@@ -1029,6 +1575,13 @@
 		"topicTitle": "Computing in the 1990s and Early 2000s"
 	},
 	{
+		"term": "Windows CE",
+		"def": "An optional Microsoft runtime developers could ship on a disc to ease PC ports; not the console's native OS.",
+		"domain": "hardware",
+		"slug": "sega-dreamcast",
+		"topicTitle": "The Sega Dreamcast"
+	},
+	{
 		"term": "Wintermute",
 		"def": "One of the two Tessier-Ashpool AIs; a cold, scheming planner that drives the plot toward its own merger.",
 		"domain": "fiction",
@@ -1041,5 +1594,19 @@
 		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Z-buffer",
+		"def": "A per-pixel depth buffer the Reality Display Processor maintains so closer surfaces correctly hide farther ones, removing the need for software polygon sorting.",
+		"domain": "hardware",
+		"slug": "nintendo-64",
+		"topicTitle": "The Nintendo 64"
+	},
+	{
+		"term": "Zero-Cost Abstraction",
+		"def": "A high-level construct that compiles down to code no slower than hand-written low-level equivalents.",
+		"domain": "kernel",
+		"slug": "the-rust-language",
+		"topicTitle": "The Rust Language"
 	}
 ]

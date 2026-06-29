@@ -87,6 +87,117 @@
 		]
 	},
 	{
+		"slug": "arbitrary-code-execution",
+		"title": "Arbitrary Code Execution in Games",
+		"domain": "games",
+		"tags": [
+			"ace",
+			"speedrun",
+			"memory-corruption",
+			"glitch",
+			"retro",
+			"tas"
+		],
+		"source": "Compiled June 2026 from Bulbapedia, Glitch City Wiki, ZeldaSpeedRuns, Hackaday, and TASVideos; mechanics cross-checked against multiple community writeups.",
+		"related": [
+			"pokemon-gen1",
+			"zelda-speedruns",
+			"doom"
+		],
+		"sections": [
+			{
+				"section": "What ACE Actually Means",
+				"text": "Arbitrary code execution, or ACE, is the point where a player stops playing a game and starts programming the machine that runs it. The console only ever fetches bytes and treats them as CPU instructions; it has no concept of \"this region is code, that region is data.\" If a player can corrupt the program so it jumps into a region they can fill with their own bytes, the processor will dutifully execute whatever is there. Daniel Baamonde, an Ocarina of Time runner, framed it as two requirements: redirect execution into memory that normally holds data, and shape the bytes at that location so they mimic valid instructions. Meet both and the game becomes a substrate for code the developers never wrote. On original hardware this is not modding; the cartridge is untouched. Everything comes from in-game state and controller inputs."
+			},
+			{
+				"section": "How Inputs Become Bytes in RAM",
+				"text": "The player's only channel into the machine is the controller, so every ACE setup is ultimately a way of turning button presses into stored bytes. In Pokemon, items, box names, and Pokemon nicknames are edited until their underlying index numbers spell out the desired opcodes; a stack of items is just a run of bytes in the bag. In Ocarina of Time the file name is a favorite payload region because the player types it directly. Tool-assisted runs go further and stream bytes through the controller ports themselves, which is why TASBot demos read joypad registers as instructions. In every case the trick is the same: find a writable region whose contents the game faithfully copies somewhere predictable, then fill it one careful value at a time."
+			},
+			{
+				"section": "Super Mario World: The Credits Warp",
+				"text": "The Super Mario World credits warp is the canonical hardware ACE. The setup empties a sprite slot using an item-swap glitch (Yoshi and Mario grabbing the same coin), then a Chargin' Chuck is mishandled as a power-up. Execution falls off the end of mapped memory into open bus and lands in the sprite coordinate tables, which the player has loaded with chosen values by positioning sprites. Those values run as 65816 instructions. SethBling demonstrated it on an unmodified SNES in January 2015 after Twitch user Jeffw356 found it in emulation. Runners hold extra buttons on controllers plugged through multitaps to feed the exact bytes the routine reads. The world-record any% time now sits near 41 seconds. Hedge noted: the precise addresses and reasons the open-bus value resolves to a usable instruction are documented in detail by the community, and small route variants exist."
+			},
+			{
+				"section": "Pokemon Gen 1: 8F and the Item Pack",
+				"text": "Generation I gives one of the cleanest entry points. The glitch item 8F (index 0x5D in Red and Blue; the Yellow analog is \"ws m,\" index 0x63) has no hardcoded effect. Instead its behavior is read from a pointer that lands in writable RAM: 8F sends the program counter into the party data near 0xD163, while \"ws m\" jumps into current-box data. Because party data is awkward to control precisely, the standard pattern is a two-stage bootstrap; the entry jump writes a second jump to the third item in the bag, and the real payload is spelled out there with item index numbers and quantities. Obtaining 8F itself usually relies on the item-underflow glitch or specific glitch Pokemon. A caution the community stresses: since the payload lives in ordinary game data, routine play (healing, catching, reordering) can silently corrupt it."
+			},
+			{
+				"section": "Pokemon Gen 2: The Coin Case",
+				"text": "The Coin Case glitch is the Generation II analog and is exclusive to the English Gold and Silver; it does not exist in Japanese versions or in Crystal. The root cause is mundane: the English Coin Case text string is not properly terminated, so after listening to certain Pokemon cries the game runs off the end and executes echo RAM around 0xE112. The cries of Bellsprout, Machop, Machoke, or Omanyte redirect execution to a further address that party Pokemon can steer toward the PC items, where a payload waits. It went unnoticed in testing because that memory region is usually zeros, so nothing visible happened. It is a textbook example of how a single missing terminator byte becomes a full code-execution primitive."
+			},
+			{
+				"section": "Ocarina of Time: SRM into ACE",
+				"text": "Ocarina of Time reached ACE through Stale Reference Manipulation, discovered in 2019. The N64 game keeps actors in a doubly linked heap, and some actors store references to others; Link holds a reference to what is over his head, the boomerang to what it carries. SRM unloads the carried actor and loads something else into that memory, while the holder keeps writing position data to the now-stale reference. By ordering room and actor loads carefully, runners aim those stray writes at actor code or function pointers. This climbs from editing actor variables, to partial function calls, to full ACE that calls arbitrary functions (commonly the title-screen file-setup routine for instant items). Because full ACE is effectively unlimited, it is banned in most categories; the famous Triforce% demonstration used TASBot to feed custom data and even added new content, all through the controller ports."
+			},
+			{
+				"section": "What TAS Reaches That Humans Cannot",
+				"text": "A tool-assisted speedrun records inputs frame by frame, with save states, slow motion, and scripting, so it can hit windows no human hand can. That precision is what lets a TAS write large, exact payloads: the Super Mario World total-control runs reprogram the cartridge mid-play into small games like Pong and Snake using only controller input. Real-time runners must trade that ambition for reliability, leaning on simpler, robust setups (a single credits warp) that survive human timing error. The line between the two is not a different exploit but a different budget of precision; both stand on the same fact that a game console will run whatever bytes you can convince it to fetch."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Arbitrary Code Execution",
+				"def": "Steering a program to run instructions the developers never wrote, assembled from data the player controls."
+			},
+			{
+				"term": "Memory Corruption",
+				"def": "Writing values into memory the program assumes hold something else, so later reads or jumps misbehave."
+			},
+			{
+				"term": "Stack Smashing",
+				"def": "Overwriting saved return addresses on the call stack so a routine returns to a location the attacker chose."
+			},
+			{
+				"term": "Payload",
+				"def": "The block of bytes the player has shaped to act as the custom code that finally runs."
+			},
+			{
+				"term": "Credits Warp",
+				"def": "An ACE setup whose payload jumps straight to the ending sequence, beating the game in minutes."
+			},
+			{
+				"term": "Tool-Assisted Speedrun",
+				"def": "A run built frame by frame with emulator tools, often feeding precise byte streams through the controller ports."
+			},
+			{
+				"term": "RAM Write",
+				"def": "Storing a chosen byte at a chosen address, the building block that lets a player author a payload in memory."
+			},
+			{
+				"term": "8F",
+				"def": "A glitch item in Pokemon Red and Blue (index 0x5D) whose effect pointer sends execution into party data in RAM."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Arbitrary code execution (Bulbapedia)",
+				"url": "https://bulbapedia.bulbagarden.net/wiki/Arbitrary_code_execution",
+				"kind": "wiki"
+			},
+			{
+				"title": "Arbitrary code execution (Glitch City Wiki mirror)",
+				"url": "https://nintyconservation.github.io/glitchcity.wiki/glitchcity.wiki/Arbitrary_code_execution.html",
+				"kind": "wiki"
+			},
+			{
+				"title": "SRM Overview (ZeldaSpeedRuns)",
+				"url": "https://www.zeldaspeedruns.com/oot/srm/srm-overview",
+				"kind": "reference"
+			},
+			{
+				"title": "Reprogramming Super Mario World From Inside The Game (Hackaday)",
+				"url": "https://hackaday.com/2015/01/22/reprogramming-super-mario-world-from-inside-the-game/",
+				"kind": "reference"
+			},
+			{
+				"title": "Super Mario World total-control TAS (TASVideos)",
+				"url": "https://tasvideos.org/2513M",
+				"kind": "video"
+			}
+		]
+	},
+	{
 		"slug": "beagleplay",
 		"title": "The BeaglePlay and SPI Display Bring-up",
 		"domain": "kernel",
@@ -209,6 +320,121 @@
 		]
 	},
 	{
+		"slug": "cyberpunk",
+		"title": "Cyberpunk",
+		"domain": "fiction",
+		"tags": [
+			"cyberpunk",
+			"science-fiction",
+			"dystopia",
+			"aesthetic",
+			"film",
+			"anime"
+		],
+		"source": "Compiled from English Wikipedia entries on cyberpunk and its key works, June 2026.",
+		"related": [
+			"neuromancer",
+			"distributed-systems"
+		],
+		"sections": [
+			{
+				"section": "The phrase that defines it",
+				"text": "Cyberpunk is a science fiction subgenre and an aesthetic built on a single tension, usually written \"high tech, low life.\" The future it imagines is wired, networked, and crowded with machines, but the people living in it are poor, hustling, surveilled, or modified against their will. The technology works; the society does not. Advanced computing, artificial intelligence, and body modification sit next to slums, addiction, and crime. The genre rarely offers a clean utopia or a clean apocalypse. Instead it gives a grimy, plausible middle: corporations that outlast governments, streets lit by advertising, and individuals who survive by knowing the system's seams. This pairing of dazzling capability with social rot is the load-bearing idea, and most cyberpunk works can be read as variations on it."
+			},
+			{
+				"section": "Coining the word",
+				"text": "The term comes from Bruce Bethke, a Minnesota writer who used it as the title of a short story. Accounts agree he wrote the story in spring 1980; it was published in Amazing Stories in 1983. Bethke has said he built the word deliberately, taking roots like \"cyber\" and \"techno\" and mixing them with terms for socially misdirected youth until one combination \"just plain sounded right.\" The story itself, about teenage hackers, is not the genre's defining text; the word outgrew it almost immediately. Bethke later remarked that he had coined a label without inventing the thing it would come to name. That gap, between the coinage and the movement, is why credit for cyberpunk is usually split between the person who named it and the people who built it."
+			},
+			{
+				"section": "Dozois and the naming of a movement",
+				"text": "Gardner Dozois, then a prominent editor and later editor of Isaac Asimov's Science Fiction Magazine, is generally credited with popularizing \"cyberpunk\" as the name for a literary movement. In the early-to-mid 1980s he applied the word in print to a cluster of writers producing what he called bizarre, hard-edged, high-tech fiction, naming William Gibson and Bruce Sterling among them. The label stuck because it described a real shift. A loose group of writers was reacting against both the optimistic space opera of older science fiction and the soft introspection of the New Wave. They wanted computers, networks, and street-level grit. Dozois did not invent that impulse, but by attaching Bethke's word to it he gave critics and readers a handle, and the handle became the genre's name."
+			},
+			{
+				"section": "Neuromancer and the Sprawl",
+				"text": "William Gibson's first novel, Neuromancer (1984), became the genre's archetypal text and remains the work most people reach for first. It is, as of this writing, often cited as the only novel to win the Hugo, Nebula, and Philip K. Dick awards in a single sweep. The book follows Case, a burned-out hacker, through a world of artificial intelligences, corporate intrigue, and a navigable data-space Gibson called cyberspace; the word entered general use largely through him. Its setting, the Sprawl, is a continuous urban band along the American East Coast, formally the Boston-Atlanta Metropolitan Axis. Neuromancer opened the Sprawl trilogy, continued in Count Zero (1986) and Mona Lisa Overdrive (1988). Gibson's prose, dense with brand names and slang, did as much to define the genre's texture as its plot did."
+			},
+			{
+				"section": "Mirrorshades and the canon",
+				"text": "If Neuromancer was the genre's novel, Mirrorshades: The Cyberpunk Anthology (1986), edited by Bruce Sterling, was its manifesto in story form. Sterling, sometimes called cyberpunk's chief ideologue, had already been agitating for the movement through his fanzine Cheap Truth. Mirrorshades gathered twelve stories by the core writers: Gibson, Sterling, Pat Cadigan, Rudy Rucker, John Shirley, Lewis Shiner, Greg Bear, Tom Maddox, Marc Laidlaw, James Patrick Kelly, Paul Di Filippo, and collaborative pieces. The anthology is widely described as the first and still definitive collection of cyberpunk short fiction. The title itself became shorthand for the genre's look: the mirrored sunglasses worn by characters who watch without being seen. The collection both defined a canon and, by defining it, helped the movement begin to ossify and splinter."
+			},
+			{
+				"section": "The visual genre: Blade Runner",
+				"text": "Cyberpunk's most influential single object is arguably not a book but a film. Ridley Scott's Blade Runner (1982), loosely adapted from Philip K. Dick's 1968 novel Do Androids Dream of Electric Sheep?, gave the genre its visual vocabulary before Neuromancer was even published. Its Los Angeles is a rain-soaked, neon-drenched, perpetually dark city where vast corporate ziggurats loom over crowded streets and flying advertisements. Scott drew on Edward Hopper's paintings and the French comics magazine Metal Hurlant to build a high-tech but decaying future. That image, advanced technology layered over urban decay, became the template for how cyberpunk would be drawn, filmed, and rendered in games for decades. The film influenced later offshoots too, including biopunk, which centers on biotechnology and genetic engineering."
+			},
+			{
+				"section": "Into anime and games",
+				"text": "By the late 1980s cyberpunk had moved decisively beyond Anglophone print, and Japanese animation became one of its strongest carriers. Katsuhiro Otomo's Akira (1988), adapted from his own 1982 manga, brought a sprawling, violent vision of Neo-Tokyo to a global audience and set a standard for animated detail. Mamoru Oshii's Ghost in the Shell (1995), based on Masamune Shirow's 1989 manga, pushed the genre toward philosophy, asking what selfhood means when minds run on networks and bodies are interchangeable hardware. Its imagery of cascading code and networked consciousness fed directly back into Western film, including The Matrix. From there cyberpunk spread into tabletop and video games, from the Cyberpunk 2020 RPG to Deus Ex and the 2020 game Cyberpunk 2077, completing the genre's journey from a single short story's title into a durable, cross-media aesthetic."
+			}
+		],
+		"vocab": [
+			{
+				"term": "High Tech Low Life",
+				"def": "The genre's core tension: advanced technology embedded in social decay, poverty, and crime."
+			},
+			{
+				"term": "Mirrorshades",
+				"def": "Bruce Sterling's 1986 anthology that fixed cyberpunk's canon; also the genre's signature mirrored sunglasses."
+			},
+			{
+				"term": "Blade Runner",
+				"def": "Ridley Scott's 1982 film whose neon-and-rain noir became cyberpunk's defining look."
+			},
+			{
+				"term": "Megacorporation",
+				"def": "A corporate entity wielding power beyond any nation-state, a stock fixture of cyberpunk worlds."
+			},
+			{
+				"term": "Cyberspace",
+				"def": "Gibson's term for a consensual hallucination, a navigable graphic representation of networked data."
+			},
+			{
+				"term": "Ghost in the Shell",
+				"def": "Masamune Shirow's 1989 manga and Mamoru Oshii's 1995 film exploring identity in a networked, cybernetic body."
+			},
+			{
+				"term": "Sprawl",
+				"def": "Gibson's Boston-Atlanta Metropolitan Axis, the urban setting of Neuromancer and its trilogy."
+			},
+			{
+				"term": "Bruce Bethke",
+				"def": "Minnesota writer who coined the word 'cyberpunk' as the title of a 1980 short story."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Cyberpunk",
+				"url": "https://en.wikipedia.org/wiki/Cyberpunk",
+				"kind": "wiki"
+			},
+			{
+				"title": "Neuromancer",
+				"url": "https://en.wikipedia.org/wiki/Neuromancer",
+				"kind": "wiki"
+			},
+			{
+				"title": "Blade Runner",
+				"url": "https://en.wikipedia.org/wiki/Blade_Runner",
+				"kind": "wiki"
+			},
+			{
+				"title": "Mirrorshades: The Cyberpunk Anthology",
+				"url": "https://en.wikipedia.org/wiki/Mirrorshades:_The_Cyberpunk_Anthology",
+				"kind": "wiki"
+			},
+			{
+				"title": "Ghost in the Shell (1995 film)",
+				"url": "https://en.wikipedia.org/wiki/Ghost_in_the_Shell_(1995_film)",
+				"kind": "wiki"
+			},
+			{
+				"title": "Akira (1988 film)",
+				"url": "https://en.wikipedia.org/wiki/Akira_(1988_film)",
+				"kind": "wiki"
+			}
+		]
+	},
+	{
 		"slug": "distributed-systems",
 		"title": "Distributed Systems",
 		"domain": "distsys",
@@ -324,6 +550,488 @@
 				"title": "Linearizability paper PDF",
 				"url": "https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf",
 				"kind": "paper"
+			}
+		]
+	},
+	{
+		"slug": "doom",
+		"title": "DOOM (1993)",
+		"domain": "games",
+		"tags": [
+			"doom",
+			"id-software",
+			"fps",
+			"bsp",
+			"modding",
+			"source-port",
+			"shareware"
+		],
+		"source": "Compiled from Wikipedia, the Doom Wiki (doomwiki.org), and id Software's official source release on GitHub; June 2026.",
+		"related": [
+			"the-c-language",
+			"arbitrary-code-execution",
+			"emulation-preservation"
+		],
+		"sections": [
+			{
+				"section": "Origins and release",
+				"text": "id Software released DOOM for MS-DOS on December 10, 1993. The small Texas studio had already redefined the action game with Wolfenstein 3D in 1992; DOOM was the follow-up that turned the first-person shooter into a genre. John Carmack led the programming and wrote the renderer. John Romero and Sandy Petersen designed levels, and Adrian Carmack handled art. The game shipped as three episodes set on the moons of Mars and in Hell, with a nameless marine fighting demons. It was loud, fast, and violent in a way home computers had not really seen, and it spread across office networks and bulletin boards almost immediately."
+			},
+			{
+				"section": "The renderer is 2.5D, not true 3D",
+				"text": "DOOM looks three-dimensional but is not. The world is defined on a two-dimensional plane; walls are line segments and floors are regions, with floor and ceiling heights attached. The renderer projects this into a convincing perspective, but the player cannot truly look up or down, and there is no room over room: you can never stack one space directly above another. Enemies and objects are flat sprites drawn at a handful of fixed angles, not polygonal models. This combination of a 2D world model with perspective drawing is what people mean by 2.5D. It was a deliberate trade; the constraints let the engine run smoothly on a 1993 PC."
+			},
+			{
+				"section": "Binary space partitioning",
+				"text": "The renderer's central trick is binary space partitioning. Romero's level designs grew complex enough that naive drawing was too slow, so Carmack adopted BSP, an idea from earlier computer-graphics research. A tool processes each map ahead of time, recursively splitting it along its own line segments into a binary tree. At runtime the engine walks that tree from the player's position to visit wall segments in a guaranteed front-to-back order, drawing only what is visible and skipping the rest. Because the heavy partitioning is precomputed, the per-frame cost is low. The BSP tree is stored inside the level data, which is why DOOM maps need a build step before they will run."
+			},
+			{
+				"section": "WAD files and the data model",
+				"text": "DOOM keeps almost everything outside the executable in WAD files; the name is a backronym for \"Where's All the Data?\". A WAD is a directory of named lumps: levels, sprites, sounds, music, textures, and palettes. The base game ships in an IWAD, and add-ons come as PWADs that replace or extend lumps without touching engine code. A level itself is built from sectors (the flat-floored regions), linedefs and sidedefs (the walls), and things (monsters, items, the player start). This clean separation of data from code is what made DOOM so moddable; you could redraw a monster or build a new map without recompiling anything."
+			},
+			{
+				"section": "Shareware and how DOOM spread",
+				"text": "id released the first episode, \"Knee-Deep in the Dead,\" as free shareware. Anyone could copy it, pass it around, and play it in full; the remaining two episodes were sold by mail order. The model fit the early-1990s internet and FidoNet perfectly. The shareware episode landed on FTP sites and floppy disks everywhere, and a meaningful fraction of players eventually paid for the rest. It made id wealthy without a traditional publisher and seeded an enormous installed base, which in turn fed the modding community."
+			},
+			{
+				"section": "The source release and source ports",
+				"text": "id put the DOOM engine source online on December 23, 1997, initially the Linux version under a license that forbade commercial use. After community pressure (and the loss of a derivative project's code to a disk crash), id relicensed the engine under the GNU GPL on October 3, 1999. The GPL release is the one mirrored at id-Software/DOOM on GitHub. Programmers ported the code to every modern platform and removed the original limits; these builds are called source ports. Chocolate Doom aims for faithful behavior, while ZDoom, GZDoom, and PrBoom add higher resolutions, OpenGL rendering, mouselook, and scripting. By the 2000s most people played DOOM through a source port rather than the DOS original."
+			},
+			{
+				"section": "Demos, determinism, and \"runs on everything\"",
+				"text": "DOOM records gameplay as demos: .lmp files that store only the player's inputs, not video. Replaying a demo feeds those inputs back through the same deterministic engine, so the run reproduces exactly; this is the backbone of the speedrunning and demo-verification scene. The same simplicity behind that determinism, plus the open source, fuels the long-running joke that DOOM runs on everything. People have made it run on printers, ATMs, oscilloscopes, pregnancy-test displays, and inside other games. Much of that is genuine; the engine is small, portable C, and once you can draw a framebuffer and read a few buttons, a port is plausible. The gag endures because it keeps being true."
+			}
+		],
+		"vocab": [
+			{
+				"term": "WAD",
+				"def": "id's archive format (\\\"Where's All the Data?\\\") that bundles levels, sprites, sounds, and textures into named lumps; IWADs hold the base game and PWADs add or replace content."
+			},
+			{
+				"term": "BSP",
+				"def": "Binary space partitioning, a tree built from a level's lines that lets the renderer sort walls back to front quickly without per-frame depth sorting."
+			},
+			{
+				"term": "Source Port",
+				"def": "A community-maintained build of the released DOOM engine code, ported to new platforms and extended with higher resolutions, mouselook, and new features."
+			},
+			{
+				"term": "Shareware",
+				"def": "A distribution model where the first episode was given away free and copyable, with the remaining episodes sold by mail order."
+			},
+			{
+				"term": "id Tech 1",
+				"def": "id Software's retroactive name for the DOOM engine in its later engine-numbering scheme."
+			},
+			{
+				"term": "Sector",
+				"def": "A flat-floored, flat-ceilinged polygonal region of a DOOM map; floor and ceiling heights, light level, and textures are properties of the sector."
+			},
+			{
+				"term": "Sprite",
+				"def": "A flat 2D bitmap drawn to face the camera; DOOM's monsters, items, and projectiles are sprites, not polygonal models."
+			},
+			{
+				"term": "Demo (LMP)",
+				"def": "A recording of player input stored in an .lmp file; replaying the same inputs against the same engine reproduces a playthrough deterministically."
+			},
+			{
+				"term": "Carmack",
+				"def": "John Carmack, id's lead programmer, who wrote the DOOM renderer and later championed the source releases."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Doom (1993 video game) — Wikipedia",
+				"url": "https://en.wikipedia.org/wiki/Doom_(1993_video_game)",
+				"kind": "wiki"
+			},
+			{
+				"title": "Doom modding — Wikipedia",
+				"url": "https://en.wikipedia.org/wiki/Doom_modding",
+				"kind": "wiki"
+			},
+			{
+				"title": "WAD — Doom Wiki",
+				"url": "https://doomwiki.org/wiki/WAD",
+				"kind": "reference"
+			},
+			{
+				"title": "Source port — Doom Wiki",
+				"url": "https://doomwiki.org/wiki/Source_port",
+				"kind": "reference"
+			},
+			{
+				"title": "id-Software/DOOM source release — GitHub",
+				"url": "https://github.com/id-Software/DOOM",
+				"kind": "source"
+			}
+		]
+	},
+	{
+		"slug": "emulation-preservation",
+		"title": "Emulation and Preservation",
+		"domain": "hardware",
+		"tags": [
+			"emulation",
+			"preservation",
+			"fpga",
+			"mister",
+			"rom",
+			"dumping",
+			"accuracy",
+			"dolphin",
+			"mgba",
+			"bsnes",
+			"no-intro",
+			"redump"
+		],
+		"source": "Wikipedia (bsnes/higan, Dolphin emulator, MiSTer, Video game console emulator), mgba.io, DAT-o-MATIC (no-intro.org), Redump forum/PulseGeek on No-Intro vs Redump, MiSTer-devel GitHub wiki.",
+		"related": [
+			"gamecube",
+			"nintendo-64",
+			"game-boy"
+		],
+		"sections": [
+			{
+				"section": "What an emulator actually does",
+				"text": "An emulator is software that pretends to be another computer. It reads the same program bytes the original console ran, decodes them the way that console's CPU did, and produces the same results: the same pixels, the same sound, the same behavior. The hard part is that a game console is not just a CPU. It is a CPU plus a graphics chip, a sound chip, controllers, timers, and the wiring between them, all running at once and all watching each other's clocks. A faithful emulator has to model every part and keep them in step. The simplest approach is interpretation: fetch one emulated instruction, figure out what it means, do it, repeat. That is straightforward and easy to get right, but slow, because the host spends many native instructions on each emulated one. Most of the history of emulation is a negotiation between that simplicity and the speed real games demand."
+			},
+			{
+				"section": "Interpreters versus dynamic recompilation",
+				"text": "When a console's CPU is fast, plain interpretation cannot keep up, so emulators reach for dynamic recompilation, also called a JIT (just-in-time) recompiler. Instead of interpreting each instruction every time, the emulator translates a whole block of the guest's machine code into the host CPU's native machine code, then runs that translated block directly and caches it for reuse. A loop that runs a million times gets translated once. Dolphin, which emulates the GameCube's PowerPC \"Gekko\" and the Wii's \"Broadway,\" leans on a JIT for exactly this reason; pure interpretation of those chips on a desktop would crawl. The cost is complexity and a subtler relationship with accuracy: the recompiler must reproduce not just the result of each instruction but its side effects and timing closely enough that games behave. Low-end CPUs like the Game Boy's are slow enough that an interpreter suffices, which is part of why handheld emulation reached high accuracy earlier than console emulation."
+			},
+			{
+				"section": "The accuracy debate",
+				"text": "For years \"it boots and looks right\" was the bar. Then a quieter argument took hold: looking right is not the same as being right. Near (formerly byuu) started bsnes on October 14, 2004, after hitting Super Famicom bugs that only appeared on real hardware, and built it around low-level, cycle-accurate emulation; the project was renamed higan in 2012 as it grew to cover more systems. Cycle accuracy means stepping every chip in time the way the silicon did, so a game relying on the exact moment a scanline is drawn, or on a race between two chips, behaves identically. The trade is brutal: cycle-accurate cores can need an order of magnitude more host power than a \"good enough\" emulator. Critics call that wasteful; defenders answer that preservation has no second chance, and that the obscure timing bug nobody hits today is exactly what an archive exists to keep. Near died in 2021, and the work continued as a collaborative project."
+			},
+			{
+				"section": "FPGA reimplementation",
+				"text": "There is a different route that sidesteps the speed-versus-accuracy fight. Instead of running the old hardware's behavior as software on a general CPU, an FPGA is reconfigured into the old hardware's actual digital logic. An FPGA is a chip whose gates can be rewired after manufacture, so a \"core\" describes the original console's circuits and the FPGA becomes that circuitry, running in parallel the way the real chips did. The MiSTer project, started by Alexey \"Sorgelig\" Melnikov in June 2017 as a successor to the earlier MIST, does this on Terasic's DE10-Nano board, built around an Intel Cyclone V FPGA paired with a dual-core ARM that handles loading and menus. Commercial hardware such as Analogue's consoles takes the same FPGA approach in a polished product. The appeal is low input lag and behavior that comes from logic rather than approximation; the limits are that each system must be painstakingly described in hardware terms, and large FPGAs are expensive, so the most demanding consoles lag behind."
+			},
+			{
+				"section": "Dumping and verifying ROMs",
+				"text": "Before anything can be emulated, the original data has to be extracted, and extracting it cleanly is its own discipline. A ROM is a dump of a cartridge's memory; a disc image is a dump of an optical disc. Two community databases set the standard for what a correct dump looks like. No-Intro curates cartridge dumps, with clean naming, region tags, and header corrections so that every copy of a given release hashes to the same value. Redump does the parallel work for optical media, where the physical structure matters more: track layouts, pregaps, mixed-mode audio, and copy-protection artifacts all affect the checksums, so a disc must be modeled as a physical object, not just a blob. Both projects publish DAT files, lists of known-good checksums (CRC32, MD5, SHA-1), and explicitly do not host the games. You verify your own dump against the database. Neither distributes ROMs; the value is the reference, not the file."
+			},
+			{
+				"section": "Save states and the player's view",
+				"text": "The feature most players associate with emulation is the save state. Because the emulator already holds the entire machine in its own memory, it can serialize that whole state, every byte of RAM, every register, the exact mid-frame instant, to a file and restore it later. No original console offered this; it is a pure artifact of running on a host that can pause and snapshot the world. Save states transformed how people play old games, enabling tool-assisted speedruns, frame-perfect practice, and casual checkpointing in games that never had it. They also expose a subtlety: a save state from one emulator version, or one core, may not load in another, because it encodes that emulator's internal layout rather than anything the cartridge defined. The convenience is real, and so is the reminder that an emulator's state is its own, not the hardware's."
+			},
+			{
+				"section": "Why preservation matters",
+				"text": "Cartridges rot. Disc lasers drift, battery-backed saves die, and the small companies that made thousands of games are gone, with no master copies kept. Emulation and verified dumping are, increasingly, the only path by which a great deal of software survives at all. The legal picture is narrower than the technical one. Courts in the United States have held that an emulator built by clean-room design, reverse-engineering behavior without copying the original code, is itself lawful; the games it runs remain under copyright, and distributing those dumps is generally infringement even when the rights holder sells nothing. That gap is the core tension of the field: the tools are legal, the cultural argument for keeping the work is strong, and the legal right to copy the work usually rests with companies that may never reissue it. Preservation projects answer by documenting and verifying rather than distributing, betting that an accurate record now is worth more than a convenient one."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Emulator",
+				"def": "Software that reproduces the behavior of one machine's hardware on a different machine, so programs written for the original run unchanged."
+			},
+			{
+				"term": "Cycle Accuracy",
+				"def": "An emulation goal where each chip is stepped in time the way the real silicon was, so timing-dependent effects behave exactly as on hardware."
+			},
+			{
+				"term": "Dynamic Recompilation",
+				"def": "A speed technique that translates blocks of the emulated CPU's machine code into the host CPU's native code at runtime and caches the result, rather than interpreting one instruction at a time."
+			},
+			{
+				"term": "FPGA",
+				"def": "A field-programmable gate array, a chip whose logic can be reconfigured after manufacture to behave like arbitrary digital circuitry."
+			},
+			{
+				"term": "MiSTer",
+				"def": "An open-source project that recreates old computers and consoles as FPGA logic on the Terasic DE10-Nano board rather than as software."
+			},
+			{
+				"term": "ROM",
+				"def": "A dump of the read-only memory from a cartridge or chip, the program and data image an emulator loads in place of the original media."
+			},
+			{
+				"term": "No-Intro",
+				"def": "A community database of verified, header-corrected cartridge dumps and their checksums, distributed as DAT files rather than as the games themselves."
+			},
+			{
+				"term": "Dolphin",
+				"def": "An open-source emulator for the Nintendo GameCube, Wii, and Triforce arcade hardware, first released in 2003 and open-sourced in 2008."
+			},
+			{
+				"term": "Save State",
+				"def": "A snapshot of the entire emulated machine's memory and registers, written to disk so play can resume from that exact instant later."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Video game console emulator (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Video_game_console_emulator",
+				"kind": "wiki"
+			},
+			{
+				"title": "Dolphin emulator (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Dolphin_(emulator)",
+				"kind": "wiki"
+			},
+			{
+				"title": "bsnes / higan (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Bsnes",
+				"kind": "wiki"
+			},
+			{
+				"title": "mGBA",
+				"url": "https://mgba.io/",
+				"kind": "official"
+			},
+			{
+				"title": "MiSTer project wiki",
+				"url": "https://github.com/MiSTer-devel/Wiki_MiSTer/wiki",
+				"kind": "wiki"
+			},
+			{
+				"title": "DAT-o-MATIC (No-Intro)",
+				"url": "https://datomatic.no-intro.org/",
+				"kind": "reference"
+			}
+		]
+	},
+	{
+		"slug": "fpga-mister",
+		"title": "FPGA and the MiSTer Project",
+		"domain": "hardware",
+		"tags": [
+			"fpga",
+			"mister",
+			"retro",
+			"hardware",
+			"recreation",
+			"hdl",
+			"latency"
+		],
+		"source": "Compiled from Wikipedia (FPGA, MiSTer, Analogue Pocket), the official MiSTer-devel GitHub wiki, and Analogue's product pages; June 2026.",
+		"related": [
+			"emulation-preservation",
+			"beagleplay",
+			"spi-bus"
+		],
+		"sections": [
+			{
+				"section": "What an FPGA Actually Is",
+				"text": "A field-programmable gate array is an integrated circuit you can rewire after it leaves the factory. Inside is a grid of small logic blocks and a fabric of programmable interconnect. Loading a configuration sets what each block computes and how the blocks are wired together. The result is real digital hardware, not a program running on a processor. This is the key distinction for retro work; a CPU fetches and executes instructions one after another, while an FPGA holds the actual circuit and runs it in parallel. Xilinx shipped the first commercially viable FPGA, the XC2064, in 1985, with programmable logic blocks and programmable interconnect between them. Altera, founded in 1983, was the other early pioneer. For decades those two companies dominated the market; Altera is now part of Intel, which is why the chip at the heart of MiSTer carries both names."
+			},
+			{
+				"section": "Logic Cells and Look-Up Tables",
+				"text": "The building block of most FPGAs is the logic cell. A typical cell pairs a look-up table with a full adder and a D-type flip-flop. The look-up table is a tiny memory; a four-input LUT stores sixteen bits, one per possible input combination, so it can implement any Boolean function of those four inputs just by holding the right truth table. Chain thousands of these cells through the interconnect and you can build counters, state machines, memory controllers, and whole CPUs. Device capacity is quoted in logic elements; the Cyclone V part MiSTer uses reports roughly 110,000 logic elements. The point is that none of this is fixed at manufacture. The same silicon becomes a Z80, a 6502, or a video chip depending on which configuration you load."
+			},
+			{
+				"section": "Describing Hardware: HDL, Verilog, VHDL",
+				"text": "You do not draw FPGA circuits by hand. You write a hardware description language. The two dominant HDLs are VHDL, whose syntax descends from Ada, and Verilog, which reads more like C. An HDL describes structure and timing rather than a step-by-step procedure; a line of Verilog can mean \"this register updates on every clock edge,\" which becomes physical flip-flops and wires after synthesis. Synthesis tools translate the HDL into a netlist of LUTs and routing, then place and route it onto a specific device. This is why FPGA recreations are sometimes called gateware. A core author is effectively redrawing the original machine's schematic in code, clock domains and all, instead of writing software that imitates its behavior."
+			},
+			{
+				"section": "Why FPGA Recreation Differs from Emulation",
+				"text": "Software emulation runs on a host CPU and operating system; the host interprets the guest machine's instructions and redraws its video. That introduces scheduling jitter and buffering, and accuracy depends on how faithfully the emulator author modeled odd hardware timing. An FPGA core instead instantiates the original logic and clocks it in step. Because the logic runs in parallel hardware rather than a host scheduler, input-to-display latency can be kept very low and consistent, and quirky timing behavior tends to fall out for free when the circuit matches the original. This is not magic; a sloppy core can still be wrong, and a careful software emulator can be excellent. The honest framing is that the FPGA approach removes a host software stack from the loop, which makes low, deterministic latency easier to reach."
+			},
+			{
+				"section": "The MiSTer Project and the DE10-Nano",
+				"text": "MiSTer is an open project that recreates classic computers, consoles, and arcade machines on modern hardware. Alexey \"Sorgelig\" Melnikov introduced it on GitHub in June 2017 as a successor to the earlier MIST project, motivated partly by MIST's analog-only video; MiSTer outputs HDMI directly. It runs on Terasic's DE10-Nano, a mass-produced development board built around an Intel/Altera Cyclone V SoC FPGA (the 5CSEBA6U23I7, about 110,000 logic elements) paired with a dual-core ARM Cortex-A9. The ARM side runs a small Linux that loads cores and handles menus and storage, while the FPGA fabric becomes the recreated machine. Picking a stock, affordable board instead of custom hardware is much of why the project spread."
+			},
+			{
+				"section": "Cores, Add-on Boards, and the SDRAM Problem",
+				"text": "In MiSTer terms a core is one machine: an HDL design that turns the FPGA into an NES, an SNES, a Genesis, an Amiga, or a particular arcade board. The project depends on many contributors maintaining these cores, and support spans 8-bit through 32-bit systems. Several add-on boards extend the bare DE10-Nano: a USB hub, an analog I/O board with VGA for CRTs, a digital I/O board with TOSLINK audio, a real-time clock, and most importantly an SDRAM module (commonly 128MB). The SDRAM board exists for a subtle reason. The DE10-Nano's onboard DDR3 is shared with the ARM side and has high, variable latency, which cannot stand in for the fast, simply timed memory many vintage machines expected, so a dedicated low-latency SDRAM chip is added for cores that need it."
+			},
+			{
+				"section": "The Wider FPGA Recreation World",
+				"text": "MiSTer is the open, hobbyist anchor of a larger movement, and commercial FPGA hardware sits alongside it. Analogue builds polished consumer devices on the same principle; their Analogue Pocket, announced in October 2019 and launched December 13, 2021, uses an Altera Cyclone V FPGA plus a second Cyclone 10 for system functions. It plays Game Boy, Game Boy Color, and Game Boy Advance cartridges directly, with adapters for Game Gear, Neo Geo Pocket, Atari Lynx, and TurboGrafx-16. Crucially Analogue opened a framework called openFPGA so outside developers can write cores for the Pocket, echoing MiSTer's open model. The shared thread across MiSTer and the Pocket is preservation through reconfigurable logic; instead of describing old hardware in software, you rebuild the circuit itself on a chip designed to be reprogrammed."
+			}
+		],
+		"vocab": [
+			{
+				"term": "FPGA",
+				"def": "A field-programmable gate array; an integrated circuit whose logic can be reconfigured after manufacture to behave like arbitrary digital hardware."
+			},
+			{
+				"term": "HDL",
+				"def": "Hardware description language; code that describes the structure and behavior of digital circuits rather than a sequence of instructions."
+			},
+			{
+				"term": "Verilog",
+				"def": "A widely used HDL with C-like syntax for describing and simulating digital logic."
+			},
+			{
+				"term": "Look-Up Table",
+				"def": "A small programmable memory inside an FPGA logic cell that implements any function of a few input bits."
+			},
+			{
+				"term": "Core",
+				"def": "An HDL design that configures an FPGA to recreate a specific machine, such as a console or arcade board."
+			},
+			{
+				"term": "DE10-Nano",
+				"def": "The Terasic development board, built around an Intel Cyclone V SoC FPGA, that the MiSTer project runs on."
+			},
+			{
+				"term": "Latency",
+				"def": "The delay between an input and its visible result; FPGA recreations can keep this very low because logic runs in parallel hardware."
+			},
+			{
+				"term": "Reconfigurable Logic",
+				"def": "Digital circuitry whose wiring and function can be reprogrammed, as opposed to fixed gates etched at fabrication."
+			},
+			{
+				"term": "Analogue",
+				"def": "A company that builds FPGA-based hardware such as the Analogue Pocket handheld for playing original game cartridges."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Field-programmable gate array (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Field-programmable_gate_array",
+				"kind": "wiki"
+			},
+			{
+				"title": "MiSTer FPGA (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/MiSTer_FPGA",
+				"kind": "wiki"
+			},
+			{
+				"title": "Official MiSTer-devel Wiki",
+				"url": "https://github.com/MiSTer-devel/Wiki_MiSTer/wiki",
+				"kind": "official"
+			},
+			{
+				"title": "MiSTer Main repository",
+				"url": "https://github.com/MiSTer-devel/Main_MiSTer",
+				"kind": "source"
+			},
+			{
+				"title": "Analogue Pocket (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Analogue_Pocket",
+				"kind": "wiki"
+			},
+			{
+				"title": "Analogue Pocket product page",
+				"url": "https://www.analogue.co/pocket",
+				"kind": "official"
+			}
+		]
+	},
+	{
+		"slug": "game-boy",
+		"title": "The Game Boy",
+		"domain": "hardware",
+		"tags": [
+			"game-boy",
+			"nintendo",
+			"handheld",
+			"lr35902",
+			"chiptune",
+			"mbc"
+		],
+		"source": "Compiled from Wikipedia (Game Boy, Game Boy Color, Chiptune, Zilog Z80), gekkio's Game Boy: Complete Technical Reference, and the official Little Sound Dj site; June 2026.",
+		"related": [
+			"pokemon-gen1",
+			"retro-computing"
+		],
+		"sections": [
+			{
+				"section": "The handheld and its run",
+				"text": "Nintendo released the Game Boy in Japan on April 21, 1989, and in North America on July 31, 1989. It was not the most powerful handheld of its era; the contemporary Atari Lynx and Sega Game Gear had color and more muscle. The Game Boy won anyway on battery life, price, and a deep software library. The hardware was led by Gunpei Yokoi's team at Nintendo R&D1, with Satoru Okada among the key designers.\n\nThe line carried forward through the smaller Game Boy Pocket (1996) and Game Boy Light (1998, Japan only) before the Game Boy Color arrived on October 21, 1998. Counted together, the Game Boy and Game Boy Color sold 118.69 million units worldwide by the time the line was discontinued in 2003. That makes it one of the best-selling game systems ever, and the platform that carried Tetris and the first Pokemon games to the world."
+			},
+			{
+				"section": "The LR35902 CPU",
+				"text": "The system runs on a Sharp LR35902, a system-on-chip clocked at 4.194304 MHz. Its CPU core is often called the SM83, and it is a hybrid: it borrows much of its instruction set from the Intel 8080 and Zilog Z80, but it is not a full Z80. The designers dropped the Z80's IX/IY index registers, the alternate register set, and several instructions, while adding their own conveniences such as the LDH instruction for fast access to high memory.\n\nThe chip is 8-bit with a 16-bit address bus, so it can address 64 KB directly. On-board it has 8 KB of work RAM and 8 KB of video RAM, plus a small block of high RAM. The 8080 and Z80 lineage means assembly programmers coming from those parts felt at home, which mattered in 1989 when those CPUs were everywhere in arcades and home computers."
+			},
+			{
+				"section": "A dot-matrix screen in four greys",
+				"text": "The DMG name stands for Dot Matrix Game, and the screen is the point. It is a 2.5-inch reflective STN (super-twisted nematic) liquid crystal display, 160 by 144 pixels, in a 10:9 aspect ratio. It shows four shades, rendered on the original unit as the famous pea-green-to-dark palette.\n\nBeing reflective rather than backlit, the original screen needed ambient light and was notoriously hard to read in dim rooms; an accessory light and magnifier industry grew up around that flaw. The display also had visible ghosting on fast motion. The Game Boy Color kept the same 160 by 144 resolution but swapped in a color LCD. Power came from four AA batteries good for up to about 30 hours, a runtime its rivals could not touch."
+			},
+			{
+				"section": "Tiles and sprites",
+				"text": "The Game Boy does not have a framebuffer you draw pixels into; it composes the image from tiles. A tile is an 8x8-pixel bitmap stored as 16 bytes in VRAM, using a planar 2-bits-per-pixel format (each pixel is a value from 0 to 3). The background and window layers are grids of these tiles.\n\nMovable objects, called sprites or OBJs, live in a 160-byte table called OAM, with 40 four-byte entries. Each sprite is 8x8 or 8x16 pixels and carries its position, palette choice, priority, and flip flags. Two hard limits shaped Game Boy art: only 40 sprites total, and only 10 per scanline. Sprites also reserve color 0 as transparent, so a sprite shows at most three solid shades. Programmers learned to juggle the per-line limit, sometimes flickering sprites on and off across frames to fake more on screen."
+			},
+			{
+				"section": "Cartridges, mappers, and saves",
+				"text": "The CPU can only address 32 KB of cartridge ROM at once, far less than most games need. The fix lives in the cartridge itself: a Memory Bank Controller (MBC) that maps larger ROMs and RAM into the small window through bank switching. Writing to special address ranges tells the MBC which bank to expose.\n\nThe common chips each have a profile. MBC1 handles up to 2 MB of ROM with optional battery-backed RAM. MBC2 is smaller (up to 256 KB) with a tiny built-in RAM. MBC3 added a real-time clock, which is how Pokemon Gold and Silver track day and night even with the system off. MBC5 raised the ROM ceiling further and supported the rumble motor in carts like the Pokemon Pinball series. Saves persist because the cartridge holds SRAM kept alive by a small coin cell; when that battery dies decades later, the save is lost."
+			},
+			{
+				"section": "Linking up",
+				"text": "The Game Boy's serial port and Game Link Cable, developed by Satoru Okada, let two units (and in some configurations up to four) talk to each other at a modest serial rate. It was first imagined for head-to-head play, and Tetris versus mode was an early showcase.\n\nIts lasting importance was different. Pokemon Red and Green were built around the cable: you cannot complete the Pokedex on one cartridge alone, because some species only evolve or appear through trading. That design turned a piece of hardware into a social loop, sending kids to find a friend with the other version. The same link hardware later carried the Super Game Boy and Game Boy Printer accessories, and homebrew musicians use it to sync two trackers together."
+			},
+			{
+				"section": "Constraints that bred a music scene",
+				"text": "The Game Boy's audio is a four-channel programmable sound generator: two pulse-wave channels with selectable duty cycles, one channel that plays a custom 4-bit waveform, and one noise channel. Game composers like Hirokazu Tanaka wrung memorable scores out of it; the same chip became an instrument in its own right.\n\nThat second life is chiptune. In 2000 the Swedish programmer Johan Kotlinski wrote Little Sound Dj (LSDj), a music tracker that runs on real Game Boy hardware from a cartridge and gives a performer direct control of all four channels, custom waveforms, and an arpeggiator. Sold on flash carts and later released as freeware, LSDj (alongside Oliver Wittchow's Nanoloop) made the Game Boy a live performance instrument and inspired a generation of trackers. The platform's limits, four channels and four greys, became its aesthetic."
+			}
+		],
+		"vocab": [
+			{
+				"term": "LR35902",
+				"def": "Sharp's system-on-chip in the Game Boy; its CPU core (the SM83) is a hybrid of the Intel 8080 and Zilog Z80."
+			},
+			{
+				"term": "DMG",
+				"def": "Dot Matrix Game; the codename and model prefix of the original 1989 Game Boy."
+			},
+			{
+				"term": "MBC",
+				"def": "Memory Bank Controller; a chip inside cartridges that swaps ROM and RAM banks in and out of the CPU's small address space."
+			},
+			{
+				"term": "Game Link Cable",
+				"def": "A serial cable that connects two (or up to four) Game Boys for trading and multiplayer."
+			},
+			{
+				"term": "SRAM",
+				"def": "Static RAM on a cartridge, often kept alive by a coin cell to hold save data after power off."
+			},
+			{
+				"term": "Tile",
+				"def": "An 8x8-pixel, 2-bits-per-pixel bitmap; the basic unit the Game Boy draws backgrounds and sprites from."
+			},
+			{
+				"term": "Sprite",
+				"def": "A movable object (OBJ) drawn over the background; the Game Boy supports up to 40, with 10 per scanline."
+			},
+			{
+				"term": "Chiptune",
+				"def": "Music made with the sound chips of old game hardware, including the Game Boy's four-channel APU."
+			},
+			{
+				"term": "LSDj",
+				"def": "Little Sound Dj; a Game Boy music tracker by Johan Kotlinski that anchored the modern chiptune scene."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Game Boy (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Game_Boy",
+				"kind": "wiki"
+			},
+			{
+				"title": "Game Boy Color (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Game_Boy_Color",
+				"kind": "wiki"
+			},
+			{
+				"title": "Game Boy: Complete Technical Reference (gekkio)",
+				"url": "https://gekkio.fi/files/gb-docs/gbctr.pdf",
+				"kind": "reference"
+			},
+			{
+				"title": "Zilog Z80 (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Zilog_Z80",
+				"kind": "wiki"
+			},
+			{
+				"title": "Chiptune (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Chiptune",
+				"kind": "wiki"
+			},
+			{
+				"title": "Little Sound Dj (official site)",
+				"url": "https://www.littlesounddj.com/lsd/index.php",
+				"kind": "official"
 			}
 		]
 	},
@@ -988,6 +1696,115 @@
 		]
 	},
 	{
+		"slug": "nintendo-64",
+		"title": "The Nintendo 64",
+		"domain": "hardware",
+		"tags": [
+			"nintendo-64",
+			"n64",
+			"vr4300",
+			"reality-coprocessor",
+			"rdram",
+			"cartridge",
+			"anti-aliasing",
+			"microcode",
+			"ocarina-of-time"
+		],
+		"source": "Wikipedia (Nintendo 64, Nintendo 64 controller, Nintendo 64 Game Pak), copetti.org Nintendo 64 Architecture.",
+		"related": [
+			"majoras-mask",
+			"zelda-speedruns",
+			"gamecube"
+		],
+		"sections": [
+			{
+				"section": "A 64-bit console arrives, late and powerful",
+				"text": "Nintendo released the Nintendo 64 in Japan on June 23, 1996, in North America on September 29, 1996, and in Europe and Australia on March 1, 1997. It was the company's fifth-generation machine, following the Super Nintendo, and it landed a year or more after Sony's PlayStation and the Sega Saturn. The name advertised its headline feature: a 64-bit processor at a time when rivals ran 32-bit chips. The hardware was a joint effort with Silicon Graphics, the workstation company whose rendering pipelines defined high-end 3D, and the project carried the codename \"Project Reality\" through development. The console sold about 32.93 million units worldwide over its life, behind the PlayStation but ahead of the Saturn. Its reputation rests less on sales than on a small, sharp library and on a controller that taught a generation what an analog stick felt like."
+			},
+			{
+				"section": "The VR4300 and a 32-bit bottleneck",
+				"text": "The CPU is the NEC VR4300, a 64-bit chip running at 93.75 MHz and binary-compatible with the MIPS R4300i. It implements the MIPS III instruction set, carries 24 KB of L1 cache (16 KB instruction, 8 KB data), and uses a five-stage pipeline. The 64-bit width was real but rarely exploited. To cut cost, NEC narrowed the external data bus to 32 bits, so moving 64-bit data across the system burned extra cycles; most studios stayed in 32-bit mode and treated the wider registers as a bonus rather than a default. The chip is quoted at roughly 125 million instructions per second. In practice the CPU was not the limiting factor. The harder constraints sat in memory latency and in the texture pipeline of the graphics chip, which shaped how N64 games actually looked far more than the marketing-friendly \"64-bit\" label did."
+			},
+			{
+				"section": "The Reality Coprocessor: RSP plus RDP",
+				"text": "Almost everything beyond the CPU runs through the Reality Coprocessor, clocked at 62.5 MHz, about two-thirds the CPU speed and co-designed with SGI. It splits into two units. The Reality Signal Processor (RSP) is a cut-down MIPS core paired with a vector unit of thirty-two 128-bit registers, each able to hold eight 16-bit lanes for SIMD-style math; it transforms geometry and can also process audio. The Reality Display Processor (RDP) is the fixed-function rasterizer that fills triangles, applies textures, and writes pixels. The RDP supports perspective-correct mapping, bilinear and trilinear filtering, and mipmapping, though its trilinear filter interpolates between three points rather than the usual four, which produces small visual artifacts. The two units work in a pipeline with the CPU, geometry flowing from VR4300 to RSP to RDP and out to the frame buffer."
+			},
+			{
+				"section": "Microcode: a programmable pipeline",
+				"text": "The unusual thing about the RSP is that it is programmable. Rather than a fixed transform-and-lighting block, it runs microcode: small programs, capped near a thousand instructions and held in 4 KB of instruction memory, that define how geometry and audio get processed. Nintendo and SGI shipped standard microcode, but studios could write their own. Doing so was difficult and poorly documented early on, yet teams that managed it pushed far past the default limits. Custom microcode let games reach much higher polygon counts and more advanced lighting, animation, and physics than the stock path allowed. Factor 5, working on the Star Wars titles, became famous for squeezing the RSP this way. This is why N64 hardware aged unevenly: a 1996 launch game and a 2000 title could run on identical silicon yet look generations apart, because the later one was effectively running a different rendering engine on the same chip."
+			},
+			{
+				"section": "RDRAM, the Z-buffer, and the smooth blur",
+				"text": "The N64 used 4 MB of Rambus RDRAM in a unified pool shared by CPU, audio, and video, with an optional 4 MB more from the Expansion Pak. RDRAM offered high peak bandwidth, around 500 MB/s, but punishing latency, on the order of hundreds of nanoseconds per transaction, which throttled real performance. The RDP leans on a Z-buffer, a depth value stored per pixel, so nearer surfaces automatically hide farther ones; programmers no longer had to sort polygons in software. The console's signature soft image came from two compounding choices. First, the RCP and video interface applied anti-aliasing that smoothed polygon edges into a gentle haze. Second, the RDP held only 4 KB of texture memory (TMEM), and mipmapping halved even that, so textures had to be tiny and were stretched and filtered across surfaces. The result was a low-resolution, blurry, but flicker-free and smooth look that is instantly recognizable."
+			},
+			{
+				"section": "The controller and its analog stick",
+				"text": "The N64 controller broke from convention with a three-pronged, trident-shaped body so unusual it was first sculpted in clay because it could not be modeled on a computer. Its centerpiece was the analog stick, Nintendo's first standard thumbstick. The mechanism is technically a digital encoder, a gear-driven chopper wheel interrupting a light beam read by a photodiode, but its precision made it behave like a true analog control. The stick made first-person and free-roaming 3D movement feel natural for the first time on a console. The expansion port on the controller's underside accepted three accessories: the Controller Pak for save data, the Transfer Pak for linking Game Boy cartridges, and the Rumble Pak, a battery-powered force-feedback module released in April 1997 with Star Fox 64 (called Lylat Wars in Europe). Four controller ports built into the console made local four-player split-screen a defining feature."
+			},
+			{
+				"section": "Carts over CD, and the two Zeldas",
+				"text": "Nintendo kept ROM cartridges, the Game Pak, while competitors moved to CD-ROM. The reasons were practical: cartridges loaded almost instantly where CD drives crawled at roughly 300 kB/s, and the Game Pak's lockout chip made piracy far harder than copying a disc. The cost was capacity. Game Paks ran from about 4 to 12 MB early on, reached 32 MB by 1998, and topped out at 64 MB from 1999, a fraction of a CD's 650 MB. That ceiling forced compressed assets and MIDI-style sequenced audio instead of streamed music, and it pushed some third parties toward Sony. The library that resulted was small but durable, and its summit is two games from the same engine: The Legend of Zelda: Ocarina of Time in 1998 and Majora's Mask in 2000, the latter requiring the Expansion Pak. Both remain central to speedrunning and to the console's lasting reputation."
+			}
+		],
+		"vocab": [
+			{
+				"term": "VR4300",
+				"def": "The NEC-built 64-bit CPU at the heart of the N64, a binary-compatible variant of the MIPS R4300i running at 93.75 MHz."
+			},
+			{
+				"term": "Reality Coprocessor",
+				"def": "The 62.5 MHz graphics and audio chip co-designed by Nintendo and SGI, containing the Reality Signal Processor and the Reality Display Processor."
+			},
+			{
+				"term": "Microcode",
+				"def": "Small programs run on the Reality Signal Processor that define the geometry and audio pipeline, letting studios reshape what the hardware does rather than calling a fixed library."
+			},
+			{
+				"term": "Expansion Pak",
+				"def": "A plug-in module that doubled the console's RDRAM from 4 MB to 8 MB, required by some late titles and used for higher resolutions."
+			},
+			{
+				"term": "Rumble Pak",
+				"def": "A force-feedback accessory that slotted into the controller's expansion port, introduced in 1997 alongside Star Fox 64."
+			},
+			{
+				"term": "Cartridge",
+				"def": "The N64's Game Pak ROM, holding 4 to 64 MB, chosen over CD for near-instant loading and stronger copy protection."
+			},
+			{
+				"term": "Anti-aliasing",
+				"def": "Edge-smoothing applied by the RCP and video interface that softened jagged polygon borders and contributed to the console's hazy, gentle look."
+			},
+			{
+				"term": "Z-buffer",
+				"def": "A per-pixel depth buffer the Reality Display Processor maintains so closer surfaces correctly hide farther ones, removing the need for software polygon sorting."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Nintendo 64 (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Nintendo_64",
+				"kind": "wiki"
+			},
+			{
+				"title": "Nintendo 64 Architecture: A Practical Analysis",
+				"url": "https://www.copetti.org/writings/consoles/nintendo-64/",
+				"kind": "guide"
+			},
+			{
+				"title": "Nintendo 64 controller (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Nintendo_64_controller",
+				"kind": "wiki"
+			},
+			{
+				"title": "Nintendo 64 Game Pak (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Nintendo_64_Game_Pak",
+				"kind": "wiki"
+			}
+		]
+	},
+	{
 		"slug": "pokemon-gen1",
 		"title": "Pokemon Generation I (Red, Green, Blue)",
 		"domain": "games",
@@ -1332,6 +2149,123 @@
 		]
 	},
 	{
+		"slug": "sega-dreamcast",
+		"title": "The Sega Dreamcast",
+		"domain": "hardware",
+		"tags": [
+			"dreamcast",
+			"sega",
+			"console",
+			"sh4",
+			"powervr",
+			"online",
+			"vmu",
+			"homebrew"
+		],
+		"source": "Compiled from Wikipedia (Dreamcast, Dreamcast VGA, SegaNet), Copetti's architecture analysis, and the KallistiOS project; June 2026.",
+		"related": [
+			"retro-computing",
+			"emulation-preservation",
+			"monitors-pvm"
+		],
+		"sections": [
+			{
+				"section": "What it was, and when",
+				"text": "The Dreamcast was Sega's last home console and the first machine of the sixth generation, beating the PlayStation 2, GameCube, and Xbox to market. It launched in Japan on November 27, 1998, then in North America on September 9, 1999, a date Sega's marketing leaned on hard as \"9/9/99.\" Europe followed on October 14, 1999. The launch price was $199 in the United States. A team led by Hideki Sato began the design in 1997, choosing cheap off-the-shelf parts to avoid the costly custom silicon that had hurt the Saturn. Two competing internal designs existed; the Japanese proposal built around a Hitachi CPU and an NEC GPU won out over an American 3dfx-based plan. Sega discontinued the console on March 31, 2001, sold roughly 9.13 million units worldwide, and pivoted to life as a third-party publisher. The hardware died young, but it left a deep mark."
+			},
+			{
+				"section": "The SH-4 and the rest of the silicon",
+				"text": "At the center sits the Hitachi SH-4, a two-way superscalar 32-bit RISC chip running at 200 MHz. Its standout feature is a 128-bit graphics-oriented floating-point unit rated around 1.4 GFLOPS, which the Dreamcast used to do geometry transformation on the CPU rather than the GPU. The chip carried an 8 KB instruction cache and a 16 KB data cache. Around it sat 16 MB of main RAM, 8 MB of video RAM, and 2 MB of sound RAM. Audio ran on a Yamaha AICA processor with 64 PCM channels and its own embedded ARM7 core clocked near 45 MHz, effectively a small sound computer that offloaded mixing from the main CPU. The result was a balanced little machine for 1998, with generous memory and a CPU well suited to feeding the renderer."
+			},
+			{
+				"section": "PowerVR2 and tile-based rendering",
+				"text": "The graphics chip was the NEC and VideoLogic PowerVR2 (CLX2) at 100 MHz, and its design is the part engineers still talk about. Instead of immediate-mode rendering, it used tile-based deferred rendering: the screen is split into small tiles, hidden surfaces are discarded before any shading happens, and only visible pixels get textured and lit. This saved memory bandwidth and gave Dreamcast games a clean, bright look. The hardware supported trilinear filtering, Gouraud shading, bump mapping, per-pixel order-independent translucency, and spatial anti-aliasing, and it could push more than three million polygons per second; far more than the Saturn could manage. That deferred approach was unusual then and foreshadowed techniques common in mobile GPUs today."
+			},
+			{
+				"section": "GD-ROM and the disc format",
+				"text": "Sega skipped DVD-ROM to save money and instead used the GD-ROM, a proprietary high-density optical format holding about 1 GB. A GD-ROM disc carried a normal CD-readable area plus a high-density region read by the 12x drive. The format gave developers more room than a CD without the licensing cost and drive expense of DVD. It also doubled as a modest anti-piracy measure, since standard CD burners could not write the high-density area; the homebrew and piracy scenes eventually worked around this with self-booting CD-R images. The drive itself was a conventional optical mechanism, not the fastest of its era, but adequate for the library."
+			},
+			{
+				"section": "The VMU: a memory card with a face",
+				"text": "The Visual Memory Unit, sold as the Visual Memory System in Japan, was more than storage. It held 128 KB of flash memory (about 200 usable blocks of 512 bytes after system reservations), but it also carried a Sanyo 8-bit CPU, a 32x48 monochrome LCD, six buttons, a real-time clock, and a small buzzer. Slotted into the controller, it acted as a second screen; pulled out and powered by two CR2032 cells, it became a tiny handheld that could run mini-games downloaded from full titles. The best-known example is Sonic Adventure's Chao, which players raised on the VMU and synced back to the console. Few accessories before or since blended save card and toy so cleanly."
+			},
+			{
+				"section": "Going online: modem, SegaNet, and friends",
+				"text": "The Dreamcast shipped with a built-in modem, a first for a console; 33.6 kbit/s in PAL regions and 56 kbit/s in later North American units, with a broadband adapter sold separately. Regional services grew around it: Dricas in Japan, Dreamarena in Europe, and the subscription SegaNet in North America, which launched September 7, 2000 at $21.95 a month and ran game servers wired directly into its own network for lower latency. Players matched up through online lobbies for titles like Phantasy Star Online, NFL 2K1, and Quake III Arena. The services were short-lived; SegaNet closed in July 2001. Today a community project called DreamPi, built on a Raspberry Pi, revives much of this online play for surviving consoles."
+			},
+			{
+				"section": "VGA output, and why collectors love it",
+				"text": "The Dreamcast was among the first consoles to output 480p progressive scan, and Sega's VGA Box (released in Japan on January 14, 1999) carried that signal to a VGA computer monitor or an early HDTV. Sega chose VGA where rivals later used component video, which let the console's sharp, colorful image shine on the many quality CRT monitors of the day. The catch is real: most VGA monitors cannot show the 15 kHz signal that some 2D and sprite-based titles require, so a chunk of the library throws an unsupported-cable warning over VGA and needs a TV or a switchable cable instead. Windows CE, often misremembered as the console's OS, was simply an optional runtime some studios shipped on disc to ease PC ports."
+			},
+			{
+				"section": "A short life, a long afterlife",
+				"text": "Commercially the Dreamcast lost. It launched into Sega's weakened finances, faced the hype wave of the PS2's DVD playback, and never recovered momentum despite a strong library. Yet preservation has been kind to it. The open-source KallistiOS SDK gave the platform a modern homebrew toolchain that supports recent C and C++ standards and even powers most commercial indie releases on the system. New games still ship on GD-ROM and CD-R, and modern fans favor the console for its clean 480p, its quirky VMU, and a back catalog (Soulcalibur, Jet Set Radio, Shenmue, Phantasy Star Online) that aged well. It is one of the most fondly remembered failures in console history."
+			}
+		],
+		"vocab": [
+			{
+				"term": "SH-4",
+				"def": "The Hitachi 32-bit RISC CPU at 200 MHz with a 128-bit vector floating-point unit; the Dreamcast's main processor."
+			},
+			{
+				"term": "PowerVR2",
+				"def": "The NEC/VideoLogic GPU at 100 MHz using tile-based deferred rendering to cull hidden surfaces before shading."
+			},
+			{
+				"term": "GD-ROM",
+				"def": "Sega's proprietary high-density optical disc holding roughly 1 GB, a cheaper alternative to DVD-ROM."
+			},
+			{
+				"term": "VMU",
+				"def": "The Visual Memory Unit, a 128 KB memory card with its own monochrome LCD, buttons, and clock that doubles as a tiny handheld."
+			},
+			{
+				"term": "SegaNet",
+				"def": "Sega's North American dial-up online gaming service for the Dreamcast, launched September 7, 2000."
+			},
+			{
+				"term": "VGA Box",
+				"def": "An accessory that outputs the Dreamcast's 480p progressive-scan signal to a VGA monitor or HDTV."
+			},
+			{
+				"term": "Windows CE",
+				"def": "An optional Microsoft runtime developers could ship on a disc to ease PC ports; not the console's native OS."
+			},
+			{
+				"term": "Homebrew",
+				"def": "Independent software for the Dreamcast, mostly built with the open KallistiOS SDK and booted from CD-R or storage adapters."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Dreamcast (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Dreamcast",
+				"kind": "wiki"
+			},
+			{
+				"title": "Dreamcast Architecture: A Practical Analysis",
+				"url": "https://www.copetti.org/writings/consoles/dreamcast/",
+				"kind": "reference"
+			},
+			{
+				"title": "Dreamcast VGA (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/Dreamcast_VGA",
+				"kind": "wiki"
+			},
+			{
+				"title": "SegaNet (Wikipedia)",
+				"url": "https://en.wikipedia.org/wiki/SegaNet",
+				"kind": "wiki"
+			},
+			{
+				"title": "KallistiOS homebrew SDK",
+				"url": "https://github.com/KallistiOS/KallistiOS",
+				"kind": "source"
+			}
+		]
+	},
+	{
 		"slug": "spi-bus",
 		"title": "The SPI Bus",
 		"domain": "kernel",
@@ -1457,6 +2391,257 @@
 				"title": "Total Phase CPOL and CPHA guide",
 				"url": "https://www.totalphase.com/blog/2014/12/cpol-cpha-bitrate-configured-host-adapter-spi-slave-mode/",
 				"kind": "guide"
+			}
+		]
+	},
+	{
+		"slug": "the-c-language",
+		"title": "The C Language",
+		"domain": "kernel",
+		"tags": [
+			"c",
+			"ritchie",
+			"bell-labs",
+			"unix",
+			"pointers",
+			"undefined-behavior",
+			"ansi-c",
+			"systems-programming"
+		],
+		"source": "Ritchie, The Development of the C Language (HOPL II, 1993); ISO/IEC JTC1/SC22/WG14; Wikipedia (C language, Undefined behavior, The C Programming Language); Linux kernel coding-style docs; Prossimo/memorysafety.org",
+		"related": [
+			"the-rust-language",
+			"linux-kernel",
+			"rust-for-linux"
+		],
+		"sections": [
+			{
+				"section": "Born next to Unix",
+				"text": "C came out of Bell Labs in the early 1970s, written mostly by Dennis Ritchie between 1972 and 1973. It did not appear in a vacuum; it grew alongside Unix and largely to serve it. Ritchie built on Ken Thompson's language B, which Thompson had derived from Martin Richards's BCPL. B was typeless and word-oriented, which fit older machines but fought against the byte-addressed PDP-11 that Unix was moving to. Ritchie added a type system, the notion of a character, and structures, and the result was a new language he called C. The payoff was concrete and historic: in 1973 Unix was rewritten from PDP-11 assembly into C, making the operating system portable in a way no assembly-language system could be. From that point on, the language and the system carried each other."
+			},
+			{
+				"section": "K&R, then a standard",
+				"text": "For years C had no formal standard; it had a book. In 1978 Brian Kernighan and Dennis Ritchie published \"The C Programming Language,\" and the dialect it described became known as K&R C, the de facto definition. The book also gave the world its \"hello, world\" ritual. Formal standardization began with the ANSI X3J11 committee, producing ANSI X3.159-1989, usually called ANSI C or C89; the same text was adopted internationally as ISO C90. Later revisions followed: C99 added inline functions, new integer types, and one-line comments; C11 added a memory model, threads, and type-generic macros; C17 was a bug-fix release with no new features; and C23 (ISO/IEC 9899, adopted in 2024) added nullptr, typeof, and other modern touches. The standard is now maintained by ISO/IEC JTC1/SC22/WG14."
+			},
+			{
+				"section": "Pointers and the machine",
+				"text": "The defining idea in C is the pointer: a value that is itself a memory address. A pointer can be dereferenced to read or write whatever sits at that address, advanced with arithmetic to walk an array, or passed to a function so the callee can modify the caller's data. This is why C feels close to the metal; an array name decays to a pointer, a string is just a pointer to bytes ending in a zero, and a struct is a known layout you can reach into directly. The model maps almost transparently onto how a CPU actually addresses memory, which is exactly what an operating system or device driver needs. The same transparency is the source of most of C's danger. Nothing checks that a pointer still points at something valid, or that an index stays inside its array."
+			},
+			{
+				"section": "Manual memory management",
+				"text": "C has no garbage collector. Memory that outlives a single function call is obtained from the heap with malloc (or calloc, realloc) and must be handed back with free when you are done. The programmer owns the whole lifecycle. Get it wrong and you produce a recognizable family of bugs: a memory leak when you allocate and never free; a use-after-free when you keep using a pointer past the free call; a double free when you release the same block twice; a dangling pointer left aimed at memory that has been reclaimed. None of these are caught by the language. The discipline is entirely on the human, which is both why C programs can run with almost no runtime overhead and why memory bugs are endemic to them."
+			},
+			{
+				"section": "The preprocessor",
+				"text": "Before a C compiler proper sees your code, a separate text-substitution pass runs over it: the preprocessor. It handles lines beginning with #. #include splices in another file, which is how header files share declarations. #define creates macros, from simple constants to function-like macros expanded inline. #ifdef, #if, and #endif do conditional compilation, letting one source file build differently per platform or per build flag. The preprocessor is powerful and famously blunt; it knows nothing about C's syntax or types, it just moves text around. That makes some idioms (include guards, feature toggles) clean and others (macros with side effects, missing parentheses) a reliable source of surprises. A source file after preprocessing, headers and all, is the translation unit the compiler actually turns into an object file."
+			},
+			{
+				"section": "Undefined behavior",
+				"text": "The C standard does not define what every program does; it leaves a large set of constructs as undefined behavior, where the standard imposes no requirements at all. Signed integer overflow, dereferencing a null pointer, reading an uninitialized variable, indexing past the end of an array, and using a pointer after free are all undefined. The intent was to let C run fast on wildly different hardware without forcing checks. The modern consequence is sharper than many expect: optimizing compilers are allowed to assume undefined behavior never happens and to rewrite code on that assumption. A check that \"can't\" be true after an overflow can be deleted entirely. A program can appear to work for years and then miscompile when the optimizer changes. A segfault, the OS killing a process for an illegal memory access, is often the visible tip of UB underneath."
+			},
+			{
+				"section": "Why it became the lingua franca",
+				"text": "C won the systems world because it sits at a deliberate sweet spot: high enough to be readable and portable, low enough to express exactly what the hardware does, with a tiny runtime and a standard library (libc) that asks little of the platform underneath. Operating system kernels, device drivers, network stacks, language runtimes, and embedded firmware are overwhelmingly C. The Linux kernel is the canonical example; it is written in C (a freestanding dialect that does not use the normal libc) with its own famous coding style, down to eight-character tabs. Decades of code, tooling, ABIs, and trained programmers compound the advantage. C is the language other languages call into and define their foreign-function interface against."
+			},
+			{
+				"section": "The safety problem and what answers it",
+				"text": "The flip side of C's power is a now well-documented security record. Studies from Microsoft, Google, and Apple have repeatedly found that on the order of 70% of their serious vulnerabilities are memory-safety issues: buffer overflows, use-after-free, and the rest, the exact bug classes C does not prevent. Sanitizers, fuzzers, and static analyzers help but do not close the gap, which is why agencies like CISA now push memory-safe languages for new code. This is the precise motivation behind Rust. Rust keeps C-level control over memory and layout but adds a compile-time ownership and borrowing system that makes use-after-free and data races into errors the compiler rejects, rather than undefined behavior at runtime. The Rust-for-Linux effort brings that model into the kernel itself, in cautious coexistence with the C that still defines it."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Pointer",
+				"def": "A variable that holds the memory address of another value, which the program can read or write by dereferencing it."
+			},
+			{
+				"term": "Undefined Behavior",
+				"def": "A program construct the C standard places no requirements on, leaving the compiler free to do anything, including silently miscompile."
+			},
+			{
+				"term": "The Preprocessor",
+				"def": "A text-substitution pass that runs before compilation, handling #include, #define macros, and #ifdef conditional compilation."
+			},
+			{
+				"term": "ANSI C",
+				"def": "The first formal C standard, ANSI X3.159-1989, also called C89; adopted internationally as ISO C90."
+			},
+			{
+				"term": "K&R",
+				"def": "The 1978 book by Kernighan and Ritchie that served as C's de facto definition before standardization, and the pre-standard dialect it described."
+			},
+			{
+				"term": "Translation Unit",
+				"def": "A single source file plus everything it includes, compiled as one unit into an object file."
+			},
+			{
+				"term": "Segfault",
+				"def": "A segmentation fault: the OS killing a process for touching memory it is not allowed to access, often from a bad pointer."
+			},
+			{
+				"term": "Manual Memory Management",
+				"def": "The model where the programmer explicitly allocates memory with malloc and releases it with free, with no garbage collector."
+			},
+			{
+				"term": "libc",
+				"def": "The C standard library: the runtime implementation of printf, malloc, strcpy, and the other functions the standard defines."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "C (programming language) — Wikipedia",
+				"url": "https://en.wikipedia.org/wiki/C_(programming_language)",
+				"kind": "wiki"
+			},
+			{
+				"title": "Undefined behavior — Wikipedia",
+				"url": "https://en.wikipedia.org/wiki/Undefined_behavior",
+				"kind": "wiki"
+			},
+			{
+				"title": "The C Programming Language (K&R) — Wikipedia",
+				"url": "https://en.wikipedia.org/wiki/The_C_Programming_Language",
+				"kind": "wiki"
+			},
+			{
+				"title": "ISO/IEC JTC1/SC22/WG14 (C standards committee)",
+				"url": "https://www.open-std.org/jtc1/sc22/wg14/",
+				"kind": "official"
+			},
+			{
+				"title": "Linux kernel coding style",
+				"url": "https://docs.kernel.org/process/coding-style.html",
+				"kind": "reference"
+			},
+			{
+				"title": "What is memory safety and why does it matter? — Prossimo",
+				"url": "https://www.memorysafety.org/docs/memory-safety/",
+				"kind": "reference"
+			}
+		]
+	},
+	{
+		"slug": "the-rust-language",
+		"title": "The Rust Language",
+		"domain": "kernel",
+		"tags": [
+			"rust",
+			"systems",
+			"memory-safety",
+			"ownership",
+			"borrow-checker",
+			"no-std",
+			"traits"
+		],
+		"source": "rust-lang.org; Wikipedia Rust (programming language); The Rust Book ch. 4 ownership and references; rustfoundation.org; Cargo Book; Rust Edition Guide",
+		"related": [
+			"rust-for-linux",
+			"the-c-language",
+			"spi-bus"
+		],
+		"sections": [
+			{
+				"section": "Origins and governance",
+				"text": "Rust began in 2006 as a personal project by Graydon Hoare, then an engineer at Mozilla. Mozilla took over sponsorship in 2009, and the first public release, Rust 0.1, shipped on January 20, 2012. The language churned hard through those pre-1.0 years; whole features came and went. The first stable release, Rust 1.0, landed on May 15, 2015, and with it came a promise the project still keeps: stability without stagnation, meaning code that compiles on a stable release should keep compiling.\n\nIn 2021 stewardship moved out of Mozilla and into an independent nonprofit, the Rust Foundation, established on February 8, 2021. Its five founding corporate backers were the large companies already shipping Rust: Amazon Web Services, Google, Huawei, Microsoft, and Mozilla. Meta (then Facebook) joined the same top platinum tier a few months later, on April 29, 2021, which is why it is often listed alongside the original five. The Foundation funds infrastructure, security, and maintainers; it does not design the language. That work stays with the open project's teams."
+			},
+			{
+				"section": "Ownership",
+				"text": "Ownership is the idea everything else hangs on. The rules are short: every value has one owner, there is only one owner at a time, and when the owner goes out of scope the value is dropped. \"Dropped\" means its destructor runs and its memory is freed, automatically, at a point the compiler can see.\n\nThis is how Rust frees heap memory without a garbage collector and without manual `free`. There is no runtime scanning for unreachable objects and no pauses. Cleanup is tied to scope, so it is deterministic; you can reason about exactly when a buffer or a lock is released. The cost is paid at compile time, in the discipline the compiler demands. Plenty of programs that a C or Python author would write without thinking simply will not compile until the ownership story is made explicit."
+			},
+			{
+				"section": "Move semantics",
+				"text": "Because a value has one owner, handing it somewhere else moves it rather than copying it. After `let b = a;` for a heap-backed type like `String`, `a` is no longer valid; using it is a compile error. Only the pointer and metadata were copied, not the heap contents, and the source was invalidated so two owners can never both try to free the same allocation. That rules out double frees by construction.\n\nSmall, fixed-size types that live entirely on the stack (integers, `bool`, `char`, tuples of such types) opt out by implementing the `Copy` trait; for them, assignment duplicates the bits and the original stays usable. Everything else moves by default. Passing a value into a function moves it too, unless you pass a reference instead."
+			},
+			{
+				"section": "Borrowing and the borrow checker",
+				"text": "You usually do not want to give ownership away just to read or tweak a value, so Rust lets you borrow it with a reference, written `&`. The borrow checker, a compiler pass, enforces two rules. At any moment a value may have either any number of shared `&` references or exactly one mutable `&mut` reference, never both. And no reference may outlive the data it points at.\n\nThose two rules eliminate a surprising amount of trouble at compile time: data races (no aliasing while writing), use-after-free, and dangling pointers. A function that tries to return a reference to its own local will not compile, because the local is dropped at the end of the function. The checker has become less conservative over time; non-lexical lifetimes, stabilized in 2018, let a borrow end at its last use rather than at the close of its block."
+			},
+			{
+				"section": "Lifetimes and traits",
+				"text": "Lifetimes are the names the compiler uses for \"how long is this reference valid.\" Most of the time they are inferred and invisible. When a function's references could plausibly relate in more than one way, you annotate them, as in `fn longest<'a>(x: &'a str, y: &'a str) -> &'a str`, telling the compiler the returned reference lives no longer than the inputs. Lifetimes are purely a compile-time device; they vanish in the generated code.\n\nTraits are Rust's mechanism for shared behavior. A trait names a set of methods; a type implements the trait to gain them. Traits drive generics through bounds (`T: Display`), enable both static and dynamic dispatch, and underpin operator overloading and `Copy`, `Drop`, and the rest of the standard machinery. They are also where zero-cost abstractions show up: generic, trait-bound code monomorphizes per concrete type, so an iterator chain compiles to roughly the loop you would have written by hand."
+			},
+			{
+				"section": "Errors without exceptions",
+				"text": "Rust has no exceptions. Fallible operations return the `Result<T, E>` enum, which is either `Ok(value)` or `Err(error)`. The type signature tells you a call can fail, and the compiler warns if you ignore the result. Propagating an error up the stack is terse thanks to the `?` operator, which returns early on `Err` and unwraps on `Ok`. The related `Option<T>` handles \"value or nothing\" the same way, which is how Rust avoids null.\n\nThere is a second failure mode, `panic!`, for unrecoverable bugs; it unwinds (or aborts) rather than returning a value. The split is deliberate: expected, recoverable failures are values you must handle, while a panic signals a violated invariant. In constrained settings this matters a lot. Kernel and embedded code cannot afford to panic on a failed allocation, so allocation there is made fallible and returns a `Result`."
+			},
+			{
+				"section": "no_std, unsafe, and editions",
+				"text": "The standard library assumes an operating system: a heap that cannot fail, threads, files, a process. Strip that with the `#![no_std]` attribute and you build on `core`, the allocation-free foundation, optionally adding a separate `alloc` crate for heap types. This is what lets Rust target microcontrollers and the Linux kernel, and it is central to Rust for Linux.\n\nSome things the compiler cannot prove safe: dereferencing raw pointers, calling into C, touching hardware registers. The `unsafe` keyword marks those regions, shifting the burden of upholding invariants from the compiler to the programmer. Good practice is to keep `unsafe` small and audited, then wrap it in a safe API. Finally, editions (2015, 2018, 2021, 2024) let the language make opt-in breaking changes, like adding the `async` keyword, without splitting the ecosystem; crates on different editions still link together."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Ownership",
+				"def": "Rust's rule that every value has exactly one owner, and the value is dropped when that owner goes out of scope."
+			},
+			{
+				"term": "Borrow Checker",
+				"def": "The compiler pass that enforces the borrowing rules so references can never outlive their data or alias mutably."
+			},
+			{
+				"term": "Lifetime",
+				"def": "A region of code over which a reference is valid, tracked by the compiler so dangling references fail to compile."
+			},
+			{
+				"term": "Trait",
+				"def": "A named set of methods a type can implement, used for shared behavior, generic bounds, and polymorphism."
+			},
+			{
+				"term": "Result",
+				"def": "The Result<T, E> enum that carries either a success value or an error, making fallible operations explicit in the type."
+			},
+			{
+				"term": "Cargo",
+				"def": "Rust's build tool and package manager; it resolves dependencies, compiles crates, and talks to the crates.io registry."
+			},
+			{
+				"term": "no_std",
+				"def": "An attribute that drops the standard library and builds only on core, for kernels and bare-metal targets with no OS underneath."
+			},
+			{
+				"term": "Zero-Cost Abstraction",
+				"def": "A high-level construct that compiles down to code no slower than hand-written low-level equivalents."
+			},
+			{
+				"term": "Move Semantics",
+				"def": "Assigning or passing a non-Copy value transfers ownership and invalidates the source, preventing double frees."
+			},
+			{
+				"term": "Unsafe",
+				"def": "A keyword marking code where the programmer, not the compiler, vouches for memory safety invariants."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Rust language home",
+				"url": "https://www.rust-lang.org/",
+				"kind": "official"
+			},
+			{
+				"title": "The Rust Book: What Is Ownership?",
+				"url": "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html",
+				"kind": "guide"
+			},
+			{
+				"title": "The Rust Book: References and Borrowing",
+				"url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+				"kind": "guide"
+			},
+			{
+				"title": "The Cargo Book",
+				"url": "https://doc.rust-lang.org/cargo/",
+				"kind": "manual"
+			},
+			{
+				"title": "Rust Edition Guide",
+				"url": "https://doc.rust-lang.org/edition-guide/editions/index.html",
+				"kind": "guide"
+			},
+			{
+				"title": "Rust Foundation",
+				"url": "https://rustfoundation.org/",
+				"kind": "official"
 			}
 		]
 	},
