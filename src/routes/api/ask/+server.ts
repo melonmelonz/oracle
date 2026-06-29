@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types';
 import corpus from '$lib/corpus.json';
+import archive from '$lib/archive.json';
 import {
 	EMBED_MODEL,
 	CHAT_MODEL,
@@ -18,6 +19,41 @@ import {
 
 const CHUNKS = corpus as Chunk[];
 const BM25 = buildBm25Index(CHUNKS);
+
+// Topic relations, for grounded follow-up suggestions. Every follow-up points at
+// a topic that exists in the corpus and is curated as related to a cited one, so
+// nothing is invented.
+interface TopicMeta {
+	title: string;
+	domain: string;
+	related: string[];
+}
+const TOPIC = new Map<string, TopicMeta>(
+	(archive as Array<{ slug: string; title: string; domain: string; related?: string[] }>).map((a) => [
+		a.slug,
+		{ title: a.title, domain: a.domain, related: a.related ?? [] }
+	])
+);
+
+/** Follow-ups drawn from the cited topics' related[] and their domains. */
+function followups(passages: Retrieved[]): string[] {
+	const citedSlugs = [...new Set(passages.map((p) => p.slug))];
+	const cited = citedSlugs.map((s) => TOPIC.get(s)).filter((t): t is TopicMeta => !!t);
+	if (cited.length === 0) return [];
+
+	const out: string[] = [];
+	const domains = [...new Set(cited.map((c) => c.domain))];
+	if (cited.length >= 2 && domains.length >= 2) {
+		out.push(`what connects ${cited[0].title.toLowerCase()} and ${cited[1].title.toLowerCase()}?`);
+	}
+	const relatedSlugs = [...new Set(cited.flatMap((c) => c.related))].filter((s) => !citedSlugs.includes(s));
+	for (const s of relatedSlugs) {
+		const t = TOPIC.get(s);
+		if (t) out.push(`what is ${t.title.toLowerCase()}?`);
+		if (out.length >= 3) break;
+	}
+	return out.slice(0, 3);
+}
 const EMBED_KEY = `emb:${EMBED_VERSION}:${CHUNKS.length}`;
 const EMBED_BATCH = 50;
 
@@ -75,11 +111,12 @@ async function rerank(
 	query: string,
 	candidates: Candidate[]
 ): Promise<RerankHit[]> {
-	const res = (await env.AI.run(RERANK_MODEL, {
+	const input = {
 		query,
 		top_k: candidates.length,
 		contexts: candidates.map((c) => ({ text: c.text }))
-	})) as { response?: Array<{ id: number; score: number }> };
+	};
+	const res = (await env.AI.run(RERANK_MODEL, input)) as { response?: Array<{ id: number; score: number }> };
 
 	const out = (res.response ?? [])
 		.filter((r) => typeof r?.id === 'number' && typeof r?.score === 'number')
@@ -158,13 +195,17 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 				// 2. Cross-encoder rerank for true relevance; fall back to dense-only
 				//    cosine if the reranker is unavailable.
 				let passages: Retrieved[];
+				const rerankByCand = new Map<number, number>(); // candidate-array index -> rerank score
+				let usedFallback = false;
 				try {
 					const hits = await rerank(env, question, candidates);
+					for (const h of hits) rerankByCand.set(h.index, h.score);
 					passages = hits
 						.filter((h) => h.score >= RERANK_MIN)
 						.slice(0, TOP_K)
 						.map((h) => ({ ...candidates[h.index], score: h.score }));
 				} catch {
+					usedFallback = true;
 					passages = retrieve(queryRes.data[0], CHUNKS, embeddings, { topK: TOP_K });
 				}
 
@@ -177,6 +218,30 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					text: p.text
 				}));
 				send({ type: 'sources', sources });
+
+				// 3. The "underscan" signal: the full retrieval pipeline laid bare for
+				//    the whole shortlist, not just the survivors. dense (cosine) and
+				//    lexical (BM25) feed RRF (rank in the fused order), and the
+				//    cross-encoder rerank score decides what crosses the honesty gate.
+				const r3 = (x: number) => Math.round(x * 1000) / 1000;
+				const passedIds = new Set(passages.map((p) => p.id));
+				send({
+					type: 'trace',
+					query: question,
+					tokens: tokenize(question),
+					gate: RERANK_MIN,
+					fallback: usedFallback,
+					candidates: candidates.map((c, i) => ({
+						doc: c.doc,
+						slug: c.slug,
+						section: c.section,
+						dense: r3(c.dense),
+						lexical: Math.round(c.lexical * 100) / 100,
+						rrf: i + 1,
+						rerank: rerankByCand.has(i) ? r3(rerankByCand.get(i)!) : null,
+						passed: passedIds.has(c.id)
+					}))
+				});
 
 				if (passages.length === 0) {
 					await typeOut(SILENT, send);
@@ -196,7 +261,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 				const answer = (result?.response ?? '').toString().trim();
 				await typeOut(answer || SILENT, send);
-				send({ type: 'done' });
+				send({ type: 'done', followups: followups(passages) });
 			} catch (err) {
 				send({ type: 'error', message: err instanceof Error ? err.message : 'Oracle failure.' });
 			} finally {

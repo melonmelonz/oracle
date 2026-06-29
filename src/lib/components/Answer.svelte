@@ -26,6 +26,7 @@
 		return out;
 	});
 
+	/** @param {number} n */
 	function scrollTo(n) {
 		document.getElementById(`source-${n}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
@@ -61,7 +62,8 @@
 		font-family: var(--mono);
 		font-size: 0.86em;
 		font-weight: 600;
-		color: var(--amber-bright);
+		/* the cool calibration accent: citations are the "grounded / sourced" marks */
+		color: var(--cool-bright);
 		background: none;
 		border: 0;
 		cursor: pointer;
@@ -71,7 +73,7 @@
 	.cite:hover,
 	.cite:focus-visible {
 		color: #fff;
-		text-shadow: 0 0 12px rgba(246, 205, 132, 0.8);
+		text-shadow: 0 0 12px rgba(111, 166, 181, 0.85);
 		outline: none;
 	}
 

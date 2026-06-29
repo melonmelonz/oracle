@@ -1,15 +1,21 @@
 <script>
+	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import AsciiPortrait from '$lib/components/AsciiPortrait.svelte';
 	import Answer from '$lib/components/Answer.svelte';
 	import SourceCard from '$lib/components/SourceCard.svelte';
+	import SignalPath from '$lib/components/SignalPath.svelte';
 
 	let question = $state('');
 	let asked = $state('');
-	/** @type {'idle' | 'divining' | 'answering' | 'spent' | 'error'} */
-	let status = $state('idle');
+	let status = $state(/** @type {'idle' | 'divining' | 'answering' | 'spent' | 'error'} */ ('idle'));
 	let answer = $state('');
 	/** @type {Array<{n:number,doc:string,slug:string,section:string,score:number,text:string}>} */
 	let sources = $state([]);
+	/** @type {{query:string,tokens:string[],gate:number,fallback:boolean,candidates:Array<{doc:string,slug:string,section:string,dense:number,lexical:number,rrf:number,rerank:number|null,passed:boolean}>} | null} */
+	let trace = $state(null);
+	/** @type {string[]} */
+	let followups = $state([]);
 	let errorMsg = $state('');
 	/** @type {number | null} */
 	let hoveredCite = $state(null);
@@ -19,11 +25,11 @@
 
 	const SUGGESTIONS = [
 		'what are you?',
-		'what is rust for linux?',
-		'how was ocarina of time speedrunning broken?',
+		'what is a pvm, and why do people want one?',
+		'what is stale reference manipulation?',
+		'explain the four spi modes',
 		'why put rust in the linux kernel?',
-		'what did neuromancer invent?',
-		'how does a linux release happen?'
+		"how is majora's mask broken in a speedrun?"
 	];
 
 	async function ask() {
@@ -34,6 +40,8 @@
 		status = 'divining';
 		answer = '';
 		sources = [];
+		trace = null;
+		followups = [];
 		errorMsg = '';
 		hoveredCite = null;
 
@@ -78,6 +86,8 @@
 				if (msg.type === 'sources') {
 					sources = msg.sources;
 					if (status === 'divining') status = 'answering';
+				} else if (msg.type === 'trace') {
+					trace = msg;
 				} else if (msg.type === 'token') {
 					if (status === 'divining') status = 'answering';
 					answer += msg.text;
@@ -85,6 +95,7 @@
 					errorMsg = msg.message ?? 'something went wrong.';
 					status = 'error';
 				} else if (msg.type === 'done') {
+					followups = msg.followups ?? [];
 					status = 'spent';
 				}
 			}
@@ -92,18 +103,25 @@
 		if (status === 'answering' || status === 'divining') status = 'spent';
 	}
 
+	/** @param {string} q */
 	function askWith(q) {
 		question = q;
 		ask();
 	}
 
+	/** @param {HTMLInputElement} node */
 	function autofocus(node) {
 		node.focus();
 	}
+
+	onMount(() => {
+		const q = page.url.searchParams.get('q');
+		if (q) askWith(q);
+	});
 </script>
 
 <svelte:head>
-	<title>oracle — an archive of the work</title>
+	<title>oracle — an archive</title>
 </svelte:head>
 
 <main>
@@ -112,9 +130,9 @@
 
 		<div class="id">
 			<span class="name">oracle</span>
-			<span class="ver">v1</span>
+			<span class="ver">v2</span>
 		</div>
-		<p class="tagline"># an archive of the work. answers only from what is written.</p>
+		<p class="tagline"># a reference archive. it answers only from what is written.</p>
 
 		<form class="prompt" onsubmit={(e) => (e.preventDefault(), ask())}>
 			<span class="ps1">oracle:~$</span>
@@ -174,6 +192,19 @@
 					</div>
 				</div>
 			{/if}
+
+			<SignalPath {trace} />
+
+			{#if status === 'spent' && followups.length}
+				<div class="followups">
+					<div class="fu-head">threads/</div>
+					{#each followups as q}
+						<button class="sug" onclick={() => askWith(q)}>
+							<span class="caret">&rsaquo;</span> {q}
+						</button>
+					{/each}
+				</div>
+			{/if}
 		</section>
 	{/if}
 
@@ -186,7 +217,7 @@
 		z-index: 1;
 		max-width: var(--maxw);
 		margin: 0 auto;
-		padding: clamp(2rem, 5vh, 4rem) 1.3rem 5rem;
+		padding: clamp(1.4rem, 4vh, 3rem) 1.3rem 5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -377,6 +408,21 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.3rem;
+	}
+
+	.followups {
+		margin-top: 2rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.3rem;
+	}
+	.fu-head {
+		font-size: 0.71rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--amber-dim);
+		margin-bottom: 0.5rem;
 	}
 
 	footer {
