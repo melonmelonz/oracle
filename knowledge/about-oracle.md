@@ -1,53 +1,37 @@
 ---
-title: ORACLE Itself
-tags: [oracle, rag, meta, cloudflare, how-it-works]
-era: present
+title: About the Oracle
+domain: meta
+tags: [oracle, archive, rag, retrieval, grounding, how-it-works]
+vocab:
+  - { term: Retrieval-Augmented Generation, def: "Answering with a language model that is fed passages retrieved from a fixed source, so it speaks from documents rather than memory." }
+  - { term: Grounding, def: "The rule that every claim must trace to a retrieved passage; if nothing relevant is found, the honest answer is silence." }
+  - { term: Hybrid Search, def: "Combining dense vector similarity with lexical keyword matching so both meaning and exact terms are caught." }
+  - { term: BM25, def: "A classic lexical ranking function that scores a passage by how well its rare query words match, normalized for length." }
+  - { term: Reciprocal Rank Fusion, def: "A way to merge two ranked lists by rewarding items that rank highly in either, without needing to normalize their scores." }
+  - { term: Cross-Encoder Reranker, def: "A model that reads a question and a passage together and scores true relevance, sharper than comparing them as separate vectors." }
+  - { term: Embedding, def: "A vector of numbers that places a piece of text in a space where nearby vectors mean similar things." }
+  - { term: Cosine Similarity, def: "The angle-based measure of how aligned two embedding vectors are, used to rank passages by meaning." }
+related: [distributed-systems]
+source: "The architecture of this site: SvelteKit and Cloudflare Workers AI, hybrid retrieval with a cross-encoder reranker."
 ---
+# About the Oracle
 
-# ORACLE Itself
+## What this is
 
-## What ORACLE is
+The oracle is a small reference archive. It holds a handful of subjects that are worth knowing well: broadcast CRT and Sony PVM monitors, the Nintendo GameCube, The Legend of Zelda and the long history of breaking it in speedruns, Rust for Linux and the SPI bus, the Linux kernel, distributed systems, and Neuromancer. You can read it like a reference, or you can ask it a question and it will answer from what is written.
 
-ORACLE is a grounded oracle — a question-answering archive that speaks only from
-a fixed canon of written knowledge about Penn's universe. You ask it something;
-it finds the passages in its archive that bear on the question, and it answers
-using only those passages. If the archive holds no answer, ORACLE says the canon
-is silent rather than guessing. It is built by Penn as a demonstration of
-retrieval-augmented generation done honestly.
+It does not know anything else. Ask it about the weather and it will tell you, plainly, that the weather is not in the archive.
 
-## How ORACLE answers
+## How it answers
 
-Every question travels the same path. First the question is turned into a vector
-— a string of numbers capturing its meaning — and compared against the vector of
-every passage in the canon. The closest passages are retrieved. Those passages,
-and nothing else, are handed to a language model along with a strict instruction:
-answer only from this context, cite each claim, and refuse anything the context
-does not support. The answer you read is assembled from the archive, not from the
-model's memory of the wider world.
+Every answer is grounded. When you ask a question the oracle does not reach into a model's memory; it retrieves passages from this archive and answers only from those, citing each one inline. If nothing relevant is found, it says so rather than guessing. That refusal is not a failure mode. It is the point.
 
-## Why it can be trusted
+The retrieval is hybrid. A dense embedding catches meaning, a BM25 lexical score catches exact terms like a model number or a glitch name, and the two rankings are fused with Reciprocal Rank Fusion. A cross-encoder reranker then reads the question and each candidate passage together and scores true relevance, and a threshold on that score is the honesty gate.
 
-The trust comes from the grounding, not from faith in the model. The model never
-answers from its own training knowledge; it is fenced inside the retrieved
-passages. Citations point back to the exact fragments used, so any claim can be
-checked against its source. And when a question falls outside the canon, the
-retrieval step returns nothing strong enough to use, and ORACLE declines instead
-of inventing — the silence is a feature.
+## Underscan
 
-## What ORACLE is made of
+A broadcast monitor has an underscan mode that pulls the picture inward to reveal the part of the signal normally hidden behind the bezel. The oracle borrows the word. Turn on underscan and the retrieval signal is laid bare: the query as it was tokenized, every candidate passage, its dense score, its lexical score, its fused rank, and the reranker score that decided whether it survived. The machinery is not hidden. You can watch it work.
 
-ORACLE runs entirely on Cloudflare. The interface is a SvelteKit application
-served from Cloudflare Pages. The thinking happens in Cloudflare Workers AI: one
-model turns text into vectors for search, another writes the grounded answer. The
-passage vectors are computed once and kept in Cloudflare KV so that every
-question after the first is answered instantly. There are no outside services and
-no API keys — the whole oracle lives at the edge.
+## What it runs on
 
-## The canon
-
-ORACLE's archive is a collection of written documents. Some are about Penn's own
-work. Others are about the subjects he cares about: Rust for Linux, the Linux
-kernel, distributed systems, Zelda speedrunning, Neuromancer and the cyberpunk it
-started. Each document is split into sections, and each section is a passage
-ORACLE can retrieve. To teach ORACLE something new, you add a document to the
-canon; it knows nothing beyond what is written there, and that is the point.
+The whole thing is built on SvelteKit and runs on Cloudflare Pages. The embeddings, the reranker, and the language model are all Cloudflare Workers AI, so there are no external API keys and the retrieval happens at the edge. The corpus is small on purpose, which is why brute-force cosine over a few dozen vectors is instant and needs no separate index.

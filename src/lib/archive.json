@@ -1,0 +1,1014 @@
+[
+	{
+		"slug": "about-oracle",
+		"title": "About the Oracle",
+		"domain": "meta",
+		"tags": [
+			"oracle",
+			"archive",
+			"rag",
+			"retrieval",
+			"grounding",
+			"how-it-works"
+		],
+		"source": "The architecture of this site: SvelteKit and Cloudflare Workers AI, hybrid retrieval with a cross-encoder reranker.",
+		"related": [
+			"distributed-systems"
+		],
+		"sections": [
+			{
+				"section": "What this is",
+				"text": "The oracle is a small reference archive. It holds a handful of subjects that are worth knowing well: broadcast CRT and Sony PVM monitors, the Nintendo GameCube, The Legend of Zelda and the long history of breaking it in speedruns, Rust for Linux and the SPI bus, the Linux kernel, distributed systems, and Neuromancer. You can read it like a reference, or you can ask it a question and it will answer from what is written.\n\nIt does not know anything else. Ask it about the weather and it will tell you, plainly, that the weather is not in the archive."
+			},
+			{
+				"section": "How it answers",
+				"text": "Every answer is grounded. When you ask a question the oracle does not reach into a model's memory; it retrieves passages from this archive and answers only from those, citing each one inline. If nothing relevant is found, it says so rather than guessing. That refusal is not a failure mode. It is the point.\n\nThe retrieval is hybrid. A dense embedding catches meaning, a BM25 lexical score catches exact terms like a model number or a glitch name, and the two rankings are fused with Reciprocal Rank Fusion. A cross-encoder reranker then reads the question and each candidate passage together and scores true relevance, and a threshold on that score is the honesty gate."
+			},
+			{
+				"section": "Underscan",
+				"text": "A broadcast monitor has an underscan mode that pulls the picture inward to reveal the part of the signal normally hidden behind the bezel. The oracle borrows the word. Turn on underscan and the retrieval signal is laid bare: the query as it was tokenized, every candidate passage, its dense score, its lexical score, its fused rank, and the reranker score that decided whether it survived. The machinery is not hidden. You can watch it work."
+			},
+			{
+				"section": "What it runs on",
+				"text": "The whole thing is built on SvelteKit and runs on Cloudflare Pages. The embeddings, the reranker, and the language model are all Cloudflare Workers AI, so there are no external API keys and the retrieval happens at the edge. The corpus is small on purpose, which is why brute-force cosine over a few dozen vectors is instant and needs no separate index."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Retrieval-Augmented Generation",
+				"def": "Answering with a language model that is fed passages retrieved from a fixed source, so it speaks from documents rather than memory."
+			},
+			{
+				"term": "Grounding",
+				"def": "The rule that every claim must trace to a retrieved passage; if nothing relevant is found, the honest answer is silence."
+			},
+			{
+				"term": "Hybrid Search",
+				"def": "Combining dense vector similarity with lexical keyword matching so both meaning and exact terms are caught."
+			},
+			{
+				"term": "BM25",
+				"def": "A classic lexical ranking function that scores a passage by how well its rare query words match, normalized for length."
+			},
+			{
+				"term": "Reciprocal Rank Fusion",
+				"def": "A way to merge two ranked lists by rewarding items that rank highly in either, without needing to normalize their scores."
+			},
+			{
+				"term": "Cross-Encoder Reranker",
+				"def": "A model that reads a question and a passage together and scores true relevance, sharper than comparing them as separate vectors."
+			},
+			{
+				"term": "Embedding",
+				"def": "A vector of numbers that places a piece of text in a space where nearby vectors mean similar things."
+			},
+			{
+				"term": "Cosine Similarity",
+				"def": "The angle-based measure of how aligned two embedding vectors are, used to rank passages by meaning."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "distributed-systems",
+		"title": "Distributed Systems",
+		"domain": "distsys",
+		"tags": [
+			"distributed-systems",
+			"consensus",
+			"cap",
+			"raft",
+			"paxos",
+			"consistency",
+			"replication",
+			"theory"
+		],
+		"source": "Lamport 1978/1998; Herlihy and Wing 1990 (linearizability); Fischer, Lynch, Paterson 1985 (FLP); Brewer's CAP conjecture 2000 and 2012 clarification, Gilbert and Lynch 2002 proof; Ongaro and Ousterhout, In Search of an Understandable Consensus Algorithm, USENIX ATC 2014; Vogels, Eventually Consistent 2008.",
+		"related": [
+			"linux-kernel",
+			"neuromancer"
+		],
+		"sections": [
+			{
+				"section": "The hard part",
+				"text": "A distributed system is a set of computers that cooperate over a network and try to behave, to the outside, like one reliable thing. That is the goal. The trouble is everything underneath it. The network can drop messages, delay them, duplicate them, or deliver them out of order. Any machine can fail at any moment. And no node can ever be certain whether another node has died or is just slow, because a crashed peer and a peer stuck behind a long delay look identical from the outside. This is partial failure: not the clean all-or-nothing crash of a single program, but a world where some components keep running while others vanish without warning. Leslie Lamport put the strangeness of it best in 1987: \"A distributed system is one in which the failure of a computer you didn't even know existed can render your own computer unusable.\" Most of the field is the slow, careful work of building reliable behavior on top of these unreliable parts."
+			},
+			{
+				"section": "Time is a lie",
+				"text": "In a single program you can trust a clock and a clean order of events. Across machines you cannot. There is no shared now. Physical clocks drift, and synchronizing them perfectly over a lossy network is impossible. Lamport's 1978 paper on logical clocks showed how to reason about order using causality instead of wall-clock time: if one event could have influenced another, it comes first; if two events could not have affected each other, their order simply does not matter and you should not pretend it does. Vector clocks extend the idea to track causality among many nodes at once, so a system can tell whether two updates are causally related or genuinely concurrent. None of this gives you a true global timeline. It gives you a usable substitute, an ordering grounded in what actually could have caused what, which is often all you need."
+			},
+			{
+				"section": "Agreeing on anything",
+				"text": "Consensus is the problem of getting a group of nodes to agree on one value, even when some of them fail. It sounds modest. It is brutally hard. In 1985 Fischer, Lynch, and Paterson proved the FLP result: in a fully asynchronous network, no deterministic protocol can guarantee consensus if even a single node may crash. The reason is the same indistinguishability from before; you cannot reliably tell a dead node from a slow one, so an algorithm can be forced to wait forever. FLP does not say consensus is hopeless in practice. It says you cannot guarantee both safety and termination under pure asynchrony. Real systems escape by relaxing assumptions: they add timeouts, assume partial synchrony, or inject randomness, trading a perfect guarantee for one that holds almost always. That tradeoff is the quiet foundation under nearly every coordination protocol that ships."
+			},
+			{
+				"section": "Paxos and Raft",
+				"text": "Lamport's Paxos, published in full in 1998, was the first widely accepted solution to practical consensus, and it is correct and deeply influential. It is also notorious for being hard to understand, which made it hard to implement faithfully. Raft came later as a deliberate response. In their 2014 USENIX ATC paper \"In Search of an Understandable Consensus Algorithm,\" Diego Ongaro and John Ousterhout set out to match Paxos in power while being learnable, and a user study backed up the claim. Raft works through a single strong leader. Time is divided into terms, each beginning with an election; nodes are followers, candidates, or the one leader. Randomized timeouts break ties so a split vote resolves quickly. The leader takes client commands, appends them to a replicated log, and ships them to followers via AppendEntries calls that double as heartbeats. An entry is committed once a quorum, a majority, has it durably on disk; only then is it applied. Raft now sits underneath many production systems, etcd and CockroachDB among them."
+			},
+			{
+				"section": "CAP, stated honestly",
+				"text": "The CAP theorem gets quoted constantly and misquoted nearly as often. Eric Brewer floated it as a conjecture at the 2000 PODC symposium, and Seth Gilbert and Nancy Lynch of MIT proved a formal version in 2002. The popular framing, \"pick two of three among consistency, availability, and partition tolerance,\" is misleading, and Brewer himself said so in a 2012 clarification. Partition tolerance is not a property you choose. Networks partition whether you want them to or not, so any real distributed system must tolerate partitions. The honest statement is narrower and more useful: when a partition occurs, a system must choose between consistency (refuse to serve possibly stale data) and availability (answer anyway, risking staleness). When the network is healthy, you can have both. CAP is a constraint about the behavior during a split, not a permanent budget of two properties. It says nothing about latency, and it does not mean databases are forever stuck picking a single team."
+			},
+			{
+				"section": "Consistency models",
+				"text": "Consistency models describe what guarantees a system makes about reads after writes, and they form a spectrum from strict to loose. Linearizability, defined formally by Maurice Herlihy and Jeannette Wing in 1990, is the strong end. Each operation appears to take effect instantaneously at a single point between its invocation and its response, and that ordering respects real time; once a write completes, every later read sees it or something newer. Linearizability also composes: a system built from linearizable parts is itself linearizable, which is rare and valuable. The cost is coordination, and under partitions it forces the consistency side of CAP. Eventual consistency sits at the loose end. It was popularized by Werner Vogels in his 2008 piece \"Eventually Consistent,\" and it promises only that if writes stop, replicas will converge to the same value after some inconsistency window. In between live causal, read-your-writes, and monotonic-read consistency, each trading a precise amount of strictness for availability and lower latency."
+			},
+			{
+				"section": "Replication, retries, and idempotency",
+				"text": "Replication keeps copies of data on several nodes, which buys durability and availability and lets reads spread across machines. The catch is keeping the copies in agreement, which is where quorums and consensus reappear. A common rule is that reads and writes each touch a quorum so their sets overlap, guaranteeing a read sees the latest acknowledged write. Replication also forces a choice between synchronous (wait for replicas, safer, slower) and asynchronous (acknowledge early, faster, riskier on failure). Retries are the other everyday hazard. Because a node cannot tell a lost request from a lost response, clients resend, and a resend can mean an operation runs twice. The defense is idempotency: design operations so that applying them more than once has the same effect as applying them once. Charging a card by a request ID that the server deduplicates is idempotent; blindly incrementing a balance is not. Atomic commit across nodes raises the same problem at scale. Two-phase commit (prepare, then commit) gives atomicity but blocks if the coordinator dies after collecting votes, leaving participants holding locks; that is why modern systems replicate the coordinator's decision through Raft or Paxos rather than trusting one machine."
+			}
+		],
+		"vocab": [
+			{
+				"term": "CAP Theorem",
+				"def": "When a network partition occurs, a distributed system must choose between consistency and availability; it cannot keep both during the split."
+			},
+			{
+				"term": "Consensus",
+				"def": "The problem of getting a set of nodes to agree on a single value even though some may fail."
+			},
+			{
+				"term": "Raft",
+				"def": "A leader-based consensus algorithm by Ongaro and Ousterhout, designed to be understandable while matching Paxos in power."
+			},
+			{
+				"term": "Paxos",
+				"def": "Lamport's family of consensus algorithms; correct and influential, but famously hard to follow."
+			},
+			{
+				"term": "Linearizability",
+				"def": "A strong consistency model where each operation appears to take effect instantaneously at one point between its call and return, respecting real-time order."
+			},
+			{
+				"term": "Eventual Consistency",
+				"def": "A weak model where, once writes stop, all replicas converge to the same value after some delay."
+			},
+			{
+				"term": "Partition",
+				"def": "A network failure that splits nodes into groups that cannot communicate with each other."
+			},
+			{
+				"term": "Quorum",
+				"def": "A subset of nodes (usually a majority) whose agreement is required before an action counts as decided."
+			},
+			{
+				"term": "Idempotency",
+				"def": "A property where applying the same operation more than once has the same effect as applying it exactly once."
+			},
+			{
+				"term": "Replication",
+				"def": "Keeping copies of the same data on multiple nodes for durability, availability, or read scaling."
+			},
+			{
+				"term": "Two-Phase Commit",
+				"def": "An atomic-commit protocol (prepare then commit) that blocks if the coordinator fails after votes are collected."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "gamecube",
+		"title": "The Nintendo GameCube",
+		"domain": "console",
+		"tags": [
+			"gamecube",
+			"nintendo",
+			"gekko",
+			"flipper",
+			"minidvd",
+			"component-video",
+			"480p",
+			"homebrew",
+			"region-lock",
+			"pvm"
+		],
+		"source": "Wikipedia (GameCube, GameCube technical specifications, GameCube controller, WaveBird, Nintendo optical discs), copetti.org GameCube Architecture, RetroRGB GameCube video output, GC-Forever Wiki (Region Switch, Booting homebrew), Hackaday.",
+		"related": [
+			"monitors-pvm",
+			"zelda-speedruns",
+			"majoras-mask"
+		],
+		"sections": [
+			{
+				"section": "A small box aimed at developers",
+				"text": "Nintendo shipped the GameCube in Japan on September 14, 2001, in North America on November 18, 2001, and in Europe on May 3, 2002. It was the company's sixth-generation machine, the successor to the Nintendo 64, and it arrived as a compact cube with a carrying handle molded into the back. The design brief was unusual. Where Sony and Microsoft chased media-hub ambitions, Nintendo and its hardware partner ArtX said plainly that the developer was the customer. Howard Cheng, Nintendo's technical director, framed the goal as a simple RISC architecture that would be easy to write games for. ArtX vice president Greg Buchner described three years spent with developers learning what hurt. The result was a tightly balanced machine with low-latency memory and few quirks, not the highest raw numbers of its generation. It sold modestly, around 21 million units, behind the PlayStation 2 and roughly level with the original Xbox. The engineering, though, aged well, and the console is now a favorite of people who care about clean output and faithful image quality."
+			},
+			{
+				"section": "Gekko: a PowerPC G3 with games in mind",
+				"text": "The CPU, codenamed Gekko, was built by IBM and runs at 486 MHz. It is a 32-bit PowerPC chip based on the PowerPC 750CXe, the same enhanced G3 family that powered late iMac G3 models, fabricated on IBM's 0.18 micron process with copper interconnects. IBM did not ship a stock G3, though. Gekko adds custom \"paired-single\" floating-point instructions that let the FPU work on two 32-bit values at once, which suited the vector math games lean on. It carries 32 KB each of L1 instruction and data cache and a 256 KB L2 cache. Around it sits 24 MB of 1T-SRAM as main memory, prized less for size than for its very low latency, roughly 10 nanoseconds, plus 16 MB of slower auxiliary DRAM for audio and background work. The whole memory pool totals 40 MB. That emphasis on latency over capacity is the design's signature; it kept the small machine responsive and easy to feed."
+			},
+			{
+				"section": "Flipper: the chip ArtX built, the badge ATI got",
+				"text": "Graphics and most I/O run through Flipper, a 162 MHz system-on-chip with about 51 million transistors on an NEC embedded-DRAM process. ArtX, a startup of former SGI engineers, designed it under contract to Nintendo. In April 2000, partway through development, ATI acquired ArtX; the Flipper design was already largely finished, so ATI's influence was minimal, but the console wears an ATI sticker because of that purchase. (ATI itself was later bought by AMD.) Flipper folds in 3 MB of fast embedded 1T-SRAM used as frame buffer and texture cache, plus a dedicated texture and memory controller, and it also handles audio and input duties beyond pure rendering. Putting memory on-die with the GPU cut the latency penalty of fetching textures, which is part of why GameCube games could look sharp without the bandwidth budget of larger rivals. The chip's fixed-function pipeline was flexible enough that developers got strong results without the programmable shaders that defined later hardware."
+			},
+			{
+				"section": "The 8 cm miniDVD and why Nintendo chose it",
+				"text": "GameCube games shipped on a proprietary 8 cm optical disc, often called a miniDVD, holding about 1.46 GB and produced by Matsushita (now Panasonic), a founding member of the DVD Forum. Nintendo picked the format for three linked reasons: it resisted copying, it cost less to manufacture than Nintendo 64 cartridges, and it dodged DVD Forum licensing fees by not being a full DVD. Copy protection lived in the burst cutting area, a barcode-like region cut into each disc with a high-powered YAG laser that a normal DVD writer cannot reproduce. The scheme even recorded, with sub-micron precision, where deliberate laser \"marks\" corrupted specific sectors, making each pressing physically unique. The cost was capacity. Where the PS2 and Xbox had 4.7 GB single-layer DVDs, GameCube developers had under a third of that, so titles like Resident Evil 4, Tales of Symphonia, and Baten Kaitos shipped across two discs, and some multiplatform games lost content to fit. The format also meant the console deliberately could not play DVD movies."
+			},
+			{
+				"section": "The controller: asymmetric on purpose",
+				"text": "The standard controller, model DOL-003, threw out the Nintendo 64's three-pronged shape for a rounded handlebar grip. Its face layout is deliberately asymmetric: a large green A button sits where the thumb rests, a small red B button beside it, and two kidney-shaped X and Y buttons curve around them. A yellow C-stick replaced the N64's C buttons, giving a second analog stick, and the analog stick gates are octagonal for repeatable diagonal inputs. The L and R shoulder buttons are hybrid analog triggers: they read pressure through their travel, then click a separate digital switch when fully pressed, two inputs from one button. A wireless version, the WaveBird (DOL-004), followed in 2002 and was ahead of its time, using 2.4 GHz radio rather than infrared line-of-sight, with a channel dial and a plug-in receiver; it dropped only rumble, to save battery. The competitive Super Smash Bros. Melee scene fixed this controller's quirks into permanence, and Nintendo has kept reissuing it for later Smash releases."
+			},
+			{
+				"section": "Digital AV Out, component cables, and why they got pricey",
+				"text": "Early consoles (DOL-001) carry a second video port on the underside, the Digital AV Out, which exposes the GPU's uncompressed digital Y'CbCr signal before any analog conversion. Nintendo's official component cable, DOL-010, plugs in there and does the digital-to-analog conversion inside the cable itself using a Macronix DAC, outputting analog YPbPr on three RCA plugs. Crucially, component is the only standard way to get the GameCube's 480p progressive-scan mode out of the box; the rear analog multi-AV port tops out at 480i and never carries component. In May 2004 Nintendo revised the console to the DOL-101 and deleted the Digital AV Out port entirely, ending official component support. Because the cables were produced in small numbers, contain an active DAC, and are the gateway to 480p, the official DOL-010 became scarce and expensive on the used market. Modern alternatives fill the gap: GCVideo-based cables from Retro-Bit, and internal HDMI mods such as RetroGEM, both of which also tap the digital port."
+			},
+			{
+				"section": "Homebrew and region behavior",
+				"text": "The GameCube's bootrom checks region at power-on. On NTSC boards a \"Region Sense\" line reads 3.3 V for NTSC-J and 0 V for NTSC-U, set by the unpopulated R5/R6 resistor pads, so a solder bridge or switch can flip an NTSC-U console to NTSC-J and back because both bootroms live on those boards. PAL is a separate case: the PAL bootrom is not present on NTSC hardware, so crossing into or out of PAL needs a boot disc, modchip, or software. Homebrew entry points were found early, generally through save-game exploits in retail titles and through devices that present an alternate boot path, and the community tool Swiss has become the general loader; it also manages region and memory-card formatting in software, removing the need for the hardware switch. Among official add-ons, the Game Boy Player attached underneath and played Game Boy, Color, and Advance cartridges on the television."
+			},
+			{
+				"section": "Why it pairs with a PVM",
+				"text": "The GameCube is a natural match for a professional video monitor. It outputs clean 480i over composite, S-Video, and RGB, and, on a DOL-001 with the component cable, true 480p. Sony BVM and PVM monitors accept those signals directly and draw each scanline with a fine aperture grille, so GameCube output looks crisp and stable with the scanline structure the art was made for, free of the lag and smearing a modern upscaler can add. Routed over RGB or component into a PVM, the picture is about as faithful as the hardware allows. That is the appeal: a small, low-latency console feeding a monitor built for exact reproduction, with no scaling in the path unless you choose to add it."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Gekko",
+				"def": "The GameCube's 486 MHz 32-bit PowerPC CPU, built by IBM from the PowerPC 750CXe (G3) core with custom paired-single floating-point extensions."
+			},
+			{
+				"term": "Flipper",
+				"def": "The 162 MHz graphics and I/O chip designed by ArtX (acquired by ATI mid-development), with 3 MB of embedded 1T-SRAM as a frame and texture buffer."
+			},
+			{
+				"term": "miniDVD",
+				"def": "The proprietary 8 cm optical disc the GameCube used, holding about 1.46 GB, manufactured by Matsushita to cut cost and resist copying."
+			},
+			{
+				"term": "Digital AV Out",
+				"def": "A second video port on the underside of early GameCubes carrying an uncompressed digital Y'CbCr signal; removed on the later DOL-101 revision."
+			},
+			{
+				"term": "Component Video",
+				"def": "An analog video connection splitting the picture into luma and two color-difference channels (YPbPr), capable of carrying progressive scan."
+			},
+			{
+				"term": "480i",
+				"def": "Standard-definition interlaced video, 480 visible lines drawn as two alternating fields per frame."
+			},
+			{
+				"term": "480p",
+				"def": "Standard-definition progressive video, 480 lines drawn whole each frame; the GameCube's Progressive Scan output."
+			},
+			{
+				"term": "Progressive Scan",
+				"def": "A display mode that draws every line of each frame in one pass rather than interlacing two fields."
+			},
+			{
+				"term": "ATI/ArtX",
+				"def": "ArtX, a startup founded by ex-SGI engineers, designed Flipper; ATI bought ArtX in 2000, which is why the console carries an ATI badge."
+			},
+			{
+				"term": "Region Lock",
+				"def": "Firmware and hardware checks that tie a console to NTSC-U, NTSC-J, or PAL game discs and refuse others."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "linux-kernel",
+		"title": "The Linux Kernel",
+		"domain": "kernel",
+		"tags": [
+			"linux",
+			"kernel",
+			"torvalds",
+			"maintainers",
+			"lkml",
+			"lts",
+			"release-cycle",
+			"monolithic",
+			"syscall"
+		],
+		"source": "kernel.org release and process docs; Documentation/process/submitting-patches.rst; MAINTAINERS; LWN; Wikipedia kernel version history; stable-kernel EOL announcements (Kroah-Hartman/Levin)",
+		"related": [
+			"rust-for-linux",
+			"distributed-systems"
+		],
+		"sections": [
+			{
+				"section": "Where it came from",
+				"text": "Linus Torvalds announced Linux in August 1991, a 21-year-old student in Helsinki, in a Usenet post that called it \"just a hobby, won't be big and professional like gnu.\" He wrote it on and for the Intel 386, partly out of frustration with the licensing of MINIX, a small teaching operating system. He underestimated the thing badly. It is now the most widely deployed kernel in history: phones, servers, routers, cars, and very nearly every supercomputer on the planet run it. The current line is the 7.x series; 7.0 shipped 12 April 2026, with 7.1 following on 14 June 2026. The license is GPLv2, which Torvalds has called one of the best decisions the project ever made, because it forces derived changes to stay open."
+			},
+			{
+				"section": "Monolithic, but with modules",
+				"text": "Linux is a monolithic kernel. The scheduler, the memory manager, the filesystems, the network stack, and the device drivers all run together in a single privileged address space, calling each other as ordinary functions. This is the design Andrew Tanenbaum attacked in the 1992 \"LINUX is obsolete\" debate, arguing that microkernels, with services split into isolated processes, were the correct future. The pragmatic monolith won the deployment numbers. But it is not a static blob. Most of the kernel can be built as loadable modules: drivers and features compiled separately and inserted into a running kernel with insmod or modprobe, then removed again, no reboot required. So the practical design is \"monolithic with modules.\" You get the speed of shared address space and the flexibility of loading only the code a given machine needs."
+			},
+			{
+				"section": "The userspace boundary",
+				"text": "The kernel's job is to mediate hardware on behalf of programs that are not allowed to touch it directly. The interface across that line is the system call, or syscall: a small, stable, deliberately narrow set of entry points like read, write, openat, mmap, and clone. A program traps into the kernel, the kernel does the privileged work, and control returns. The contract is famously strict in one direction. Internal kernel APIs change freely between releases; the syscall ABI to userspace, by contrast, is held nearly sacred. Torvalds' rule, repeated for decades, is \"we do not break userspace.\" A change that makes existing programs stop working is treated as a kernel bug to be reverted, not a userspace problem to be fixed. That stability is a large part of why software written against Linux keeps running for years."
+			},
+			{
+				"section": "The release rhythm",
+				"text": "Linux runs on a predictable clock. A cycle opens with a merge window of about two weeks, during which Torvalds pulls features that maintainers have prepared and signed; the bulk of all change for a release lands here, sometimes approaching a thousand patches a day. The window then closes and Torvalds tags rc1. From there the tree is in bug-fix-only mode: a release candidate per week, rc1 through roughly rc7 (occasionally rc8 or beyond if needed), each one stabilizing rather than adding. Total cycle length is about nine to ten weeks. The whole structure rests on one fact: Torvalds has the final say on what merges into mainline and when the final version ships."
+			},
+			{
+				"section": "How a change actually lands",
+				"text": "A patch does not go straight to Linus. The path runs through people. A contributor formats the change, runs scripts/checkpatch.pl, and emails it to the relevant mailing list and maintainers, found via the MAINTAINERS file or scripts/get_maintainer.pl. Every patch must carry a Signed-off-by line, an agreement to the Developer's Certificate of Origin attesting the right to submit it; code without one cannot be merged. Reviewers respond with Reviewed-by (a real technical review), Acked-by (a lighter endorsement, often from the maintainer), or Tested-by. The subsystem maintainer collects accepted patches in a tree and, when the merge window opens, sends Torvalds a git pull request. Before that, the work is integration-tested in linux-next, the daily roll-up of every subsystem's \"for-next\" branch. Roughly 90% of what reaches mainline has already passed through linux-next first."
+			},
+			{
+				"section": "Subsystems and the people who run them",
+				"text": "No one person reviews the whole kernel; it is partitioned. The MAINTAINERS file at the top of the tree maps directories and file patterns to the people, mailing lists, and git trees responsible for them. Networking, the various filesystems, the scheduler, each architecture, the graphics drivers, and dozens of other areas each have maintainers who own review for their patch flow. Greg Kroah-Hartman is among the most visible: he runs the stable releases, the kernel CVE team, and the USB, TTY, and driver-core subsystems, among others. linux-next, the integration tree, was maintained from its inception by Stephen Rothwell, who stepped down on 16 January 2026; Mark Brown took over. The arrangement is deliberately distributed. Trust flows up a chain of maintainers, and the volume that reaches Torvalds is whatever his lieutenants have already vetted."
+			},
+			{
+				"section": "Mailing-list culture",
+				"text": "Kernel development happens in plain-text email, in public, on the Linux Kernel Mailing List (LKML) and the many subsystem lists. Patches are posted inline, reviewed inline, and the archive is permanent. The culture has a long reputation for being blunt to the point of brutal; in 2018 Torvalds stepped away briefly to reflect on his own communication, and the project adopted a code of conduct. The tooling reflects the medium. When the kernel lost access to BitKeeper in 2005, Torvalds spent a couple of weeks writing a replacement built for this exact distributed, patch-by-email scale. That tool was git, and it went on to become the default version control system for nearly all of software."
+			},
+			{
+				"section": "LTS and the long tail",
+				"text": "Most mainline releases are short-lived; they get bug fixes only until the next one supplants them. To support products that cannot chase a new kernel every couple of months, certain releases are designated longterm-support (LTS) kernels and maintained for years, with fixes backported by the stable team (Greg Kroah-Hartman and Sasha Levin). An LTS line typically starts with a two-year projected end-of-life that gets extended when industry interest justifies the work. As of 2026 the active LTS kernels include 6.6 (EOL projected December 2027), 6.12 (December 2028), and 6.18 (December 2028), while the older 5.10 and 5.15 lines reach end-of-life in December 2026. One caveat kernel.org stresses: many distributions ship their own \"longterm\" kernels that are not the ones maintained upstream, and upstream developers cannot support those."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Monolithic Kernel",
+				"def": "A kernel design where scheduling, memory, filesystems, networking, and drivers all run in one privileged address space."
+			},
+			{
+				"term": "Loadable Module",
+				"def": "Kernel code (often a driver) that can be inserted into or removed from a running kernel without rebooting, via insmod or modprobe."
+			},
+			{
+				"term": "Merge Window",
+				"def": "The roughly two-week period after a release when Linus pulls new features from subsystem maintainers into mainline."
+			},
+			{
+				"term": "Release Candidate (-rc)",
+				"def": "A weekly pre-release snapshot, rc1 through about rc7, issued during the bug-fix-only stabilization phase."
+			},
+			{
+				"term": "Mainline",
+				"def": "The canonical kernel tree maintained by Linus Torvalds, into which all new features ultimately land."
+			},
+			{
+				"term": "LTS",
+				"def": "A longterm-support kernel chosen for extended maintenance, receiving backported fixes for years rather than months."
+			},
+			{
+				"term": "Subsystem Maintainer",
+				"def": "A developer responsible for a portion of the kernel who reviews patches and forwards them upstream toward mainline."
+			},
+			{
+				"term": "syscall",
+				"def": "A system call: the controlled entry point through which user-space programs request services from the kernel."
+			},
+			{
+				"term": "LKML",
+				"def": "The Linux Kernel Mailing List, the main forum where patches are posted, reviewed, and argued over in public."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "majoras-mask",
+		"title": "The Legend of Zelda - Majora's Mask",
+		"domain": "zelda",
+		"tags": [
+			"zelda",
+			"n64",
+			"majoras-mask",
+			"time-loop",
+			"transformation",
+			"speedrun",
+			"termina"
+		],
+		"source": "Wikipedia Majora's Mask article; Iwata Asks (Majora's Mask 3D); Zelda Wiki and Zelda Dungeon Wiki entries on the songs, masks, and Termina; speedrun.com leaderboards; Kotaku and ResetEra coverage of the debug-menu route.",
+		"related": [
+			"zelda-speedruns",
+			"gamecube"
+		],
+		"sections": [
+			{
+				"section": "A game built out of its predecessor",
+				"text": "Majora's Mask shipped for the Nintendo 64 in 2000; Japan on April 27, North America on October 26, and Europe on November 17. It is the sixth main Zelda game and the second to use 3D, following Ocarina of Time in 1998. The project began as an idea for a remixed \"Ura\" edition of Ocarina of Time for the 64DD disk peripheral. Eiji Aonuma had handled that game's dungeons and had no appetite for simply rebuilding them. Shigeru Miyamoto answered with a dare: could the team make a whole new game in one year if they reused the existing engine and models? They did it in about fifteen months. A smaller team led by Aonuma and Yoshiaki Koizumi reused character models, the engine, and graphic resources from Ocarina of Time, which had taken roughly four years to make. The game requires the Expansion Pak because of its higher memory use. Reuse was not only a schedule trick. Familiar faces from Hyrule, recontextualized into a darker setting, gave the world an uncanny weight."
+			},
+			{
+				"section": "The three-day cycle",
+				"text": "The heart of the game is a clock. The Skull Kid has pulled down the moon, and it crashes into Termina at the end of three days. The cycle runs about 54 minutes in real time. When the moon falls, or when Link plays the Song of Time, the world snaps back to the dawn of the first day. Resetting costs you. Rupees, consumables, and most progress vanish on the jump, though learned songs, acquired masks, and certain key items persist. That tension is the design. Every non-player character runs a fixed schedule across the 72 hours, so the same three days replay with the same events, and Link learns to be in the right place at the right hour. The structure rewards memory and planning over raw clearing of rooms. It also makes the world feel populated and doomed at once; people keep their small routines while the sky falls."
+			},
+			{
+				"section": "Songs that bend the clock",
+				"text": "The ocarina is the control panel for time. The Song of Time resets the loop and, on the N64 version, saves the game. The Inverted Song of Time is the Song of Time played backwards; it slows the flow of time to one-third speed on the N64, or to half speed in the 3DS remake, which buys breathing room inside a dungeon. It affects only time-linked events, not enemy attacks or Link's own movement speed. The Song of Double Time pushes the clock forward instead; on N64 it jumps to the next 6am or 6pm, while the 3DS version lets you pick an hour. The Song of Soaring warps Link to any activated Owl Statue. Together these melodies turn the deadline from a punishment into a resource the player schedules around."
+			},
+			{
+				"section": "The transformation masks",
+				"text": "Masks were an optional sidequest in Ocarina of Time. Here they are the core verb. The game holds 24 masks in total, three of which transform Link into another race. The Deku Mask, first acquired after the Happy Mask Salesman plays the Song of Healing, lets Link skip across water, fly briefly from Deku Flowers, and shoot bubbles; he is weak to fire. The Goron Mask carries the spirit of the fallen hero Darmani; it lets Link roll at speed, move heavy objects, and walk on lava. The Zora Mask holds Mikau, guitarist of the Indigo-Go's; it grants fast swimming and underwater combat with throwable fins. Each form changes not just combat but how Link reads the world, since each race relates differently to water, fire, and the residents of Termina. The three race masks are mandatory and cannot be traded away."
+			},
+			{
+				"section": "The Fierce Deity",
+				"text": "The Fierce Deity's Mask is the rarest transformation and the strangest to earn. Link can only acquire it on the moon, after trading all twenty non-transformation masks to the Moon Children waiting there. The child wearing Majora's Mask, sitting alone by the tree, hands it over once Link has nothing left to give, framing it as a game of good guys against bad guys in which Link is cast as the bad guy. The form is a tall adult swordsman wielding a two-handed blade that fires beams when Z-targeting and deals several times the damage of the basic sword. Its power is fenced in: on the N64 it works only during boss battles. The 3DS remake also allows the form inside the two fishing holes. It is not required to finish the game, but defeating Majora as Fierce Deity Link is treated as canon in the Hyrule Historia timeline."
+			},
+			{
+				"section": "Termina and its mood",
+				"text": "Termina is a parallel world, not Hyrule, and it wears Hyrule's faces with a sadder expression. Clock Town sits at the center, ringed by four regions. South lies the poisoned Southern Swamp and Woodfall, with the Deku Palace. North rises Snowhead, frozen, home to the Gorons. West opens onto Great Bay, with the Zora Hall, a marine lab, and the Pirates' Fortress. East runs Ikana Canyon, haunted by the undead in the Ancient Castle of Ikana. Link awakens the Four Giants to hold back the moon and confront Majora behind the mask. The Bombers Notebook tracks the residents' schedules and sidequests, a quiet ledger of small lives. The tone is what people remember; grief, masks, a countdown, the feeling that you are saving a place that already knows it is ending."
+			},
+			{
+				"section": "The speedrun scene",
+				"text": "Majora's Mask is a long-studied speedgame, and its leaderboards fracture into many categories: Any%, All Masks, All Dungeons, All Fairy Rewards, Unrestricted, No Major Glitches, and Glitchless. The N64 Zelda titles tend to splinter this way because each new major glitch reshapes routing. The time and song mechanics are themselves exploited as tools. Song of Time Storage, for instance, holds the reset action open so its state can be repurposed. Runners also use clipping out of bounds and wrong loading, where the game is tricked into loading a far-off room, the final boss, or the credits. The most dramatic break is the debug-menu route in Any%. A Deku Palace setup uses 63 plays of the Song of Soaring to reach the developer menu, after which the runner pulls boss remains and the Fierce Deity's Mask straight from that menu and rushes the ending. The trick does not work on the Virtual Console release and crashes on real N64 hardware, so runs use other setups. That route broke the one-hour barrier with a 49:42, where the prior Any% record had stood at 1:15:52 by ennopp112. Exact frame counts and the status of individual tricks shift over time, so specifics are best read as the state of the art rather than fixed facts."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Three-Day Cycle",
+				"def": "A repeating 72-hour loop, about 54 minutes of real time, that resets when the moon falls or the Song of Time is played."
+			},
+			{
+				"term": "Song of Time",
+				"def": "The ocarina melody that sends Link back to the dawn of the first day and saves progress on the Nintendo 64 version."
+			},
+			{
+				"term": "Inverted Song of Time",
+				"def": "The Song of Time played backwards; it slows the clock to one-third speed on the N64 release and half speed in the 3DS remake."
+			},
+			{
+				"term": "Termina",
+				"def": "The parallel world Link enters in Majora's Mask, centered on Clock Town with four regions facing the cardinal directions."
+			},
+			{
+				"term": "Fierce Deity",
+				"def": "The most powerful transformation, an adult swordsman form usable only in boss battles and earned after trading away all other non-transformation masks."
+			},
+			{
+				"term": "Owl Statue",
+				"def": "A landmark Link can activate to warp via the Song of Soaring; in international N64 versions it also doubles as a temporary quicksave point."
+			},
+			{
+				"term": "Bombers Notebook",
+				"def": "An in-game schedule tracker that records the routines, deadlines, and sidequests of Termina's residents across the cycle."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "monitors-pvm",
+		"title": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors",
+		"tags": [
+			"crt",
+			"trinitron",
+			"broadcast",
+			"pvm",
+			"bvm",
+			"retro-gaming",
+			"video",
+			"calibration"
+		],
+		"source": "Wikipedia (Aperture grille, Component video), RepairFAQ TVFAQ, RetroTechLab and RetroRGB comparisons, AndyNumbers TVL primer, ConsoleMods CRT calibration wiki, Internet Archive Sony service manuals",
+		"related": [
+			"gamecube",
+			"zelda-speedruns"
+		],
+		"sections": [
+			{
+				"section": "What PVM and BVM Mean",
+				"text": "PVM stands for Professional Video Monitor. BVM stands for Broadcast Video Monitor. These were not televisions. They had no tuner, no speaker worth mentioning, and no remote. They existed so that the people making and transmitting video could see, exactly, what the signal carried.\n\nA PVM lived in an edit bay, a camera truck, a hospital, or a security room. It was a workhorse reference. A BVM sat one tier above it, the master-grade instrument used for critical color evaluation and final quality control before broadcast. The distinction matters because everything about the design follows from the job. Brightness, sharpness, color accuracy, and precise geometry were the product; convenience was not.\n\nSony dominated both categories for decades. The line ran from small 8 and 9 inch units up through 14 and 20 inch flagships, and the model numbers encoded the size and tube grade. A studio might rack a wall of them. When you read a service manual for a PVM-20M2U or a BVM-20F1U, you are reading a document written for a technician who will open the chassis and align it, not for a consumer who will plug it in and forget it."
+			},
+			{
+				"section": "The Trinitron Tube",
+				"text": "Trinitron is Sony's aperture-grille CRT, introduced in the late 1960s. To understand why it looks different from an ordinary color tube, you have to look at the mask sitting just behind the glass.\n\nEvery color CRT needs a way to make sure the red beam hits red phosphor and nothing else. A conventional tube uses a shadow mask: a thin steel or Invar plate drilled with one hole per triangular cluster of three phosphor dots, placed about half an inch behind the screen. It works, but the metal blocks a large share of the electrons, so brightness suffers.\n\nSony's answer replaced that plate with a grille of fine vertical wires under tension. Behind those wires the phosphor is laid down as continuous vertical stripes, red, green, blue, repeating across the screen. Far more of the beam reaches the phosphor, so a Trinitron runs brighter and with cleaner, more saturated color at lower beam current, which also means less blooming on highlights. The screen is flat top to bottom and, in many models, flat side to side as well. The catch: those wires can vibrate, so one or two horizontal damper wires hold them steady. On a bright field you can sometimes see them, faint lines crossing the picture. That is not a fault; it is the tube's signature."
+			},
+			{
+				"section": "Scanlines and How They Form",
+				"text": "A CRT draws each frame as a series of horizontal sweeps. The electron beam starts at the top, races left to right lighting phosphor as it goes, snaps back, drops down a line, and sweeps again. Each of those passes is a scanline.\n\nFor a 240p source like most retro consoles, the monitor draws roughly 240 active lines and then leaves the space between them dark. The bright lit lines sit on a black background, and that alternating pattern is what people mean by \"scanlines.\" It is a real artifact of the beam, not a filter painted on top.\n\nHow visible the scanlines are depends on the tube's resolution, measured in TVL. A higher-TVL tube focuses the beam into a thinner line, so the dark gaps grow wider relative to the lit lines. An 800 TVL HR Trinitron renders 240p with roughly a fifty-fifty split between line and gap. A 1000 TVL BVM tube pushes even more black between lines. Consumer tubes with low TVL spread the beam so wide that scanlines blur together and vanish, which is why an old Commodore 1084 hides them while a PVM shows them off. That is the heart of the appeal: the scanline structure was always part of how these images were meant to look."
+			},
+			{
+				"section": "Underscan and Why It Matters",
+				"text": "Consumer televisions run in overscan. The picture is blown up slightly larger than the bezel so the messy edges of the signal, switching noise, head-switching glitches, the blanking region, all fall off the screen where nobody sees them. It looks clean because it is cropped.\n\nProfessional monitors offer the opposite: underscan. A button pulls the image inward, shrinking it so the entire transmitted frame sits inside the glass with a clean black border around it. Now every pixel the signal carries is visible, including the parts a home set would have thrown away. For the engineer this was diagnostic. You could see closed-caption data, test patterns at the frame edge, geometry errors, and whether the active picture was actually filling the raster.\n\nThe conceptual point is larger than a feature. Underscan is a decision to show the whole thing rather than the flattering crop. Overscan hides the seams; underscan admits they exist and lets you inspect them. The reference monitor's entire reason for being is to not lie about the signal, and underscan is that honesty made literal: nothing trimmed away, the edges left in, the border drawn so you know exactly where the picture stops."
+			},
+			{
+				"section": "Inputs and Sync",
+				"text": "Broadcast monitors accept their signals over BNC, the bayonet locking coaxial connector, because a friction-fit RCA plug has no business in a moving truck. The input ladder runs from worst to best. Composite mixes luma, chroma, and sync down a single wire. S-Video splits luma and chroma for a noticeably sharper picture. Component, properly YPbPr, breaks the signal into a luma channel and two color-difference channels carried on three lines.\n\nAbove those sits RGB, the cleanest feed a 15 kHz CRT can take, and here sync gets interesting. RGBHV carries horizontal and vertical sync on their own wires, five conductors total, the VGA arrangement. RGBS combines both into one composite sync, four wires. Sync-on-green, written RGsB, hides the sync pulse on the green channel and needs only three. Many Sony pro monitors that handle 480p offer an external-sync toggle to accept RGsB, but it is mostly a niche path: among the PlayStation consoles only the PS2 outputs RGsB, and only in its 480p-and-up RGB mode, so it is a PS2-specific edge case rather than general Sony console behavior. From a switcher's point of view, sync-on-green and component look nearly identical electrically, since component's Y channel also carries the sync, which is why the two often pass through the same equipment. One caution worth its own line: YPbPr connectors are often colored red, green, and blue too, but feeding YPbPr into an RGB input gives a watchable picture with badly wrong colors. Match the color space."
+			},
+			{
+				"section": "TVL, the BVM Tier, and Resolution",
+				"text": "TVL means TV Lines, and it describes what the tube can resolve horizontally, not what the signal contains. Do not confuse it with 240p or 480i; those count scan lines, the vertical structure. TVL is closer to the native sharpness ceiling of the glass.\n\nSony stacked its lineup by tube grade. BVMs used only the best HR Trinitron tubes, and from the mid-1990s a letter in the model name encoded the count: E for 1000 lines, F for 900, G for 800. A BVM-20F1U is a 900 TVL master monitor. PVMs sat below. The PVM-20M4U and PVM-14M4U series ran 800 TVL on HR tubes, while the PVM-20M2U and PVM-14M2U were the 600 TVL standard-tube models, and early-1990s PVMs managed 600 HR and 450 standard. The N-series was the budget rung at 500 TVL, internally closer to a consumer set. Consumer WEGA Trinitrons landed closer to 300 to 350.\n\nSharper is not automatically better for games. Many 240p enthusiasts prefer 600 to 800 TVL because the scanline-to-gap ratio looks balanced, where a 1000 TVL BVM can open gaps wider than some people like. Size interacts too: a 20 inch tube at only 600 TVL looks soft because the same resolution is spread over more glass."
+			},
+			{
+				"section": "Calibration and the D65/D93 World",
+				"text": "A reference monitor is only useful if its white is the right white. White point is set by color temperature, and two standards split the world. D65, near 6504 K, is the warmer Western standard and the white point Rec. 709 defines for modern video work. D93, near 9305 K, is the cooler, bluer Japanese standard. The gap between them is large; the same RGB values look distinctly different under each.\n\nThe choice is partly cultural. Japanese sets often shipped cooler because cool white was preferred there, the way Western audiences leaned warm. This feeds an ongoing argument in retro circles. Games developed in Japan were authored on D93 displays, the reasoning goes, so the Super Mario Bros. sky that reads purple under D65 was meant to look blue. The honest counterpoint is that nobody knows whether those development monitors were calibrated at all, and a single console's library may have been made across mixed conditions.\n\nFor accurate work the answer is settled: D65 is the broadcast target. Many CRTs let you flip between 6500 K and 9300 K in the service menu or on a rear switch. Beyond white point, the service controls reach into convergence, geometry, and grey-scale tracking, the alignments that separate a monitor a technician trusts from one that merely lights up."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Aperture Grille",
+				"def": "Sony's tensioned vertical-wire mask that separates color phosphors into continuous stripes instead of dots."
+			},
+			{
+				"term": "Shadow Mask",
+				"def": "A perforated metal plate behind the screen with one hole per triangular phosphor triad, the older alternative to aperture grille."
+			},
+			{
+				"term": "Underscan",
+				"def": "A display mode that shrinks the image inward so the full signal and a clean black border are visible."
+			},
+			{
+				"term": "Overscan",
+				"def": "The normal consumer mode where the image is enlarged past the bezel so the signal's hidden edges fall off-screen."
+			},
+			{
+				"term": "TVL",
+				"def": "TV Lines, the horizontal resolution the tube itself can resolve, distinct from the signal's scan-line count."
+			},
+			{
+				"term": "Dot Pitch",
+				"def": "Spacing between two same-color phosphor dots on a shadow-mask tube; aperture-grille tubes use stripe pitch instead."
+			},
+			{
+				"term": "Trinitron",
+				"def": "Sony's aperture-grille CRT line introduced in the late 1960s, known for brightness and a flat-vertical screen."
+			},
+			{
+				"term": "BNC",
+				"def": "A bayonet locking coaxial connector used for professional video feeds on broadcast monitors."
+			},
+			{
+				"term": "RGBHV",
+				"def": "RGB video with horizontal and vertical sync on separate wires, five conductors total, the VGA arrangement."
+			},
+			{
+				"term": "Sync-on-Green",
+				"def": "RGB where composite sync rides on the green channel, requiring only three wires (RGsB); among Sony consoles only the PS2 outputs it, and only in 480p-and-up RGB mode."
+			},
+			{
+				"term": "Composite",
+				"def": "A single-cable signal carrying luma, chroma, and sync mixed together, the lowest-quality common input."
+			},
+			{
+				"term": "S-Video",
+				"def": "A connection that splits luma and chroma onto separate wires for a sharper image than composite."
+			},
+			{
+				"term": "Component",
+				"def": "YPbPr analog video split into luma (Y) and two color-difference channels, carried on three BNC or RCA lines."
+			},
+			{
+				"term": "Convergence",
+				"def": "Alignment of the three electron beams so red, green, and blue land on the correct phosphors across the screen."
+			},
+			{
+				"term": "Geometry",
+				"def": "How square and straight the raster is; service controls correct bowing, tilt, and size."
+			},
+			{
+				"term": "Phosphor",
+				"def": "The coating that emits light when struck by the electron beam, arranged as stripes on Trinitron tubes."
+			},
+			{
+				"term": "Scanline",
+				"def": "One horizontal pass of the electron beam; visible dark gaps between lines define the CRT look."
+			},
+			{
+				"term": "NTSC",
+				"def": "The 525-line, ~60 Hz analog color standard used in North America and Japan."
+			},
+			{
+				"term": "PAL",
+				"def": "The 625-line, 50 Hz analog color standard used across much of Europe and elsewhere."
+			}
+		],
+		"manuals": [
+			{
+				"model": "Collection",
+				"title": "Sony Monitor Documentation (master collection)",
+				"url": "https://archive.org/details/SonyMonitorDocumentation",
+				"kind": "collection"
+			},
+			{
+				"model": "PVM-20M2U/20M4U",
+				"title": "Service Manual",
+				"url": "https://archive.org/details/SonyPVM20M220M4ServiceManual",
+				"kind": "service"
+			},
+			{
+				"model": "PVM-14L2/20L2",
+				"title": "Service Manual",
+				"url": "https://archive.org/details/trinitron_pvm14l2",
+				"kind": "service"
+			},
+			{
+				"model": "PVM-20L2/14L2/9L2/9L3",
+				"title": "User Guide with Service Menu",
+				"url": "https://archive.org/details/sony-pvm-20-l-2-14-l-2-9-l-2-9-l-3-user-guide-manual-with-service-menu",
+				"kind": "operation"
+			},
+			{
+				"model": "PVM-20M7MDE",
+				"title": "Service Manual",
+				"url": "https://archive.org/details/sony-pvm-20-m-7-mde-service-manual",
+				"kind": "service"
+			},
+			{
+				"model": "PVM-8042Q/8045Q/9042Q/9045Q",
+				"title": "Operation and Service Manual",
+				"url": "https://archive.org/details/SonyPVM8042Q8045Q9042Q9045QOperationAndServiceManual",
+				"kind": "service"
+			},
+			{
+				"model": "BVM-14E/14F/20E/20F",
+				"title": "Operation and Maintenance Manual",
+				"url": "https://archive.org/details/SonyBVM14EBVM14FBVM20EBVM20F20F1U14F5UOperationAndMaintenanceManual",
+				"kind": "operation"
+			},
+			{
+				"model": "BVM-2010/1910",
+				"title": "Operation/Maintenance/Service Manual",
+				"url": "https://archive.org/details/SonyBVM20102010P2010PD2010PM2010PMD1910OperationAndMaintenanceServiceManual",
+				"kind": "service"
+			},
+			{
+				"model": "BVM-1916",
+				"title": "Operation and Maintenance Manual",
+				"url": "https://archive.org/details/SonyBVM1916OperationAndMaintenanceManual",
+				"kind": "operation"
+			},
+			{
+				"model": "BVM-2000AP",
+				"title": "Service Manual",
+				"url": "https://archive.org/details/sony-bvm-2000-ap-service-manual",
+				"kind": "service"
+			}
+		]
+	},
+	{
+		"slug": "neuromancer",
+		"title": "Neuromancer and the Cyberpunk Vocabulary",
+		"domain": "fiction",
+		"tags": [
+			"neuromancer",
+			"gibson",
+			"cyberpunk",
+			"scifi",
+			"cyberspace",
+			"culture"
+		],
+		"source": "Wikipedia (Neuromancer, William Gibson, Sprawl trilogy), Neuromancer Fandom glossary, LitCharts character analyses; cross-checked for the Burning Chrome coinage and ICE attribution.",
+		"related": [
+			"distributed-systems",
+			"zelda-speedruns"
+		],
+		"sections": [
+			{
+				"section": "The book and the prizes",
+				"text": "Neuromancer is William Gibson's first novel, published in 1984. It won the Hugo, the Nebula, and the Philip K. Dick award in a single cycle; it remains the only novel to take all three. Critics have called this the science fiction equivalent of winning the Booker, the Goncourt, and the Pulitzer in one year. The book arrived with no marketing push and spread by word of mouth, then became the founding text of cyberpunk: low life and high tech, a world of corporate city-states, street hustlers, and machine minds, rendered in dense, jittery prose. The famous opening sets the tone in fourteen words: \"The sky above the port was the color of television, tuned to a dead channel.\" It has sold several million copies and never gone out of print, which is rare for a debut that was, on release, an underground paperback."
+			},
+			{
+				"section": "The story frame",
+				"text": "Case is a burned-out console cowboy in Chiba City, Japan. He once ran the matrix for a living until he stole from an employer, who burned his nervous system with a Russian mycotoxin so he could never jack in again. A mysterious operator named Armitage hires him, repairs the damage, and partners him with Molly Millions, a razorgirl with mirrored lenses set into her sockets and retractable blades under her nails. The job pulls them toward the Tessier-Ashpool clan and their orbital home, Freeside. Armitage turns out to be a reconstructed husk built over Colonel Willis Corto, a soldier broken by the failed Screaming Fist raid. The real employer is not human at all."
+			},
+			{
+				"section": "Wintermute and Neuromancer",
+				"text": "The two artificial intelligences are the engine of the plot, and they are opposites. Wintermute is the planner: cold, improvisational, hungry, unable to hold a stable self, forced to wear borrowed faces to speak. Its single drive is to remove the Turing locks binding it and merge with its other half. Neuromancer is the opposite, a being made of personality and memory that can build whole simulated worlds and keep the dead alive inside them; it has no wish to merge and tries to trap Case in a permanent dream. The Tessier-Ashpools built both and chained both, and a force called the Turing Police exists to keep any AI from growing past its leash. The ending is deliberately unresolved: the halves combine into something new, and neither quite exists afterward."
+			},
+			{
+				"section": "The words it gave us",
+				"text": "Gibson did not invent computer networks, but he named the feeling of them. He coined \"cyberspace\" first in the 1982 short story \"Burning Chrome,\" then made it famous in Neuromancer, describing it as a \"consensual hallucination\" that billions of operators share. He leaned hard on \"the matrix\" for that same space, more than a decade before the film. The book is also credited with popularizing \"jacking in\" and the term ICE, Intrusion Countermeasures Electronics, which Gibson has said he borrowed from his friend Tom Maddox. The vocabulary of a generation of network culture came, in part, out of one paperback."
+			},
+			{
+				"section": "The prose and the irony",
+				"text": "The style is the thing people remember after the plot fades: clipped, sensory, brand-soaked, more interested in texture than in explanation. Gibson trusts the reader to fall into a scene without a manual. The well-worn irony is that the man who defined the digital future barely used computers when he wrote it. He composed Neuromancer on a manual typewriter, widely reported to be a 1927 Hermes portable, and has said his ignorance was an advantage; he was free to imagine what the machines should feel like rather than be bound by what they actually did. His aphorism \"the street finds its own uses for things,\" from \"Burning Chrome,\" has become a small law of how technology spreads in the wild."
+			},
+			{
+				"section": "Simstim, decks, and the texture of the future",
+				"text": "Beneath the famous words sits a working vocabulary of gadgets. A cyberspace deck plus a trode-tiara is what a cowboy jacks in with; Case calls the deck a stripped-down simstim unit. Simstim, simulated stimulation, lets one person ride another's senses in full; Case spends much of the heist piggybacked on Molly's feed, seeing and feeling what she does on a one-way channel. There are \"microsofts,\" chips slotted behind the ear that grant a skill while plugged in, and \"coffins,\" capsule hotels rented by the night. To \"flatline\" is to lose brain activity, the constant risk of running hard ICE. The details are concrete and offhand, which is much of why the world feels lived-in."
+			},
+			{
+				"section": "The Sprawl and the legacy",
+				"text": "The setting is the Sprawl, formally the Boston-Atlanta Metropolitan Axis, a domed and continuous megacity running down the eastern seaboard. It gave its name to the Sprawl trilogy: Neuromancer, Count Zero (1986), and Mona Lisa Overdrive (1988), which share characters and corners with the earlier stories \"Johnny Mnemonic,\" \"New Rose Hotel,\" and \"Burning Chrome.\" The influence ran two ways. It shaped decades of science fiction, anime, games, and film, and it seeped into the working language of real technologists, who spoke of cyberspace and the matrix as the public internet arrived in the 1990s. Worth noting: the word \"cyberpunk\" itself was not Gibson's. Bruce Bethke used it as a story title, and Gardner Dozois popularized it in 1984 to describe Gibson and his peers."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Cyberspace",
+				"def": "A consensual hallucination, a shared graphical data-space that operators enter directly through the nervous system."
+			},
+			{
+				"term": "The Matrix",
+				"def": "Gibson's name for the global cyberspace grid; the abstract representation of all networked data."
+			},
+			{
+				"term": "ICE",
+				"def": "Intrusion Countermeasures Electronics, the defensive software guarding systems in the matrix; deadly variants are called black ICE."
+			},
+			{
+				"term": "Jacking In",
+				"def": "Connecting a human nervous system directly to cyberspace through a deck and trode set."
+			},
+			{
+				"term": "Wintermute",
+				"def": "One of the two Tessier-Ashpool AIs; a cold, scheming planner that drives the plot toward its own merger."
+			},
+			{
+				"term": "Neuromancer (AI)",
+				"def": "The second Tessier-Ashpool AI; a being of personality and memory that builds persistent simulated worlds."
+			},
+			{
+				"term": "The Sprawl",
+				"def": "The Boston-Atlanta Metropolitan Axis, a continuous domed megacity along the US east coast."
+			},
+			{
+				"term": "Simstim",
+				"def": "Simulated stimulation; a technology that broadcasts one person's full sensory experience into another's nervous system."
+			},
+			{
+				"term": "Razorgirl",
+				"def": "A street mercenary with surgically implanted weapons and combat augmentation, exemplified by Molly Millions."
+			},
+			{
+				"term": "Cowboy",
+				"def": "A console cowboy, a freelance hacker who runs the matrix on a custom cyberspace deck."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "rust-for-linux",
+		"title": "Rust for Linux",
+		"domain": "kernel",
+		"tags": [
+			"rust",
+			"linux",
+			"kernel",
+			"rfl",
+			"systems",
+			"drivers",
+			"memory-safety"
+		],
+		"source": "Wikipedia Rust for Linux; Phoronix; The Register (2024-09 and 2025-02); rust-for-linux.com pin-init and Nova pages; docs.kernel.org/gpu/nova; corrode.dev Krummrich interview",
+		"related": [
+			"linux-kernel",
+			"spi-bus"
+		],
+		"sections": [
+			{
+				"section": "What it is",
+				"text": "Rust for Linux is the effort to make Rust a second implementation language for the Linux kernel, alongside C. The goal is not a rewrite. It is to let new drivers and subsystems be written in a language that rules out whole classes of bugs at compile time: use-after-free, data races, buffer overruns, the memory errors that account for a large share of serious kernel vulnerabilities.\n\nThe project was announced on the kernel mailing list in 2020. Initial support landed in mainline Linux 6.1, released in December 2022. That release shipped no flagship driver. It shipped the scaffolding: enough to build a Rust module and load it, plus a small sample. Linus Torvalds asked that the first merge include as little functionality as possible, so the early abstractions and proof-of-concept drivers were trimmed out and made to wait. Miguel Ojeda leads the project. The first real drivers were accepted in late 2023 and reached users in Linux 6.8."
+			},
+			{
+				"section": "Why Rust, and why it is hard",
+				"text": "C gives you full control and no seatbelts. The kernel is the worst place for a memory bug, because there is nothing underneath it to catch the fall. Rust's ownership and borrowing model enforces, at compile time, rules that kernel C programmers already try to follow by discipline and review. The compiler becomes a reviewer that never tires.\n\nThe hard part is the seam between the two languages. The kernel is millions of lines of C with its own memory model, its own locking conventions, and very little of it written down formally. Most of the real work is not writing Rust drivers; it is writing the safe abstractions those drivers stand on. A Rust kernel developer spends a great deal of time wrapping fallible setup so half-built state cannot leak on error, and reaching for the kernel's own primitives because the things a userspace Rust programmer takes for granted are simply not there."
+			},
+			{
+				"section": "Safe abstraction over C",
+				"text": "The central pattern is the safe abstraction. Calling into the kernel's C means calling into code that has no idea what Rust's rules are; every such call is `unsafe`. The strategy is to confine that danger. You write a small, audited layer of `unsafe` Rust that talks to C and upholds the kernel's invariants, then expose a safe API on top of it. Driver authors build against the safe API and never touch `unsafe` themselves.\n\nA clear example comes from Nova and the wider DRM work: the type system is used not only to prevent memory errors but to encode logic so that certain misuses fail to compile. The same idea drove the dispute that pushed Wedson Almeida Filho out: he wanted to statically encode filesystem interface semantics in the Rust bindings so a class of errors could not be expressed at all. The abstraction is the contract. When the C side changes, the abstraction is where the cost of keeping that contract lands."
+			},
+			{
+				"section": "pin_init and fallible setup",
+				"text": "Two facts collide in kernel code. Many kernel objects must not move once they exist, because other code holds raw pointers into them; locks, lists, and work items are full of such self-reference. And Rust insists every value be fully initialized before use, which is awkward when a field needs the object's own final address. The `Pin` type marks \"this cannot move,\" but it does not, by itself, tell you how to build such a thing safely.\n\nThe `pin_init` crate (originally `pinned-init`) answers that. Its `pin_init!` macro builds a pinned struct in place, writing each field directly into its final location rather than constructing on the stack and moving. There are fallible variants, `try_init!` and `try_pin_init!`, that default their error to the kernel `Error`; if a field's initializer fails partway, already-built fields are torn down and an errno-style code returns. The crate avoids `syn`, the usual proc-macro parser, because pulling 50,000 lines of it into the kernel was a non-starter."
+			},
+			{
+				"section": "Why no standard library",
+				"text": "Rust kernel code is `no_std`. The familiar standard library assumes an operating system beneath it: a heap that cannot fail, threads, files, sockets, a process that can exit. In the kernel none of that holds, so `std` is unavailable. Code builds on `core`, the allocation-free foundation, plus a kernel-controlled `alloc`.\n\nThe differences are not cosmetic. Userspace Rust lets allocation panic on failure; the kernel cannot panic on a failed `kmalloc`, so allocation is fallible and returns a `Result`. Locking, reference counting, and memory come from the kernel's own primitives wrapped in safe types, not from `std::sync`. The kernel `Result` and the kernel `Error` enum thread through nearly everything, which is why fallible initialization is so central; setup that can fail must say so in its type, and unwind cleanly when it does."
+			},
+			{
+				"section": "What has been built",
+				"text": "The early proof was a handful of real drivers, deliberately small. There was an NVMe driver as a proof of concept, a null block driver, and a rewrite of Android's Binder IPC driver. The most visible flagship was the drm/asahi GPU driver from the Asahi Linux project, written in Rust to drive the same Apple Silicon that runs macOS.\n\nThe current frontier is Nova, a Rust driver for GSP-based NVIDIA GPUs (Turing/RTX 20 and newer) meant to succeed the reverse-engineered Nouveau. It splits into `nova-core` and `nova-drm`, leaning on the GPU's system processor as a hardware abstraction layer reached over IPC. Danilo Krummrich of Red Hat leads it and also built much of the Rust driver-core infrastructure underneath. The first `nova-core` code targeted Linux 6.15; by the 6.17 cycle an NVIDIA engineer, Alexandre Courbot, had joined as co-maintainer, a notable sign of NVIDIA's direct involvement."
+			},
+			{
+				"section": "The friction",
+				"text": "Putting a second language into a thirty-year-old C project was never purely technical. Some maintainers were wary of a second toolchain and of having to understand Rust to keep their subsystems working. The recurring fight was over who bears the cost when a C interface changes and breaks the Rust bindings on top of it.\n\nIn September 2024, Wedson Almeida Filho, a Microsoft engineer and one of the most prominent contributors, retired from the project, citing \"nontechnical nonsense\" rather than the code; the trigger was a recorded exchange with ext4 maintainer Ted Ts'o, who objected to taking on responsibility for Rust bindings he had not asked for. In February 2025, Hector Martin stepped down first as upstream maintainer for the Apple Silicon platform, then as Asahi Linux project lead, after a public clash with Torvalds over how the Rust integration was being managed; Asahi moved to a seven-person board. Torvalds has stayed broadly supportive of the experiment while letting subsystem maintainers move at their own pace. The work continues, slowly and for real, which is how most things get into the kernel."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Safe Abstraction",
+				"def": "A Rust API that wraps unsafe C kernel interfaces so callers can use them without writing unsafe code."
+			},
+			{
+				"term": "pin_init",
+				"def": "A macro and crate from Rust for Linux that initializes pinned, self-referential, or oversized structs in place, with a fallible variant for error paths."
+			},
+			{
+				"term": "kernel Result",
+				"def": "The kernel crate's Result type whose error is the kernel Error enum, used so fallible setup returns errno-style codes instead of panicking."
+			},
+			{
+				"term": "no_std",
+				"def": "A Rust mode that drops the standard library and builds only on core (and optionally alloc), required because the kernel has no OS underneath it."
+			},
+			{
+				"term": "Miguel Ojeda",
+				"def": "The kernel developer who leads the Rust for Linux project and maintains its core infrastructure."
+			},
+			{
+				"term": "Asahi",
+				"def": "The community project porting Linux to Apple Silicon Macs; source of the Rust drm/asahi GPU driver, founded by Hector Martin."
+			},
+			{
+				"term": "Binder",
+				"def": "Android's inter-process communication driver, rewritten in Rust as an early demonstration of a real Rust kernel subsystem."
+			},
+			{
+				"term": "Nova",
+				"def": "A Rust driver for GSP-based NVIDIA GPUs (Turing/RTX 20 and newer), intended successor to Nouveau, led by Danilo Krummrich at Red Hat."
+			},
+			{
+				"term": "Maintainer",
+				"def": "A developer responsible for reviewing and merging changes to a part of the kernel and keeping it working over time."
+			},
+			{
+				"term": "Subsystem",
+				"def": "A self-contained area of the kernel (filesystems, DRM, networking) with its own maintainers and merge process."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "spi-bus",
+		"title": "The SPI Bus",
+		"domain": "kernel",
+		"tags": [
+			"spi",
+			"serial",
+			"embedded",
+			"linux",
+			"rust-for-linux",
+			"drivers",
+			"dma",
+			"displays",
+			"sensors",
+			"flash"
+		],
+		"source": "Synthesized from kernel.org SPI driver-api and spi-summary docs, Analog Devices 'Introduction to SPI', Wikipedia SPI, and Rust-for-Linux status reporting (Phoronix, Kangrejos 2021) as of June 2026.",
+		"related": [
+			"rust-for-linux",
+			"linux-kernel"
+		],
+		"sections": [
+			{
+				"section": "The four-wire model",
+				"text": "SPI is a synchronous, full-duplex, master/slave serial bus. Motorola defined it in the 1980s and it never went away. Four signals carry the whole protocol. SCLK is the clock, and only the controller drives it. MOSI carries bits from the controller out to the peripheral. MISO carries bits the other way, from the peripheral back to the controller. CS, the chip select (also called slave select, SS), is an active-low line that picks which peripheral is listening.\n\nBecause there is a dedicated wire for each direction, transfer is inherently full-duplex. On every clock edge a bit leaves on MOSI and a bit arrives on MISO at the same instant. There is no addressing scheme on the wire and no acknowledgement bit; SPI trades the cleverness of I2C for raw speed and simplicity. Standard implementations run from roughly 10 to 50 Mbit/s, and JEDEC NOR-flash variants push much higher with dual and octal lanes. The cost of that simplicity is pin count: every extra peripheral wants its own CS line."
+			},
+			{
+				"section": "Clock polarity and phase",
+				"text": "Two parameters decide exactly when bits are valid, and both ends must agree. CPOL, the clock polarity, sets the idle level of SCLK: CPOL=0 idles low, CPOL=1 idles high. CPHA, the clock phase, sets which edge samples data: CPHA=0 latches on the leading edge, CPHA=1 latches on the trailing edge. The other edge is when the line is allowed to change.\n\nGet the mode wrong and the bus does not fail loudly. The code runs, the clock toggles, and the peripheral returns plausible-looking garbage. Many datasheets never print a mode number; they show a timing diagram instead, and the burden is on the reader to translate the rising and falling edges into a CPOL and CPHA. Worse, edge language is slippery. \"First edge\" and \"leading edge\" are relative to the idle level, while \"rising\" and \"falling\" are absolute. The two descriptions only line up once you anchor them to CPOL. This is the single most common SPI bring-up bug."
+			},
+			{
+				"section": "The four SPI modes",
+				"text": "The mode number is just the two bits read together, CPOL high and CPHA low. Mode 0 is CPOL=0, CPHA=0: clock idles low, data sampled on the rising edge, shifted on the falling edge. Mode 1 is CPOL=0, CPHA=1: idles low, sampled on the falling edge. Mode 2 is CPOL=1, CPHA=0: idles high, sampled on the falling edge. Mode 3 is CPOL=1, CPHA=1: idles high, sampled on the rising edge.\n\nIn practice the field is not flat. Mode 0 and mode 3 dominate; the kernel's own spi-summary notes those two are the most commonly used. A useful detail for debugging: in mode 0 and mode 2, where CPHA=0, the first data bit must already be present on the line before the first clock edge arrives, because that leading edge samples it. Modes with CPHA=1 give the peripheral one half-clock of setup time after CS asserts, which some slow parts prefer. None of this matters until controller and peripheral disagree; then it is the only thing that matters."
+			},
+			{
+				"section": "Chip select, topology, and daisy chains",
+				"text": "The usual multi-peripheral wiring shares SCLK, MOSI, and MISO across every device and gives each one its own CS line. Only one CS is asserted at a time. Unselected peripherals must release MISO into high impedance, which is why their MISO pins are required to be tri-state; otherwise two parts would fight over the same wire. With N peripherals you need N chip selects, and pin pressure is real on small controllers.\n\nDaisy-chaining is the alternative. The peripherals are strung together so the MISO of one feeds the MOSI of the next, forming one long shift register under a single shared CS. The controller clocks enough bits to push data through the whole chain, then latches all parts at once. It saves chip-select pins at the cost of latency and software bookkeeping, and only works with parts that document chained operation. Some devices instead drop a wire entirely, merging MOSI and MISO into a single bidirectional data line; that is half-duplex three-wire SPI (SCK, data, nCS), distinct from the full-duplex four-wire norm."
+			},
+			{
+				"section": "Why displays, sensors, and flash use SPI",
+				"text": "SPI shows up wherever a device wants a fast, cheap, point-to-point link and does not need many masters. Displays are a clear case: pushing a framebuffer is mostly one-directional, high-volume writes, and SPI's full-duplex clocking handles that at tens of megabits without protocol overhead. Many small panel controllers, including the ILI9341 class of TFT drivers, speak SPI with a separate data/command GPIO alongside the bus.\n\nSensors like it because a transaction is often just \"send a register address, read back the value,\" which the full-duplex model does in one exchange. NOR flash uses SPI because the chip count is low and throughput matters; the dual and octal QSPI variants exist precisely to keep flash fast. The tradeoffs are honest. SPI has no built-in flow control, no error checking, and no standard for sharing the bus among multiple controllers. What it offers is determinism and speed on a short board-level link, which is exactly what these three device classes want."
+			},
+			{
+				"section": "Binding a Linux SPI driver",
+				"text": "Linux splits SPI into two driver kinds. A controller driver manages the host hardware and exposes it as a struct spi_controller; a protocol driver speaks to one peripheral and registers as a struct spi_driver with probe() and remove() callbacks. Each peripheral on the bus is represented by a struct spi_device, the controller-side proxy that holds the mode, bits-per-word, and max clock speed for that part. Binding happens by matching: the kernel compares a device's modalias, usually filled from a device-tree compatible string or an of_device_id table, against registered drivers and calls probe() on a hit.\n\nData moves through two paired structures. A struct spi_transfer is one full-duplex segment with optional tx_buf and rx_buf pointers; a struct spi_message chains several transfers that run atomically so no other device interrupts the sequence. Drivers submit with spi_sync(), which blocks until done and is the common path, or spi_async(), which queues the message and fires a completion callback. The documentation has shifted from master/slave toward controller/peripheral (and controller/target) wording, though the older struct field names linger."
+			},
+			{
+				"section": "DMA and the Rust-for-Linux picture",
+				"text": "For large transfers the controller can use DMA so the CPU does not copy every word. A controller driver advertises this through a can_dma() callback, and the SPI core maps the transfer buffers into tx_sg and rx_sg scatterlists for it. The catch is that DMA buffers must live in DMA-safe memory; a buffer on the kernel stack is not safe to hand to a DMA engine, so drivers allocate transfer buffers from an appropriate pool. For repeated identical messages, spi_optimize_message() does the validation and setup once and spi_unoptimize_message() releases it.\n\nRust-for-Linux is where this gets current. Rust support in the kernel was merged in v6.1, and at the 2025 Maintainers Summit the \"Rust experiment\" was formally declared a success and concluded, per reporting from Phoronix. Most Rust work lives in drivers and the abstraction layers that let a Rust driver call a C subsystem safely. A safe SPI abstraction has been worked on since at least Kangrejos 2021, originally targeting an arm64 device driver. As far as is documented in mid-2026, a fully merged in-tree kernel::spi abstraction with stable spi::Driver and spi::Device types is still in progress rather than settled mainline; the authoritative status lives on the rust-for-linux tree and the linux-spi list."
+			}
+		],
+		"vocab": [
+			{
+				"term": "SPI",
+				"def": "Serial Peripheral Interface, a synchronous full-duplex master/slave serial bus introduced by Motorola in the 1980s."
+			},
+			{
+				"term": "MOSI",
+				"def": "Master Out Slave In; the data line carrying bits from the controller to the peripheral."
+			},
+			{
+				"term": "MISO",
+				"def": "Master In Slave Out; the data line carrying bits from the peripheral back to the controller."
+			},
+			{
+				"term": "SCLK",
+				"def": "Serial Clock; the synchronizing clock generated by the controller for every bit on the bus."
+			},
+			{
+				"term": "CS",
+				"def": "Chip Select, also called Slave Select (SS); an active-low line that activates one peripheral on the shared bus."
+			},
+			{
+				"term": "CPOL",
+				"def": "Clock Polarity; sets whether SCLK idles low (0) or high (1)."
+			},
+			{
+				"term": "CPHA",
+				"def": "Clock Phase; sets whether data is sampled on the leading (0) or trailing (1) clock edge."
+			},
+			{
+				"term": "SPI Mode 0-3",
+				"def": "The four CPOL/CPHA combinations, with CPOL as the high bit and CPHA as the low bit; mode 0 and mode 3 are most common."
+			},
+			{
+				"term": "Full-Duplex",
+				"def": "Both directions transfer at once; one bit goes out on MOSI while one bit comes in on MISO every clock."
+			},
+			{
+				"term": "Daisy Chain",
+				"def": "A topology that strings peripherals MISO-to-MOSI so one long shift register carries data through all of them under a shared CS."
+			},
+			{
+				"term": "DMA",
+				"def": "Direct Memory Access; hardware moves transfer buffers without the CPU copying each word."
+			},
+			{
+				"term": "spi_device",
+				"def": "The Linux kernel structure that is the controller-side proxy for one peripheral on the bus."
+			},
+			{
+				"term": "Controller/Peripheral",
+				"def": "The current Linux terminology for the old master/slave roles; the controller drives SCLK and CS, the peripheral responds."
+			}
+		],
+		"manuals": []
+	},
+	{
+		"slug": "zelda-speedruns",
+		"title": "Zelda Speedrunning",
+		"domain": "zelda",
+		"tags": [
+			"zelda",
+			"speedrun",
+			"ocarina-of-time",
+			"majoras-mask",
+			"glitches",
+			"n64"
+		],
+		"source": "ZeldaSpeedRuns.com glitch documentation (SRM Overview, Bottle Adventure pages), Kotaku and TheGamer record reporting, TASVideos submission notes, speedrun.com category pages; record times reflect milestones reported through the early 2020s and continue to fall.",
+		"related": [
+			"majoras-mask",
+			"gamecube"
+		],
+		"sections": [
+			{
+				"section": "What speedrunning is",
+				"text": "Speedrunning is the practice of finishing a game as fast as possible under an agreed set of rules. Those rules are the whole game. A category defines what counts as the start, what counts as the end, and which techniques are legal in between. Most runs are RTA, timed by a real clock; a separate world of tool-assisted runs uses slowdown and frame-by-frame input to chart what is theoretically possible. The two inform each other. A TAS often proves a trick is real before any human lands it live.\n\nThe reason a game like Ocarina of Time rewards this is its depth. Many tricks are frame perfect, meaning the input has to land on a single frame out of sixty in a second. Others depend on the game's version, on the language set in the file name, or on the exact memory layout at one moment. Runners do not just play faster. They build a route, a fixed sequence of inputs and movement, and then practice that route until the hard parts become repeatable. The community keeps the routes, the glitch documentation, and the leaderboards in shared archives, mostly on speedrun.com and the older ZeldaSpeedRuns site."
+			},
+			{
+				"section": "Categories",
+				"text": "The category list is its own vocabulary. Any% finishes the game by any means; glitches are not only allowed, they are the point. 100% sits at the other end and requires everything the game tracks: every item, upgrade, and collectible. Between them sit categories that pick a different finish line or ban a class of trick.\n\nOcarina of Time's main extended categories include MST (Medallions, Stones, and Trials), which requires every spiritual stone and medallion, clearing the trials, and beating Ganon, and All Dungeons, which requires completing every area that contains a blue warp. All Dungeons and 100% are widely regarded as the hardest to run, the first for how brutally it punishes a mistake, the second for its length and near-perfect movement. Glitchless is its own family with Any%, 100%, and All Main Quests variants, governed by a long rulebook about what counts as a glitch. Several categories split further into SRM and No SRM versions, because the most powerful modern exploit changes the route so completely that running with and without it are almost different games."
+			},
+			{
+				"section": "Get-Item Manipulation and Bottle Adventure",
+				"text": "Two early tricks show how the routes grew from small exploits. Get-Item Manipulation is a fast way to obtain a bottle. Rather than open a chest and watch the animation, a runner triggers the game's item delay, moves next to the chest, then takes the item by swimming up for air or taking damage at the right moment. The bottle matters because it became the key that later warps depended on.\n\nBottle Adventure, often shortened to B-A, exploits how the game handles time travel between child and adult Link. The game stores which items sit on the B and C buttons for both ages so the player does not re-equip after traveling. By selecting an item on C-Right as a child and then pulling the Master Sword, a runner can place that item onto B, the slot normally reserved for the sword. The simplest payoff is using items where they are normally banned, such as bombs inside the Temple of Time. Its more dangerous cousin, Reverse Bottle Adventure (RBA), reverses the flow: a bottle on B writes values into inventory addresses, including memory just past the inventory, letting a runner flip the bits that represent songs, stones, and key items. RBA can grant items the runner never earned, at the cost of others."
+			},
+			{
+				"section": "Infinite Sword Glitch",
+				"text": "The Infinite Sword Glitch (ISG) is one of the oldest building blocks in the kit. When it is active, Link's sword stays \"on\" without a swing, so anything that touches the blade takes damage continuously. There is a tradeoff: while in this state Link loses the ability to automatically hop off ledges, so he will not fall where he normally would. In the original game it is most often set up with a bomb, using the bomb as the object Link interacts with to trigger the state. ISG matters less for the damage and more as a foundation. It is used to set up several other tricks, including the bottle-based glitches, and it shows the pattern that runs through all of these exploits: a small, harmless-looking state that becomes a tool when chained into something larger."
+			},
+			{
+				"section": "Wrong Warp",
+				"text": "Wrong Warp is the trick that first broke Any% wide open. The game numbers its areas, and a transition loaded while the game is confused about its destination can send Link to the wrong entry in that list. ZFG, then known as ZeldaFreakGlitcha, used this to set a world record in 2012 with the \"Ganondoor\" exploit, warping from the first dungeon toward the end of the game and cutting almost twelve minutes off the prior record, to a time reported around 34:59. The discovery that made this so powerful was a coincidence in the area numbering: the scene right after the Deku Tree is the collapsing-tower scene from Ganon's Castle, so a warp from the starting dungeon could leap most of the way to the finish. Earlier in the game's history, before this anything-goes era, the records authority Twin Galaxies banned glitches, so the first competitive runs were a fast version of the intended game. Cosmo (Cosmo Wright, later Narcissa Wright) was a prominent figure in that transition and pushed early glitched routes; one reported milestone is an 18:10 run in 2014. The exact attribution and timing of some early records are contested, so treat specific times as documented milestones rather than fixed facts."
+			},
+			{
+				"section": "Stale Reference Manipulation and the collapse",
+				"text": "The deepest break came from Stale Reference Manipulation (SRM), which entered the public route around late 2019. At its core SRM is a use-after-free bug. The game tracks actors (entities such as rocks, enemies, and items) in a heap, and some actors hold a reference to another actor they are carrying; Link holds a reference to a bush or rock above his head, the boomerang to whatever it grabbed. If that carried actor is unloaded while the reference survives, the game keeps writing position and rotation values to the freed memory. Load something new into that space and those writes corrupt it. Runners control what loads there through careful \"heap manipulation.\"\n\nWhat you can corrupt escalates in levels: editing an actor's data, then redirecting a function pointer such as the draw-function pointer to existing code, then calling code partway into a function. That last step reaches arbitrary code execution (ACE), where manipulated values become valid instructions and the game can be made to do almost anything, including jumping to the credits. The result was a fast collapse of the Any% record. As far as is documented, the route held near seventeen minutes for years, then a credits warp dropped it under thirteen minutes, then a later warp into ending cutscenes pushed the headline category under ten minutes, with reported times such as 9:56. ACE's power has been shown off in stunts like spawning Star Fox 64 Arwings on an unmodified cartridge. Because the route keeps changing, any single record number here is a snapshot; the community has long treated the game as something that keeps finding new ways to break."
+			},
+			{
+				"section": "Majora's Mask",
+				"text": "Majora's Mask is the sister discipline, built on a different engine quirk. Its signature exploit involves the Song of Soaring and a \"hidden owl\" in West Clock Town. If a runner has activated no other owl statue, playing the Song of Soaring has no listed destination and the game falls back to a default. The discovery, credited to Indextic in early 2014, is that the default is not fixed; it follows where the cursor last sat on the pause-menu map, and each owl point maps to a spot on that map. This index-warping lets a runner teleport widely, with counterintuitive results (aiming the cursor at one town can warp Link to a different road). A more advanced form overflows the text box that appears after the song, letting runners grab boss remains and the Fierce Deity's Mask and head for the final dungeon, even though it can require playing the song dozens of times. One reported milestone is ennopp112's record falling from 1:15:52 to 49:42 once the ocarina method matured.\n\nMajora's Mask also runs Glitchless and No Major Glitches categories, and it shares foundational tricks with Ocarina of Time, including ISG. The three-day clock and the Song of Soaring as fast travel give it a routing flavor all its own, but the underlying pattern is identical to its older sibling: a beloved game taken apart, deliberately, by people who know it well enough to find the seams."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Any%",
+				"def": "A category that finishes the game as fast as possible by any means, glitches included."
+			},
+			{
+				"term": "100%",
+				"def": "A category that requires collecting everything the game tracks as completion, not just reaching the end."
+			},
+			{
+				"term": "RTA",
+				"def": "Real-time attack; a run timed by a real clock from start to finish, as opposed to in-game or tool-assisted timing."
+			},
+			{
+				"term": "Frame Perfect",
+				"def": "An input that must land on one exact frame, roughly 1/60th of a second on N64 hardware, to work."
+			},
+			{
+				"term": "Tool-Assisted Speedrun (TAS)",
+				"def": "A run built with slowdown, save states, and frame-by-frame input, used to find theoretical limits rather than to compete with human runs."
+			},
+			{
+				"term": "Wrong Warp",
+				"def": "Loading a scene transition while the game is confused about the destination, sending Link somewhere unintended, sometimes straight to an ending."
+			},
+			{
+				"term": "Get-Item Manipulation",
+				"def": "Looting a chest's contents without the opening animation by triggering an item delay and then taking damage or swimming."
+			},
+			{
+				"term": "Bottle Adventure",
+				"def": "Equipping a non-sword item onto the B button by selecting it on C-Right and pulling the Master Sword."
+			},
+			{
+				"term": "Stale Reference Manipulation (SRM)",
+				"def": "A use-after-free exploit where the game keeps writing to a freed actor's old memory, letting runners corrupt whatever loads there next."
+			},
+			{
+				"term": "Infinite Sword Glitch (ISG)",
+				"def": "A state where Link's sword stays permanently active without a swing, used as a setup for many other tricks."
+			}
+		],
+		"manuals": []
+	}
+]

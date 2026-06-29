@@ -1,0 +1,92 @@
+[
+	{
+		"model": "Collection",
+		"title": "Sony Monitor Documentation (master collection)",
+		"url": "https://archive.org/details/SonyMonitorDocumentation",
+		"kind": "collection",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "PVM-20M2U/20M4U",
+		"title": "Service Manual",
+		"url": "https://archive.org/details/SonyPVM20M220M4ServiceManual",
+		"kind": "service",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "PVM-14L2/20L2",
+		"title": "Service Manual",
+		"url": "https://archive.org/details/trinitron_pvm14l2",
+		"kind": "service",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "PVM-20L2/14L2/9L2/9L3",
+		"title": "User Guide with Service Menu",
+		"url": "https://archive.org/details/sony-pvm-20-l-2-14-l-2-9-l-2-9-l-3-user-guide-manual-with-service-menu",
+		"kind": "operation",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "PVM-20M7MDE",
+		"title": "Service Manual",
+		"url": "https://archive.org/details/sony-pvm-20-m-7-mde-service-manual",
+		"kind": "service",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "PVM-8042Q/8045Q/9042Q/9045Q",
+		"title": "Operation and Service Manual",
+		"url": "https://archive.org/details/SonyPVM8042Q8045Q9042Q9045QOperationAndServiceManual",
+		"kind": "service",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "BVM-14E/14F/20E/20F",
+		"title": "Operation and Maintenance Manual",
+		"url": "https://archive.org/details/SonyBVM14EBVM14FBVM20EBVM20F20F1U14F5UOperationAndMaintenanceManual",
+		"kind": "operation",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "BVM-2010/1910",
+		"title": "Operation/Maintenance/Service Manual",
+		"url": "https://archive.org/details/SonyBVM20102010P2010PD2010PM2010PMD1910OperationAndMaintenanceServiceManual",
+		"kind": "service",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "BVM-1916",
+		"title": "Operation and Maintenance Manual",
+		"url": "https://archive.org/details/SonyBVM1916OperationAndMaintenanceManual",
+		"kind": "operation",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"model": "BVM-2000AP",
+		"title": "Service Manual",
+		"url": "https://archive.org/details/sony-bvm-2000-ap-service-manual",
+		"kind": "service",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	}
+]

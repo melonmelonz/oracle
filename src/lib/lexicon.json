@@ -1,0 +1,751 @@
+[
+	{
+		"term": "100%",
+		"def": "A category that requires collecting everything the game tracks as completion, not just reaching the end.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "480i",
+		"def": "Standard-definition interlaced video, 480 visible lines drawn as two alternating fields per frame.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "480p",
+		"def": "Standard-definition progressive video, 480 lines drawn whole each frame; the GameCube's Progressive Scan output.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Any%",
+		"def": "A category that finishes the game as fast as possible by any means, glitches included.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Aperture Grille",
+		"def": "Sony's tensioned vertical-wire mask that separates color phosphors into continuous stripes instead of dots.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Asahi",
+		"def": "The community project porting Linux to Apple Silicon Macs; source of the Rust drm/asahi GPU driver, founded by Hector Martin.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "ATI/ArtX",
+		"def": "ArtX, a startup founded by ex-SGI engineers, designed Flipper; ATI bought ArtX in 2000, which is why the console carries an ATI badge.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Binder",
+		"def": "Android's inter-process communication driver, rewritten in Rust as an early demonstration of a real Rust kernel subsystem.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "BM25",
+		"def": "A classic lexical ranking function that scores a passage by how well its rare query words match, normalized for length.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "BNC",
+		"def": "A bayonet locking coaxial connector used for professional video feeds on broadcast monitors.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Bombers Notebook",
+		"def": "An in-game schedule tracker that records the routines, deadlines, and sidequests of Termina's residents across the cycle.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "Bottle Adventure",
+		"def": "Equipping a non-sword item onto the B button by selecting it on C-Right and pulling the Master Sword.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "CAP Theorem",
+		"def": "When a network partition occurs, a distributed system must choose between consistency and availability; it cannot keep both during the split.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Component",
+		"def": "YPbPr analog video split into luma (Y) and two color-difference channels, carried on three BNC or RCA lines.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Component Video",
+		"def": "An analog video connection splitting the picture into luma and two color-difference channels (YPbPr), capable of carrying progressive scan.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Composite",
+		"def": "A single-cable signal carrying luma, chroma, and sync mixed together, the lowest-quality common input.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Consensus",
+		"def": "The problem of getting a set of nodes to agree on a single value even though some may fail.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Controller/Peripheral",
+		"def": "The current Linux terminology for the old master/slave roles; the controller drives SCLK and CS, the peripheral responds.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Convergence",
+		"def": "Alignment of the three electron beams so red, green, and blue land on the correct phosphors across the screen.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Cosine Similarity",
+		"def": "The angle-based measure of how aligned two embedding vectors are, used to rank passages by meaning.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "Cowboy",
+		"def": "A console cowboy, a freelance hacker who runs the matrix on a custom cyberspace deck.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "CPHA",
+		"def": "Clock Phase; sets whether data is sampled on the leading (0) or trailing (1) clock edge.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "CPOL",
+		"def": "Clock Polarity; sets whether SCLK idles low (0) or high (1).",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Cross-Encoder Reranker",
+		"def": "A model that reads a question and a passage together and scores true relevance, sharper than comparing them as separate vectors.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "CS",
+		"def": "Chip Select, also called Slave Select (SS); an active-low line that activates one peripheral on the shared bus.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Cyberspace",
+		"def": "A consensual hallucination, a shared graphical data-space that operators enter directly through the nervous system.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Daisy Chain",
+		"def": "A topology that strings peripherals MISO-to-MOSI so one long shift register carries data through all of them under a shared CS.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Digital AV Out",
+		"def": "A second video port on the underside of early GameCubes carrying an uncompressed digital Y'CbCr signal; removed on the later DOL-101 revision.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "DMA",
+		"def": "Direct Memory Access; hardware moves transfer buffers without the CPU copying each word.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Dot Pitch",
+		"def": "Spacing between two same-color phosphor dots on a shadow-mask tube; aperture-grille tubes use stripe pitch instead.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Embedding",
+		"def": "A vector of numbers that places a piece of text in a space where nearby vectors mean similar things.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "Eventual Consistency",
+		"def": "A weak model where, once writes stop, all replicas converge to the same value after some delay.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Fierce Deity",
+		"def": "The most powerful transformation, an adult swordsman form usable only in boss battles and earned after trading away all other non-transformation masks.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "Flipper",
+		"def": "The 162 MHz graphics and I/O chip designed by ArtX (acquired by ATI mid-development), with 3 MB of embedded 1T-SRAM as a frame and texture buffer.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Frame Perfect",
+		"def": "An input that must land on one exact frame, roughly 1/60th of a second on N64 hardware, to work.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Full-Duplex",
+		"def": "Both directions transfer at once; one bit goes out on MOSI while one bit comes in on MISO every clock.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Gekko",
+		"def": "The GameCube's 486 MHz 32-bit PowerPC CPU, built by IBM from the PowerPC 750CXe (G3) core with custom paired-single floating-point extensions.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Geometry",
+		"def": "How square and straight the raster is; service controls correct bowing, tilt, and size.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Get-Item Manipulation",
+		"def": "Looting a chest's contents without the opening animation by triggering an item delay and then taking damage or swimming.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Grounding",
+		"def": "The rule that every claim must trace to a retrieved passage; if nothing relevant is found, the honest answer is silence.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "Hybrid Search",
+		"def": "Combining dense vector similarity with lexical keyword matching so both meaning and exact terms are caught.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "ICE",
+		"def": "Intrusion Countermeasures Electronics, the defensive software guarding systems in the matrix; deadly variants are called black ICE.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Idempotency",
+		"def": "A property where applying the same operation more than once has the same effect as applying it exactly once.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Infinite Sword Glitch (ISG)",
+		"def": "A state where Link's sword stays permanently active without a swing, used as a setup for many other tricks.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Inverted Song of Time",
+		"def": "The Song of Time played backwards; it slows the clock to one-third speed on the N64 release and half speed in the 3DS remake.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "Jacking In",
+		"def": "Connecting a human nervous system directly to cyberspace through a deck and trode set.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "kernel Result",
+		"def": "The kernel crate's Result type whose error is the kernel Error enum, used so fallible setup returns errno-style codes instead of panicking.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Linearizability",
+		"def": "A strong consistency model where each operation appears to take effect instantaneously at one point between its call and return, respecting real-time order.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "LKML",
+		"def": "The Linux Kernel Mailing List, the main forum where patches are posted, reviewed, and argued over in public.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Loadable Module",
+		"def": "Kernel code (often a driver) that can be inserted into or removed from a running kernel without rebooting, via insmod or modprobe.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "LTS",
+		"def": "A longterm-support kernel chosen for extended maintenance, receiving backported fixes for years rather than months.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Mainline",
+		"def": "The canonical kernel tree maintained by Linus Torvalds, into which all new features ultimately land.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Maintainer",
+		"def": "A developer responsible for reviewing and merging changes to a part of the kernel and keeping it working over time.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Merge Window",
+		"def": "The roughly two-week period after a release when Linus pulls new features from subsystem maintainers into mainline.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Miguel Ojeda",
+		"def": "The kernel developer who leads the Rust for Linux project and maintains its core infrastructure.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "miniDVD",
+		"def": "The proprietary 8 cm optical disc the GameCube used, holding about 1.46 GB, manufactured by Matsushita to cut cost and resist copying.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "MISO",
+		"def": "Master In Slave Out; the data line carrying bits from the peripheral back to the controller.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Monolithic Kernel",
+		"def": "A kernel design where scheduling, memory, filesystems, networking, and drivers all run in one privileged address space.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "MOSI",
+		"def": "Master Out Slave In; the data line carrying bits from the controller to the peripheral.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Neuromancer (AI)",
+		"def": "The second Tessier-Ashpool AI; a being of personality and memory that builds persistent simulated worlds.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "no_std",
+		"def": "A Rust mode that drops the standard library and builds only on core (and optionally alloc), required because the kernel has no OS underneath it.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Nova",
+		"def": "A Rust driver for GSP-based NVIDIA GPUs (Turing/RTX 20 and newer), intended successor to Nouveau, led by Danilo Krummrich at Red Hat.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "NTSC",
+		"def": "The 525-line, ~60 Hz analog color standard used in North America and Japan.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Overscan",
+		"def": "The normal consumer mode where the image is enlarged past the bezel so the signal's hidden edges fall off-screen.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Owl Statue",
+		"def": "A landmark Link can activate to warp via the Song of Soaring; in international N64 versions it also doubles as a temporary quicksave point.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "PAL",
+		"def": "The 625-line, 50 Hz analog color standard used across much of Europe and elsewhere.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Partition",
+		"def": "A network failure that splits nodes into groups that cannot communicate with each other.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Paxos",
+		"def": "Lamport's family of consensus algorithms; correct and influential, but famously hard to follow.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Phosphor",
+		"def": "The coating that emits light when struck by the electron beam, arranged as stripes on Trinitron tubes.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "pin_init",
+		"def": "A macro and crate from Rust for Linux that initializes pinned, self-referential, or oversized structs in place, with a fallible variant for error paths.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Progressive Scan",
+		"def": "A display mode that draws every line of each frame in one pass rather than interlacing two fields.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Quorum",
+		"def": "A subset of nodes (usually a majority) whose agreement is required before an action counts as decided.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Raft",
+		"def": "A leader-based consensus algorithm by Ongaro and Ousterhout, designed to be understandable while matching Paxos in power.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Razorgirl",
+		"def": "A street mercenary with surgically implanted weapons and combat augmentation, exemplified by Molly Millions.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Reciprocal Rank Fusion",
+		"def": "A way to merge two ranked lists by rewarding items that rank highly in either, without needing to normalize their scores.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "Region Lock",
+		"def": "Firmware and hardware checks that tie a console to NTSC-U, NTSC-J, or PAL game discs and refuse others.",
+		"domain": "console",
+		"slug": "gamecube",
+		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "Release Candidate (-rc)",
+		"def": "A weekly pre-release snapshot, rc1 through about rc7, issued during the bug-fix-only stabilization phase.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Replication",
+		"def": "Keeping copies of the same data on multiple nodes for durability, availability, or read scaling.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Retrieval-Augmented Generation",
+		"def": "Answering with a language model that is fed passages retrieved from a fixed source, so it speaks from documents rather than memory.",
+		"domain": "meta",
+		"slug": "about-oracle",
+		"topicTitle": "About the Oracle"
+	},
+	{
+		"term": "RGBHV",
+		"def": "RGB video with horizontal and vertical sync on separate wires, five conductors total, the VGA arrangement.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "RTA",
+		"def": "Real-time attack; a run timed by a real clock from start to finish, as opposed to in-game or tool-assisted timing.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "S-Video",
+		"def": "A connection that splits luma and chroma onto separate wires for a sharper image than composite.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Safe Abstraction",
+		"def": "A Rust API that wraps unsafe C kernel interfaces so callers can use them without writing unsafe code.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Scanline",
+		"def": "One horizontal pass of the electron beam; visible dark gaps between lines define the CRT look.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "SCLK",
+		"def": "Serial Clock; the synchronizing clock generated by the controller for every bit on the bus.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Shadow Mask",
+		"def": "A perforated metal plate behind the screen with one hole per triangular phosphor triad, the older alternative to aperture grille.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Simstim",
+		"def": "Simulated stimulation; a technology that broadcasts one person's full sensory experience into another's nervous system.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Song of Time",
+		"def": "The ocarina melody that sends Link back to the dawn of the first day and saves progress on the Nintendo 64 version.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "SPI",
+		"def": "Serial Peripheral Interface, a synchronous full-duplex master/slave serial bus introduced by Motorola in the 1980s.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "SPI Mode 0-3",
+		"def": "The four CPOL/CPHA combinations, with CPOL as the high bit and CPHA as the low bit; mode 0 and mode 3 are most common.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "spi_device",
+		"def": "The Linux kernel structure that is the controller-side proxy for one peripheral on the bus.",
+		"domain": "kernel",
+		"slug": "spi-bus",
+		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "Stale Reference Manipulation (SRM)",
+		"def": "A use-after-free exploit where the game keeps writing to a freed actor's old memory, letting runners corrupt whatever loads there next.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Subsystem",
+		"def": "A self-contained area of the kernel (filesystems, DRM, networking) with its own maintainers and merge process.",
+		"domain": "kernel",
+		"slug": "rust-for-linux",
+		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Subsystem Maintainer",
+		"def": "A developer responsible for a portion of the kernel who reviews patches and forwards them upstream toward mainline.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Sync-on-Green",
+		"def": "RGB where composite sync rides on the green channel, requiring only three wires (RGsB); among Sony consoles only the PS2 outputs it, and only in 480p-and-up RGB mode.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "syscall",
+		"def": "A system call: the controlled entry point through which user-space programs request services from the kernel.",
+		"domain": "kernel",
+		"slug": "linux-kernel",
+		"topicTitle": "The Linux Kernel"
+	},
+	{
+		"term": "Termina",
+		"def": "The parallel world Link enters in Majora's Mask, centered on Clock Town with four regions facing the cardinal directions.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "The Matrix",
+		"def": "Gibson's name for the global cyberspace grid; the abstract representation of all networked data.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "The Sprawl",
+		"def": "The Boston-Atlanta Metropolitan Axis, a continuous domed megacity along the US east coast.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Three-Day Cycle",
+		"def": "A repeating 72-hour loop, about 54 minutes of real time, that resets when the moon falls or the Song of Time is played.",
+		"domain": "zelda",
+		"slug": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask"
+	},
+	{
+		"term": "Tool-Assisted Speedrun (TAS)",
+		"def": "A run built with slowdown, save states, and frame-by-frame input, used to find theoretical limits rather than to compete with human runs.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Trinitron",
+		"def": "Sony's aperture-grille CRT line introduced in the late 1960s, known for brightness and a flat-vertical screen.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "TVL",
+		"def": "TV Lines, the horizontal resolution the tube itself can resolve, distinct from the signal's scan-line count.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Two-Phase Commit",
+		"def": "An atomic-commit protocol (prepare then commit) that blocks if the coordinator fails after votes are collected.",
+		"domain": "distsys",
+		"slug": "distributed-systems",
+		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Underscan",
+		"def": "A display mode that shrinks the image inward so the full signal and a clean black border are visible.",
+		"domain": "monitors",
+		"slug": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Wintermute",
+		"def": "One of the two Tessier-Ashpool AIs; a cold, scheming planner that drives the plot toward its own merger.",
+		"domain": "fiction",
+		"slug": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
+	},
+	{
+		"term": "Wrong Warp",
+		"def": "Loading a scene transition while the game is confused about the destination, sending Link somewhere unintended, sometimes straight to an ending.",
+		"domain": "zelda",
+		"slug": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning"
+	}
+]
