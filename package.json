@@ -1,7 +1,7 @@
 {
   "name": "oracle",
   "version": "1.0.0",
-  "description": "ORACLE - a grounded oracle over Penn's universe. RAG on Cloudflare Workers AI + SvelteKit.",
+  "description": "ORACLE - a grounded reference archive. Hybrid RAG on Cloudflare Workers AI + SvelteKit.",
   "type": "module",
   "private": true,
   "scripts": {
@@ -10,7 +10,9 @@
     "build": "npm run corpus && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler pages deploy",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250601.0",
@@ -21,6 +23,17 @@
     "svelte-check": "^4.1.0",
     "typescript": "^5.8.0",
     "vite": "^6.3.0",
+    "vitest": "^4.1.9",
     "wrangler": "^4.20.0"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/ibm-plex-sans": "^5.2.8",
+    "fuse.js": "^7.4.2"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.1": true,
+    "workerd@1.20260625.1": true
   }
 }
