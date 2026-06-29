@@ -7,6 +7,8 @@
 	import '@fontsource/ibm-plex-sans/500.css';
 	import '@fontsource/ibm-plex-sans/600.css';
 	import { page } from '$app/state';
+	import CommandPalette from '$lib/components/CommandPalette.svelte';
+	import { palette } from '$lib/palette.svelte.js';
 
 	let { children } = $props();
 
@@ -32,9 +34,13 @@
 			{#each nav as n}
 				<a class="navlink" href={n.href} aria-current={current(n.href) ? 'page' : undefined}>{n.label}</a>
 			{/each}
+			<button class="navlink search" onclick={() => (palette.open = true)} aria-label="Search the lexicon">
+				search <kbd>/</kbd>
+			</button>
 		</nav>
 		{@render children()}
 	</div>
+	<CommandPalette />
 </div>
 
 <style>
@@ -68,5 +74,23 @@
 	.navlink:hover,
 	.navlink[aria-current='page'] {
 		color: var(--amber-bright);
+	}
+	button.search {
+		background: none;
+		border: 0;
+		cursor: pointer;
+		font-family: var(--mono);
+		font-size: 0.76rem;
+		letter-spacing: 0.04em;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	button.search kbd {
+		font-size: 0.6rem;
+		color: var(--text-faint);
+		border: 1px solid var(--edge);
+		border-radius: 3px;
+		padding: 0.02rem 0.28rem;
 	}
 </style>

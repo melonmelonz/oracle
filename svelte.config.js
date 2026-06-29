@@ -11,6 +11,13 @@ const config = {
 			// during local dev require `wrangler pages dev --remote` instead.
 			platformProxy: {
 				configPath: 'wrangler.jsonc'
+			},
+			// Everything but the ask endpoint is prerendered to static assets, so
+			// only /api/* needs to invoke the Pages Function. This keeps the
+			// generated _routes.json well under Cloudflare's 100-rule limit.
+			routes: {
+				include: ['/api/*'],
+				exclude: []
 			}
 		})
 	}

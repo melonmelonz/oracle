@@ -153,6 +153,104 @@ a {
 	text-decoration: none;
 }
 
+/* ── Shared reference surfaces (archive, lexicon, manuals) ──────────────────
+   The reading layer. Prose uses IBM Plex Sans for sustained reading; labels,
+   ids, and chrome stay mono. One amber accent, one cool accent, no badge-color
+   soup. */
+.wrap {
+	position: relative;
+	z-index: 1;
+	max-width: var(--maxw);
+	margin: 0 auto;
+	padding: clamp(1.6rem, 4vh, 3rem) 1.3rem 5rem;
+}
+.kicker {
+	font-family: var(--mono);
+	font-size: 0.71rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--amber-dim);
+}
+.page-title {
+	font-family: var(--mono);
+	font-size: clamp(1.3rem, 4vw, 1.9rem);
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	color: var(--amber-bright);
+	margin: 0.5rem 0 0;
+	text-shadow: 0 0 1px currentColor;
+}
+.lede {
+	font-family: var(--sans);
+	font-size: 1rem;
+	line-height: 1.6;
+	color: var(--paper-dim);
+	max-width: 60ch;
+	margin: 0.9rem 0 0;
+}
+.prose {
+	font-family: var(--sans);
+	font-size: 1rem;
+	line-height: 1.7;
+	color: var(--paper);
+	max-width: 62ch;
+}
+.prose p {
+	margin: 0 0 1rem;
+}
+.crumb {
+	display: inline-block;
+	font-family: var(--mono);
+	font-size: 0.75rem;
+	color: var(--text-dim);
+	margin-bottom: 1.2rem;
+}
+.crumb:hover {
+	color: var(--amber-bright);
+}
+.chip {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.3rem;
+	font-family: var(--mono);
+	font-size: 0.68rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--text-dim);
+	border: 1px solid var(--edge);
+	border-radius: 999px;
+	padding: 0.15rem 0.6rem;
+	background: none;
+	cursor: pointer;
+	transition: color 0.16s, border-color 0.16s, background 0.16s;
+}
+.chip:hover,
+.chip[aria-pressed='true'],
+.chip[data-active='true'] {
+	color: var(--amber-bright);
+	border-color: var(--amber-dim);
+	background: rgba(217, 168, 94, 0.06);
+}
+/* domain tag, non-interactive, the cool accent's quiet sibling */
+.dtag {
+	font-family: var(--mono);
+	font-size: 0.66rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--text-faint);
+}
+.linkline {
+	color: var(--paper);
+	text-decoration: underline;
+	text-decoration-color: var(--edge);
+	text-underline-offset: 2px;
+	transition: text-decoration-color 0.16s, color 0.16s;
+}
+.linkline:hover {
+	color: var(--amber-bright);
+	text-decoration-color: var(--amber-dim);
+}
+
 @keyframes rise {
 	from {
 		opacity: 0;
