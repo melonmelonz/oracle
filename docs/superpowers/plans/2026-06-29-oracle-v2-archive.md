@@ -425,7 +425,17 @@ test('groupAlpha buckets by first letter', () => {
 
 - [ ] **Step 1:** `+page.ts` prerender loads `manuals.json`; group by topic/domain. `+page.svelte`: quiet citable source rows (model, title, year, kind, source host), plain underlined link to the archive.org `/details/` page; an "open in viewer" affordance only when a raw PDF URL is known + CORS-safe. No loud CTAs, no fake bezel. Commit after build.
 
-### Task 3.2: Lazy PDF.js viewer
+### Task 3.2: Manual viewer — DECISION: Archive.org embed, not custom PDF.js
+
+**Built instead of the custom pdfjs viewer.** Reason: archive.org serves manuals under
+varied filenames with uncertain CORS, so a custom pdfjs viewer pointed at raw PDFs would
+be flaky per-item. The research named `archive.org/embed/<identifier>` as the officially
+supported, reliable embed path. The shelf opens each manual in a minimally-framed inline
+panel via that embed (no rehosting, no filename/CORS guessing), with a direct link to the
+source item. pdfjs-dist was not installed, keeping the bundle lean. The original pdfjs
+viewer remains a possible future refinement if a CORS-clean PDF source is curated.
+
+### Task 3.2 (original): Lazy PDF.js viewer (superseded by the embed approach above)
 
 **Files:** `npm i pdfjs-dist`; Create `src/lib/components/PdfViewer.svelte`.
 
@@ -439,7 +449,18 @@ test('groupAlpha buckets by first letter', () => {
 
 ---
 
-## Phase 4: 3D CRT showpiece (cut-able)
+## Phase 4: 3D CRT showpiece — DEFERRED (judgment gate, awaiting green-light)
+
+**Decision (2026-06-29):** deferred, not built in this pass. The spec's own judgment gate
+plus the research flagged the 3D CRT as the single surface most at risk of reading
+"gimmicky", which directly conflicts with the governing directive (subtle, minimal,
+professional, nothing gimmicky). The CSS evolution (underscan frame, tuned scanline, warm
+palette) already delivers the broadcast-monitor read at ~1% of the weight, and the
+"underscan" signal-path view is the genuine special centerpiece. WebGL output also cannot
+be visually verified in this build environment. The Threlte scene below is fully specced
+and ready to build on an explicit green-light. Everything else ships live now.
+
+## Phase 4 (spec): 3D CRT showpiece (cut-able)
 
 ### Task 4.1: Lazy Threlte scene
 
