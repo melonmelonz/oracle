@@ -44,7 +44,15 @@
 							<div class="viewer">
 								<div class="viewer-cap">
 									<span>{m.model} &middot; {m.title}</span>
-									<span class="src">archive.org/{m.id}</span>
+									<span class="cap-right">
+										<button
+											class="fs"
+											onclick={(e) =>
+												/** @type {HTMLElement} */ (e.currentTarget).closest('.viewer')?.requestFullscreen?.()}
+											>fullscreen &#x26F6;</button
+										>
+										<span class="src">archive.org/{m.id}</span>
+									</span>
 								</div>
 								<iframe
 									src={`https://archive.org/embed/${m.id}`}
@@ -164,11 +172,38 @@
 	.viewer-cap .src {
 		color: var(--text-faint);
 	}
+	.cap-right {
+		display: flex;
+		align-items: baseline;
+		gap: 0.9rem;
+	}
+	.fs {
+		background: none;
+		border: 0;
+		cursor: pointer;
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		color: var(--cool-bright);
+	}
+	.fs:hover {
+		text-shadow: 0 0 10px rgba(111, 166, 181, 0.5);
+	}
 	.viewer iframe {
 		display: block;
 		width: 100%;
 		height: min(70vh, 640px);
 		border: 0;
+	}
+	/* When the panel is fullscreen, let the document fill the screen. */
+	.viewer:fullscreen {
+		display: flex;
+		flex-direction: column;
+		border: 0;
+		border-radius: 0;
+	}
+	.viewer:fullscreen iframe {
+		flex: 1 1 auto;
+		height: auto;
 	}
 	.note {
 		margin-top: 3rem;

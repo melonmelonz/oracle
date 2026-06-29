@@ -3,8 +3,8 @@
 	import AsciiPortrait from './AsciiPortrait.svelte';
 	import { ORACLE_ASCII } from '$lib/oracle-ascii.js';
 
-	/** @type {{ phase?: 'idle' | 'divining' | 'spent' }} */
-	let { phase = 'idle' } = $props();
+	/** @type {{ phase?: 'idle' | 'divining' | 'spent', screen?: 'oracle' | 'grid' }} */
+	let { phase = 'idle', screen = 'oracle' } = $props();
 
 	/** @type {HTMLDivElement | undefined} */
 	let host = $state();
@@ -31,7 +31,7 @@
 		let dispose = () => {};
 		let alive = true;
 		(async () => {
-			const d = await initScene(host, reduce, () => phaseRef, () => (ready = true));
+			const d = await initScene(host, reduce, () => phaseRef, () => (ready = true), screen);
 			if (!alive) d();
 			else dispose = d;
 		})();
@@ -47,8 +47,9 @@
 	 * @param {boolean} reduce
 	 * @param {() => string} getPhase
 	 * @param {() => void} onReady
+	 * @param {'oracle' | 'grid'} mode
 	 */
-	async function initScene(mount, reduce, getPhase, onReady) {
+	async function initScene(mount, reduce, getPhase, onReady, mode) {
 		const THREE = await import('three');
 		try {
 			await document.fonts.ready;
@@ -101,7 +102,7 @@
 		const texture = new THREE.CanvasTexture(canvas);
 		texture.colorSpace = THREE.SRGBColorSpace;
 		let glow = 1;
-		drawScreen(ctx, canvas.width, canvas.height, glow);
+		drawScreen(ctx, canvas.width, canvas.height, glow, mode);
 
 		const screen = new THREE.Mesh(
 			screenGeo,
@@ -192,7 +193,7 @@
 			const want = st === 'divining' ? 1.18 : st === 'spent' ? 0.92 : 1;
 			glow += (want - glow) * 0.08;
 			if (Math.abs(glow - lastGlow) > 0.01) {
-				drawScreen(ctx, canvas.width, canvas.height, glow);
+				drawScreen(ctx, canvas.width, canvas.height, glow, mode);
 				texture.needsUpdate = true;
 				lastGlow = glow;
 			}
@@ -231,32 +232,19 @@
 	}
 
 	/**
-	 * Draw the ASCII Oracle as amber phosphor with baked scanlines and a vignette.
+	 * Draw the phosphor screen content, then bake scanlines and a vignette.
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {number} w
 	 * @param {number} h
 	 * @param {number} glow
+	 * @param {'oracle' | 'grid'} mode
 	 */
-	function drawScreen(ctx, w, h, glow) {
+	function drawScreen(ctx, w, h, glow, mode) {
 		ctx.fillStyle = '#0c0b08';
 		ctx.fillRect(0, 0, w, h);
 
-		const lines = ORACLE_ASCII.split('\n');
-		const cols = Math.max(...lines.map((l) => l.length));
-		const fs = Math.min(h / (lines.length + 3), w / (cols * 0.62));
-		ctx.font = `${fs}px "IBM Plex Mono", ui-monospace, monospace`;
-		ctx.textBaseline = 'top';
-		const blockW = cols * fs * 0.6;
-		const ox = (w - blockW) / 2;
-		const oy = (h - lines.length * fs) / 2;
-
-		ctx.save();
-		ctx.globalAlpha = Math.min(1, 0.7 + glow * 0.25);
-		ctx.fillStyle = '#d9a85e';
-		ctx.shadowColor = 'rgba(217,168,94,0.55)';
-		ctx.shadowBlur = 4 * glow;
-		lines.forEach((ln, i) => ctx.fillText(ln, ox, oy + i * fs));
-		ctx.restore();
+		if (mode === 'grid') drawGrid(ctx, w, h, glow);
+		else drawAscii(ctx, w, h, glow);
 
 		// Baked scanlines.
 		ctx.fillStyle = 'rgba(0,0,0,0.16)';
@@ -268,6 +256,77 @@
 		g.addColorStop(1, 'rgba(0,0,0,0.5)');
 		ctx.fillStyle = g;
 		ctx.fillRect(0, 0, w, h);
+	}
+
+	/** @param {CanvasRenderingContext2D} ctx @param {number} w @param {number} h @param {number} glow */
+	function drawAscii(ctx, w, h, glow) {
+		const lines = ORACLE_ASCII.split('\n');
+		const cols = Math.max(...lines.map((l) => l.length));
+		const fs = Math.min(h / (lines.length + 3), w / (cols * 0.62));
+		ctx.font = `${fs}px "IBM Plex Mono", ui-monospace, monospace`;
+		ctx.textBaseline = 'top';
+		const blockW = cols * fs * 0.6;
+		const ox = (w - blockW) / 2;
+		const oy = (h - lines.length * fs) / 2;
+		ctx.save();
+		ctx.globalAlpha = Math.min(1, 0.7 + glow * 0.25);
+		ctx.fillStyle = '#d9a85e';
+		ctx.shadowColor = 'rgba(217,168,94,0.55)';
+		ctx.shadowBlur = 4 * glow;
+		lines.forEach((ln, i) => ctx.fillText(ln, ox, oy + i * fs));
+		ctx.restore();
+	}
+
+	/**
+	 * A broadcast-monitor calibration pattern in amber: a convergence grid, a
+	 * center crosshair and circle, corner registration marks. A real reference image.
+	 * @param {CanvasRenderingContext2D} ctx @param {number} w @param {number} h @param {number} glow
+	 */
+	function drawGrid(ctx, w, h, glow) {
+		const m = w * 0.06;
+		const gx = 8;
+		const gy = 6;
+		ctx.save();
+		ctx.strokeStyle = '#d9a85e';
+		ctx.globalAlpha = Math.min(1, 0.55 + glow * 0.3);
+		ctx.shadowColor = 'rgba(217,168,94,0.5)';
+		ctx.shadowBlur = 3 * glow;
+		ctx.lineWidth = 1.5;
+
+		// Grid.
+		ctx.beginPath();
+		for (let i = 0; i <= gx; i++) {
+			const x = m + ((w - 2 * m) * i) / gx;
+			ctx.moveTo(x, m);
+			ctx.lineTo(x, h - m);
+		}
+		for (let j = 0; j <= gy; j++) {
+			const y = m + ((h - 2 * m) * j) / gy;
+			ctx.moveTo(m, y);
+			ctx.lineTo(w - m, y);
+		}
+		ctx.stroke();
+
+		// Center crosshair + circle.
+		const cx = w / 2;
+		const cy = h / 2;
+		const r = Math.min(w, h) * 0.16;
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.arc(cx, cy, r, 0, Math.PI * 2);
+		ctx.moveTo(cx - r * 1.5, cy);
+		ctx.lineTo(cx + r * 1.5, cy);
+		ctx.moveTo(cx, cy - r * 1.5);
+		ctx.lineTo(cx, cy + r * 1.5);
+		ctx.stroke();
+
+		// Label.
+		ctx.shadowBlur = 2 * glow;
+		ctx.fillStyle = '#f6cd84';
+		ctx.font = `${h * 0.05}px "IBM Plex Mono", ui-monospace, monospace`;
+		ctx.textAlign = 'center';
+		ctx.fillText('PVM  GEOMETRY  100%', cx, h - m * 1.3);
+		ctx.restore();
 	}
 </script>
 

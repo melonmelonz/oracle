@@ -1,6 +1,8 @@
 import type { RequestHandler } from './$types';
 import corpus from '$lib/corpus.json';
 import topics from '$lib/topics.json';
+import manualsData from '$lib/manuals.json';
+import linksData from '$lib/links.json';
 import {
 	EMBED_MODEL,
 	CHAT_MODEL,
@@ -34,6 +36,27 @@ const TOPIC = new Map<string, TopicMeta>(
 		{ title: a.title, domain: a.domain, related: a.related ?? [] }
 	])
 );
+
+// Manuals and external references, grouped by the topic slug they belong to, so a
+// grounded answer can surface the source documents for whatever it cited.
+function groupBySlug<T extends { topic: string }>(rows: T[]): Map<string, T[]> {
+	const m = new Map<string, T[]>();
+	for (const r of rows) {
+		if (!m.has(r.topic)) m.set(r.topic, []);
+		m.get(r.topic)!.push(r);
+	}
+	return m;
+}
+const MANUALS_BY = groupBySlug(manualsData as Array<{ topic: string }>);
+const LINKS_BY = groupBySlug(linksData as Array<{ topic: string }>);
+
+/** Manuals + references for the topics a set of passages cited. */
+function referencesFor(passages: Retrieved[]) {
+	const slugs = [...new Set(passages.map((p) => p.slug))];
+	const manuals = slugs.flatMap((s) => MANUALS_BY.get(s) ?? []);
+	const links = slugs.flatMap((s) => LINKS_BY.get(s) ?? []);
+	return { manuals: manuals.slice(0, 6), links: links.slice(0, 8) };
+}
 
 /** Follow-ups drawn from the cited topics' related[] and their domains. */
 function followups(passages: Retrieved[]): string[] {
@@ -264,7 +287,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 				const answer = (result?.response ?? '').toString().trim();
 				await typeOut(answer || SILENT, send);
-				send({ type: 'done', followups: followups(passages) });
+				send({ type: 'done', followups: followups(passages), references: referencesFor(passages) });
 			} catch (err) {
 				send({ type: 'error', message: err instanceof Error ? err.message : 'Oracle failure.' });
 			} finally {

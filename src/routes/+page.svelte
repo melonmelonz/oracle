@@ -16,6 +16,8 @@
 	let trace = $state(null);
 	/** @type {string[]} */
 	let followups = $state([]);
+	/** @type {{manuals:Array<{model?:string,title?:string,url:string,kind?:string}>, links:Array<{title:string,url:string,kind:string}>}} */
+	let references = $state({ manuals: [], links: [] });
 	let errorMsg = $state('');
 	/** @type {number | null} */
 	let hoveredCite = $state(null);
@@ -42,6 +44,7 @@
 		sources = [];
 		trace = null;
 		followups = [];
+		references = { manuals: [], links: [] };
 		errorMsg = '';
 		hoveredCite = null;
 
@@ -96,6 +99,7 @@
 					status = 'error';
 				} else if (msg.type === 'done') {
 					followups = msg.followups ?? [];
+					references = msg.references ?? { manuals: [], links: [] };
 					status = 'spent';
 				}
 			}
@@ -190,6 +194,28 @@
 							<SourceCard source={s} highlighted={hoveredCite === s.n} delay={i * 50} />
 						{/each}
 					</div>
+				</div>
+			{/if}
+
+			{#if status === 'spent' && (references.manuals.length || references.links.length)}
+				<div class="shelf">
+					<div class="shelf-head">on the shelf/ &middot; from the cited pages</div>
+					<ul class="shelf-list">
+						{#each references.manuals as m}
+							<li>
+								<a class="linkline" href={m.url} target="_blank" rel="noopener noreferrer"
+									>{m.model}{#if m.title} &middot; {m.title}{/if}</a
+								>
+								<span class="k">manual</span>
+							</li>
+						{/each}
+						{#each references.links as l}
+							<li>
+								<a class="linkline" href={l.url} target="_blank" rel="noopener noreferrer">{l.title}</a>
+								<span class="k">{l.kind}</span>
+							</li>
+						{/each}
+					</ul>
 				</div>
 			{/if}
 
@@ -408,6 +434,37 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.3rem;
+	}
+
+	.shelf {
+		margin-top: 2.2rem;
+	}
+	.shelf-head {
+		font-size: 0.71rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--amber-dim);
+		margin-bottom: 0.7rem;
+	}
+	.shelf-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.3rem;
+	}
+	.shelf-list li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+		font-family: var(--mono);
+		font-size: 0.82rem;
+	}
+	.shelf-list .k {
+		font-size: 0.62rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--cool);
 	}
 
 	.followups {

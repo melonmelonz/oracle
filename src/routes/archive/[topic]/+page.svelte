@@ -1,6 +1,9 @@
 <script>
+	import Monitor3D from '$lib/components/Monitor3D.svelte';
 	let { data } = $props();
 	const { topic, related, vocab } = $derived(data);
+	// A rotatable broadcast monitor, as an inline reference graphic on its own page.
+	const showMonitor = $derived(topic.slug === 'monitors-pvm');
 
 	// Render a section's plain text into paragraphs and simple bullet lists.
 	/** @param {string} text */
@@ -30,6 +33,13 @@
 
 	<p class="dtag">{topic.domain}</p>
 	<h1 class="page-title">{topic.title}</h1>
+
+	{#if showMonitor}
+		<figure class="graphic">
+			<Monitor3D screen="grid" phase="idle" />
+			<figcaption>a broadcast monitor, showing a convergence grid. drag to turn it.</figcaption>
+		</figure>
+	{/if}
 
 	{#each topic.sections as s}
 		<section class="sec">
@@ -107,6 +117,20 @@
 </article>
 
 <style>
+	.graphic {
+		margin: 1.6rem 0 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.graphic figcaption {
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		color: var(--text-faint);
+		margin-top: 0.4rem;
+		text-align: center;
+	}
+
 	.sec {
 		margin-top: 1.8rem;
 	}
