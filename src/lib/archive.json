@@ -67,7 +67,146 @@
 				"def": "The angle-based measure of how aligned two embedding vectors are, used to rank passages by meaning."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "SvelteKit Cloudflare adapter",
+				"url": "https://svelte.dev/docs/kit/adapter-cloudflare",
+				"kind": "docs"
+			},
+			{
+				"title": "Cloudflare Workers AI",
+				"url": "https://developers.cloudflare.com/workers-ai/",
+				"kind": "docs"
+			},
+			{
+				"title": "Cloudflare Workers KV",
+				"url": "https://developers.cloudflare.com/kv/",
+				"kind": "docs"
+			}
+		]
+	},
+	{
+		"slug": "beagleplay",
+		"title": "The BeaglePlay and SPI Display Bring-up",
+		"domain": "kernel",
+		"tags": [
+			"beagleplay",
+			"single-board-computer",
+			"am625",
+			"cortex-a53",
+			"device-tree",
+			"spi",
+			"ili9341",
+			"linux",
+			"embedded"
+		],
+		"source": "BeagleBoard.org docs, TI AM625 datasheet, ILI9341 datasheet (Adafruit mirror), kernel panel-mipi-dbi-spi.yaml binding; June 2026",
+		"related": [
+			"spi-bus",
+			"rust-for-linux",
+			"linux-kernel"
+		],
+		"sections": [
+			{
+				"section": "The Board",
+				"text": "BeaglePlay is an open-hardware single-board computer from the BeagleBoard.org Foundation, introduced in March 2023 at a list price of 99 USD. It is built around the Texas Instruments AM625, a Sitara application processor. The board carries 2 GB of DDR4 RAM and 16 GB of eMMC flash soldered down, so it boots a full Debian Linux image out of the box. Its outward face is unusually rich for the price: full-size HDMI, a gigabit Ethernet RJ45, a single-pair Ethernet RJ11 (10 Mbps but long reach), dual-band Wi-Fi, Bluetooth LE, a sub-GHz radio, a USB-A host port, and a USB-C port used for both power and a serial console. For expansion it exposes a mikroBUS socket, a Grove connector, and a QWIIC connector, plus MIPI display and camera interfaces. The intent is general: it is a learning and prototyping machine that happens to use industrial-grade silicon rather than a hobby-tier chip."
+			},
+			{
+				"section": "The AM625 SoC",
+				"text": "The AM625 is heterogeneous. Its headline cluster is four Arm Cortex-A53 cores, 64-bit application cores that run at up to 1.4 GHz and share 512 KB of L2 cache; each core has 32 KB of L1 instruction and 32 KB of L1 data cache. These are the cores Linux schedules on. Alongside them the SoC carries auxiliary cores that do not run the main OS: a Cortex-M4F for low-power and safety tasks and a dual-core Programmable Real-Time Unit subsystem for deterministic I/O. The silicon also contains a Cortex-R5 core, but on the AM625 it is reserved for device management and system firmware rather than exposed as a user-programmable core, so the only customer-usable auxiliary cores are the M4F and the PRU pair. User-accessible R5F cores show up on sibling Sitara parts such as the AM62P and AM64x, not on the AM625. A PowerVR-class 3D GPU drives up to two displays and supports OpenGL ES and Vulkan. TI positions the part for human-machine-interaction and industrial work, which is why it ships in industrial and automotive temperature grades. For someone bringing up a small display, the relevant fact is simpler: the Cortex-A53 cluster is where the kernel, the device tree, and any SPI driver actually live."
+			},
+			{
+				"section": "Single-Board Computer Versus Microcontroller",
+				"text": "The phrase single-board computer marks a real boundary, not marketing. A microcontroller such as an STM32 or an AVR runs one program directly on the metal, with kilobytes of RAM and no operating system underneath. A single-board computer like BeaglePlay runs a general-purpose kernel, Linux here, with virtual memory, process scheduling, a filesystem, and loadable drivers. That changes how you attach hardware. On a microcontroller you write to a peripheral register and the wire moves. On Linux you do not touch registers from an application; you tell the kernel what is wired up, the kernel binds a driver, and the driver owns the register. The cost is indirection. The benefit is that the same SPI display code works across boards once each board describes its own pins. The device tree is the seam where that description lives."
+			},
+			{
+				"section": "The Serial Console",
+				"text": "Before a network comes up and long before any HDMI or SPI display works, the serial console is how you watch a board boot and how you log in when something is wrong. BeaglePlay exposes its debug UART through the USB-C connector by way of an onboard USB-to-serial bridge, so a single cable carries both power and the console. The conventional settings are 115200 baud, eight data bits, no parity, one stop bit, with no hardware flow control. A terminal program such as picocom, minicom, or screen attaches to the resulting device node and shows the bootloader, the kernel ring buffer, and eventually a login prompt. This channel is text only and narrow, but it is the most reliable diagnostic on the board; when a display overlay fails to bind, the dmesg output that explains why arrives here."
+			},
+			{
+				"section": "Device Tree and Overlays",
+				"text": "Some buses announce what is plugged into them. PCI and USB are discoverable; the host can ask a device to identify itself. SPI cannot. The bus is just clock, data, and a select line, with no protocol for a peripheral to say what it is. So the kernel has to be told, in advance, that a given chip sits on a given chip-select at a given speed. On Arm Linux that description is the device tree: a hierarchy of nodes giving addresses, clocks, GPIOs, pin multiplexing, and a compatible string that the kernel matches against a driver. A device tree overlay is a patch against that base tree. Rather than editing the board's main .dts, you write a small fragment that targets the SPI controller node, sets its status to \"okay\", and adds a child node for your display. Compiled to a .dtbo and applied, it brings up the new device and leaves the rest of the system untouched. Overlays are the normal way to wire an add-on board on BeaglePlay."
+			},
+			{
+				"section": "The ILI9341 Panel",
+				"text": "The ILI9341 is a single-chip driver for small color TFT LCDs, common on 2.2 to 3.2 inch modules. Its native resolution is 240 by 320 pixels (240 RGB by 320), it drives 262,144 colors, and it carries 172,800 bytes of internal graphics RAM so it can hold a full frame on-chip. It accepts a parallel bus, an RGB bus, or a 3- or 4-line SPI interface, and it runs at 1.65 to 3.3 V on its I/O lines, which matches BeaglePlay's 3.3 V logic. Wiring it over SPI needs more than the bus itself. SPI supplies clock (SCLK), host-to-device data (MOSI), and a chip-select line the controller asserts low to address this panel. On top of that the display needs a data/command GPIO, often labelled D/CX, which is high when the bytes are pixel data and low when they are a command; in 4-line mode this pin is mandatory, and omitting it puts the part in 3-line mode where the bit is sent inline. A reset GPIO is also wired so the host can hard-reset the controller before initialization."
+			},
+			{
+				"section": "Binding a Driver",
+				"text": "Once the overlay describes the panel, the kernel still has to attach a driver to it. The matching is done by the compatible string. The old fbtft framebuffer drivers handled these panels for years but have been deprecated and largely removed; the current path is DRM. A dedicated tinydrm driver for the ILI9341 exists, and a generic panel-mipi-dbi-spi driver covers DBI-compatible SPI panels by reading width, height, and an initialization sequence supplied as a firmware blob rather than hardcoding them. The kernel binding for these drivers defines dc-gpios for the data/command line and reset-gpios for the reset line. One sharp edge is worth naming: the modern DRM drivers expect the reset line as GPIO_ACTIVE_HIGH, the opposite of the active-low convention the old fbtft overlays used, and getting that polarity wrong is a frequent cause of a blank or all-white panel. The same binding is what a Rust driver in the kernel would match against; the language of the driver changes, but the device tree contract it binds to does not."
+			}
+		],
+		"vocab": [
+			{
+				"term": "BeaglePlay",
+				"def": "An open-hardware single-board computer from the BeagleBoard.org Foundation built around the TI AM625 SoC."
+			},
+			{
+				"term": "AM625",
+				"def": "A Texas Instruments Sitara application processor with a quad-core Cortex-A53 cluster and several real-time cores."
+			},
+			{
+				"term": "Cortex-A53",
+				"def": "A 64-bit Arm application core designed for power efficiency, used in clusters of up to four on the AM625."
+			},
+			{
+				"term": "Single-Board Computer",
+				"def": "A complete computer on one board running a full operating system, distinct from a bare-metal microcontroller."
+			},
+			{
+				"term": "Device Tree",
+				"def": "A data structure that describes hardware to the kernel so drivers can bind without that knowledge being compiled in."
+			},
+			{
+				"term": "Device Tree Overlay",
+				"def": "A fragment that patches the base device tree to add or enable a peripheral without editing the main file."
+			},
+			{
+				"term": "ILI9341",
+				"def": "A single-chip TFT LCD driver for 240 by 320 panels that accepts a 3- or 4-line SPI interface."
+			},
+			{
+				"term": "Chip Select",
+				"def": "An SPI line the controller asserts low to address one specific peripheral on a shared bus."
+			},
+			{
+				"term": "Data/Command",
+				"def": "An extra GPIO on many SPI displays that tells the panel whether incoming bytes are pixel data or a command."
+			},
+			{
+				"term": "Serial Console",
+				"def": "A text terminal exposed over a UART, giving boot logs and a login shell before any network or display works."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "BeaglePlay documentation",
+				"url": "https://docs.beagleboard.org/latest/boards/beagleplay/index.html",
+				"kind": "manual"
+			},
+			{
+				"title": "TI AM625 product page",
+				"url": "https://www.ti.com/product/AM625",
+				"kind": "datasheet"
+			},
+			{
+				"title": "TI AM625 datasheet PDF",
+				"url": "https://www.ti.com/lit/ds/symlink/am625.pdf",
+				"kind": "datasheet"
+			},
+			{
+				"title": "ILI9341 datasheet PDF",
+				"url": "https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf",
+				"kind": "datasheet"
+			},
+			{
+				"title": "Linux panel-mipi-dbi-spi binding",
+				"url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/display/panel/panel-mipi-dbi-spi.yaml",
+				"kind": "source"
+			}
+		]
 	},
 	{
 		"slug": "distributed-systems",
@@ -164,12 +303,34 @@
 				"def": "An atomic-commit protocol (prepare then commit) that blocks if the coordinator fails after votes are collected."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "Raft paper PDF",
+				"url": "https://raft.github.io/raft.pdf",
+				"kind": "paper"
+			},
+			{
+				"title": "Paxos Made Simple PDF",
+				"url": "https://lamport.azurewebsites.net/pubs/paxos-simple.pdf",
+				"kind": "paper"
+			},
+			{
+				"title": "Eventually Consistent",
+				"url": "https://www.allthingsdistributed.com/2008/12/eventually_consistent.html",
+				"kind": "paper"
+			},
+			{
+				"title": "Linearizability paper PDF",
+				"url": "https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf",
+				"kind": "paper"
+			}
+		]
 	},
 	{
 		"slug": "gamecube",
 		"title": "The Nintendo GameCube",
-		"domain": "console",
+		"domain": "hardware",
 		"tags": [
 			"gamecube",
 			"nintendo",
@@ -264,7 +425,29 @@
 				"def": "Firmware and hardware checks that tie a console to NTSC-U, NTSC-J, or PAL game discs and refuse others."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "GameCube architecture deep dive",
+				"url": "https://www.copetti.org/writings/consoles/gamecube/",
+				"kind": "guide"
+			},
+			{
+				"title": "RetroRGB GameCube video output",
+				"url": "https://www.retrorgb.com/gamecubeoutput.html",
+				"kind": "guide"
+			},
+			{
+				"title": "GC-Forever booting homebrew",
+				"url": "https://www.gc-forever.com/wiki/index.php?title=Booting_homebrew",
+				"kind": "wiki"
+			},
+			{
+				"title": "GC-Forever region switch",
+				"url": "https://www.gc-forever.com/wiki/index.php?title=Region_Switch",
+				"kind": "wiki"
+			}
+		]
 	},
 	{
 		"slug": "linux-kernel",
@@ -358,12 +541,34 @@
 				"def": "The Linux Kernel Mailing List, the main forum where patches are posted, reviewed, and argued over in public."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "Kernel releases",
+				"url": "https://www.kernel.org/releases.html",
+				"kind": "docs"
+			},
+			{
+				"title": "Submitting patches",
+				"url": "https://docs.kernel.org/process/submitting-patches.html",
+				"kind": "docs"
+			},
+			{
+				"title": "Linux MAINTAINERS file",
+				"url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/MAINTAINERS",
+				"kind": "source"
+			},
+			{
+				"title": "LKML archive",
+				"url": "https://lore.kernel.org/lkml/",
+				"kind": "archive"
+			}
+		]
 	},
 	{
 		"slug": "majoras-mask",
 		"title": "The Legend of Zelda - Majora's Mask",
-		"domain": "zelda",
+		"domain": "games",
 		"tags": [
 			"zelda",
 			"n64",
@@ -438,7 +643,29 @@
 				"def": "An in-game schedule tracker that records the routines, deadlines, and sidequests of Termina's residents across the cycle."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "Majora's Mask overview",
+				"url": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Majora%27s_Mask",
+				"kind": "wiki"
+			},
+			{
+				"title": "ZeldaDungeon Majora's Mask walkthrough and maps",
+				"url": "https://www.zeldadungeon.net/majoras-mask-walkthrough/",
+				"kind": "guide"
+			},
+			{
+				"title": "ZeldaSpeedRuns Majora's Mask hub",
+				"url": "https://www.zeldaspeedruns.com/mm",
+				"kind": "route"
+			},
+			{
+				"title": "ZeldaSpeedRuns Majora's Mask routes",
+				"url": "https://www.zeldaspeedruns.com/mm/routes",
+				"kind": "route"
+			}
+		]
 	},
 	{
 		"slug": "monitors-pvm",
@@ -628,6 +855,28 @@
 				"url": "https://archive.org/details/sony-bvm-2000-ap-service-manual",
 				"kind": "service"
 			}
+		],
+		"links": [
+			{
+				"title": "Sony Monitor Documentation collection",
+				"url": "https://archive.org/details/SonyMonitorDocumentation",
+				"kind": "manual"
+			},
+			{
+				"title": "RetroRGB RGB intro",
+				"url": "https://www.retrorgb.com/rgbintro.html",
+				"kind": "guide"
+			},
+			{
+				"title": "RepairFAQ TV and monitor notes",
+				"url": "https://www.repairfaq.org/samnew/tvfaq.htm",
+				"kind": "guide"
+			},
+			{
+				"title": "RetroRGB GameCube output",
+				"url": "https://www.retrorgb.com/gamecubeoutput.html",
+				"kind": "guide"
+			}
 		]
 	},
 	{
@@ -719,7 +968,259 @@
 				"def": "A console cowboy, a freelance hacker who runs the matrix on a custom cyberspace deck."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "Neuromancer reference overview",
+				"url": "https://en.wikipedia.org/wiki/Neuromancer",
+				"kind": "wiki"
+			},
+			{
+				"title": "Sprawl trilogy overview",
+				"url": "https://en.wikipedia.org/wiki/Sprawl_trilogy",
+				"kind": "wiki"
+			},
+			{
+				"title": "Wired: Neuromancer Speaks",
+				"url": "https://www.wired.com/1995/01/neuromancer-speaks",
+				"kind": "article"
+			}
+		]
+	},
+	{
+		"slug": "pokemon-gen1",
+		"title": "Pokemon Generation I (Red, Green, Blue)",
+		"domain": "games",
+		"tags": [
+			"pokemon",
+			"game-boy",
+			"game-freak",
+			"glitches",
+			"speedrun",
+			"arbitrary-code-execution",
+			"kanto"
+		],
+		"source": "Bulbapedia, Wikipedia, Glitch City Wiki, Pokemon Speedruns wiki; verified June 2026",
+		"related": [
+			"gamecube",
+			"zelda-speedruns"
+		],
+		"sections": [
+			{
+				"section": "Release and origins",
+				"text": "Pokemon began as Pocket Monsters Red and Green, released in Japan for the Game Boy on February 27, 1996. The games were developed by Game Freak and published by Nintendo. A third version, Blue, followed on October 15, 1996, first as a mail-order edition for subscribers of CoroCoro Comic. Blue carried revised art, script, and code; that revised build is what Nintendo localized for the wider world. Outside Japan the pairing shipped as Red and Blue, reaching North America in 1998 and Europe in 1999.\n\nThe original Japanese release nearly happened earlier. Development was finished by late 1995 and a December launch was planned, then pushed to February 1996 because tie-in products were not ready. The franchise that grew from those carts became the Game Boy's best-selling property; Red, Blue, and Yellow together sold more than 46 million copies. The Game Boy itself had launched in 1989, by then aging hardware, which makes the scale of the success more striking."
+			},
+			{
+				"section": "Satoshi Tajiri and the trading idea",
+				"text": "Satoshi Tajiri founded Game Freak and drove the project. The concept grew from his childhood habit of collecting insects in the fields around his home; as those fields gave way to development, he imagined a game that let children gather creatures the way he once gathered bugs. He pitched the idea to Nintendo in 1990 and met skepticism. Shigeru Miyamoto saw the potential and backed it, and the work stretched across roughly six years, with breaks for other projects.\n\nThe trading mechanic came from a specific frustration. Playing Dragon Quest II, Tajiri wanted a rare item that Ken Sugimori had a spare of, and found the Famicom offered no way to pass it across. When the Game Boy arrived with its link cable, he saw the fit at once. The two default rival names, Satoshi and Shigeru, point back at Tajiri and Miyamoto."
+			},
+			{
+				"section": "The 151 and the Kanto region",
+				"text": "Generation I is set in Kanto, a region modeled loosely on the real Kanto area of Japan. The player starts in Pallet Town, picks one of three starters, and works across the map collecting eight Gym Badges before challenging the Elite Four to become Champion. Running alongside that path is the Pokedex, the catalog the player fills by encountering and catching each species.\n\nThere are 151 Pokemon in this generation, from Bulbasaur at number 1 to Mew at 151. A small team designed them; Ken Sugimori led the art with fewer than ten people, and Atsuko Nishida drew Pikachu and several starters. Mew sits apart from the rest. Its trademark was filed in 1990, years before the games shipped, and Tajiri later said he kept Mew hidden inside the cartridge on purpose to seed rumor and keep interest alive. That single hidden creature shaped much of the lore that followed."
+			},
+			{
+				"section": "Trading as core design",
+				"text": "You cannot complete the Pokedex alone. This is built into the design at two layers. First, the paired versions hold different wild Pokemon: a species exclusive to Red is absent from Blue, and the reverse, so two players with opposite versions must trade to fill both dexes. Sandshrew is one version's catch and Ekans the other's, as one example among many.\n\nSecond, four Pokemon evolve only through trading and through no other means in Generation I. Kadabra becomes Alakazam, Machoke becomes Machamp, Graveler becomes Golem, and Haunter becomes Gengar, each transforming the instant it arrives in the other game over the link cable. A solo player can raise a Machoke forever and never see Machamp without a second Game Boy and a friend. The cable is not a bonus feature here. It is the spine of the whole catalog."
+			},
+			{
+				"section": "MissingNo. and item duplication",
+				"text": "The Generation I battle code reserves 256 internal slots but defines only 151 Pokemon. The leftover slots hold glitch creatures, the most famous of which is MissingNo., short for Missing Number. Players reach it through the Old Man trick: watch the old man's catching tutorial in Viridian City, fly to Cinnabar Island, then surf along the east coast. The coastline tile has no encounter table, so the game reuses leftover data from the tutorial, and the player's name letters decide which glitch Pokemon appears.\n\nEncountering or catching MissingNo. usually adds 128 to the quantity of the sixth item in the bag. Tossing the stack down to 127 and repeating yields a full stack of 255. The duplication made the trick a fixture in 1990s strategy guides, even as Nintendo warned it could corrupt save data. The corruption risk is real but uneven; the Hall of Fame display reliably glitches, while harder crashes depend on which variant is encountered. Some forms, such as the Ghost and fossil MissingNo., duplicate items without the freezing seen elsewhere."
+			},
+			{
+				"section": "The Mew glitch",
+				"text": "Mew was meant to be obtainable only through official distribution events. The Mew glitch is the documented way to get it on a retail cartridge without one. It works by exploiting the Trainer-Fly glitch, which leaves a trainer's battle data hanging when the player escapes a sightline at the right moment, then triggers a fresh encounter whose species is read from the leftover special stat. By controlling which trainer and which intervening encounter set that value, a player can force a wild level-7 Mew to appear.\n\nThe procedure is precise and easy to spoil, and accounts of the exact step order vary in their framing across sources, so the safe summary is the mechanism rather than a keystroke list. There is a later wrinkle for transfers. A Mew caught this way generally cannot move forward through Poke Transporter on the 3DS Virtual Console unless its original trainer and ID match the distributed Mew's, a check that arbitrary code execution can sidestep by editing those fields."
+			},
+			{
+				"section": "Arbitrary code execution and speedruns",
+				"text": "Generation I has become a celebrated speedrun and glitch-exploitation game, in large part because its quirks let runners reprogram the cartridge mid-run. The chain starts with the 255-item stack from item duplication. Glitch items such as 8F, obtained through further setup, jump the program counter into RAM rather than ROM. The bytes it lands on are player-controllable: party data, bag contents, box names, Pokemon nicknames. Runners spell out a short jump there, then a longer payload elsewhere, and effectively write new code into a running game.\n\nArbitrary code execution is powerful enough that the fastest Any% runs use it to warp straight to the credits, while categories like Glitchless and the 151-Pokemon run ban it outright to preserve a real challenge. ACE is not itself a single leaderboard category; it is a technique used across some and forbidden in others. Related practices like RNG manipulation, steering the pseudorandom state to force encounters or outcomes, sit in the same toolbox. A 2013 tool-assisted run that exposed an item underflow is often credited with opening the modern era of these exploits."
+			}
+		],
+		"vocab": [
+			{
+				"term": "MissingNo.",
+				"def": "A glitch Pokemon that appears from undefined data and, on capture or encounter, adds 128 to the sixth bag item."
+			},
+			{
+				"term": "Mew Glitch",
+				"def": "A method to obtain Mew in retail Red and Blue by exploiting the Trainer-Fly glitch without an official event."
+			},
+			{
+				"term": "Link Cable",
+				"def": "The physical cable joining two Game Boys so players can trade and battle Pokemon."
+			},
+			{
+				"term": "Game Freak",
+				"def": "The studio that developed the Generation I Pokemon games, founded by Satoshi Tajiri."
+			},
+			{
+				"term": "Satoshi Tajiri",
+				"def": "Game Freak founder who conceived Pokemon out of childhood insect collecting."
+			},
+			{
+				"term": "Kanto",
+				"def": "The region where Generation I is set, home to its 151 Pokemon and eight Gyms."
+			},
+			{
+				"term": "Pokedex",
+				"def": "The in-game catalog of Pokemon that the player fills by seeing and catching each species."
+			},
+			{
+				"term": "Arbitrary Code Execution",
+				"def": "Forcing the game to run player-controlled bytes as program code, used to rewrite the game state."
+			},
+			{
+				"term": "Version Exclusive",
+				"def": "A Pokemon catchable in only one version of a paired release, pushing players to trade."
+			},
+			{
+				"term": "RNG Manipulation",
+				"def": "Steering the game's pseudorandom state to force a desired outcome on demand."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Bulbapedia: Kanto",
+				"url": "https://bulbapedia.bulbagarden.net/wiki/Kanto",
+				"kind": "map"
+			},
+			{
+				"title": "Serebii Pokearth: Kanto",
+				"url": "https://www.serebii.net/pokearth/kanto/",
+				"kind": "map"
+			},
+			{
+				"title": "Glitch City Wiki: MissingNo.",
+				"url": "https://glitchcity.wiki/wiki/MissingNo.",
+				"kind": "wiki"
+			},
+			{
+				"title": "Glitch City Wiki: item duplication",
+				"url": "https://glitchcity.wiki/wiki/Item_duplication_glitch",
+				"kind": "guide"
+			},
+			{
+				"title": "Nintendo UK: Pokemon Red",
+				"url": "https://www.nintendo.com/en-gb/Games/Game-Boy/Pokemon-Red-Version-266110.html",
+				"kind": "manual"
+			}
+		]
+	},
+	{
+		"slug": "retro-computing",
+		"title": "Computing in the 1990s and Early 2000s",
+		"domain": "hardware",
+		"tags": [
+			"retro",
+			"pc",
+			"dos",
+			"windows",
+			"gpu",
+			"modem",
+			"cd-rom",
+			"lan",
+			"crt"
+		],
+		"source": "Web-verified June 2026 against Wikipedia, DOS Days, fabiensanglard.net, ITU/EE Times, Internet Archive, and contemporary retrospectives.",
+		"related": [
+			"monitors-pvm",
+			"gamecube"
+		],
+		"sections": [
+			{
+				"section": "The CRT on the desk",
+				"text": "Every PC of the era sat behind a deep, heavy glass tube. A color cathode ray tube fired three electron beams, one each for red, green, and blue, through a perforated metal shadow mask (or, in Sony's Trinitron line, a grid of fine vertical wires called an aperture grill) onto colored phosphor dots painted on the inside of the screen. The phosphors glowed briefly where the beams struck them, and the whole image was redrawn line by line many times a second. The redraw speed was the refresh rate, often 60 Hz on cheaper monitors and climbing to 85 Hz and beyond on better ones to reduce visible flicker. Sharpness was sold by dot pitch, the spacing between phosphor dots; smaller was better. The baseline was the VGA standard at 640 by 480 pixels, with the screen running 4:3 and stepping up through 800 by 600, 1024 by 768, and 1280 by 1024. These were the same fundamentals as the broadcast monitors used in video, just driven by a computer's analog VGA signal. The tubes were enormous and warm, and they would outlast the rest of the machine."
+			},
+			{
+				"section": "DOS underneath everything",
+				"text": "Before the graphical desktop took over, the PC booted to a blinking prompt. MS-DOS was Microsoft's command-line operating system, and you typed commands to change directories, run programs, and launch games. There was no multitasking to speak of; one program owned the machine. Memory management was a black art, since DOS could address conventional memory below 640 KB directly and everything above it needed extended or expanded memory tricks to reach. Games shipped with cryptic instructions about freeing up enough base memory and loading the right sound and mouse drivers. Even after Windows 95 arrived, DOS did not vanish: traces remained throughout the system, and MS-DOS 7 still loaded briefly during boot. For years the command line stayed close at hand, one keystroke under the colorful icons, and plenty of software still expected to find it there."
+			},
+			{
+				"section": "Windows 95 and the Start menu",
+				"text": "On August 24, 1995, Microsoft released Windows 95 at retail (it had gone to manufacturing on July 14). Developed under the codename \"Chicago,\" it merged the separate MS-DOS and Windows product lines into one and moved from the older 16-bit cooperative multitasking to a 32-bit preemptive design. The launch was a spectacle, backed by a roughly $300 million campaign and the Rolling Stones' \"Start Me Up.\" The song fit the headline feature: the Start menu, a single button in the corner that opened onto everything installed. Alongside it came the taskbar, the notification area, Windows Explorer, desktop shortcuts, Plug and Play driver detection, and long filenames up to 255 characters instead of the old eight-plus-three limit. It sold more than seven million copies in five weeks. The desktop metaphor it set down, a button at bottom-left and a bar of running programs, is still recognizable on screens decades later."
+			},
+			{
+				"section": "The beige box",
+				"text": "The hardware all looked the same. PCs shipped in putty-colored cases, the beige box, whether a flat desktop with the monitor perched on top or an upright tower. Inside was a motherboard, expansion slots for sound and video and modem cards, drive bays for floppies and a CD-ROM, and a power supply with a loud fan. The sameness was a feature of the open PC platform: parts from many makers fit together, so people upgraded a card here, a drive there, rather than replacing the whole machine. The cases were sturdy and unglamorous, and they were heavy. Some were sold with carrying handles or straps so the owner could lug the tower to a friend's house. That weight, multiplied by a CRT, is the reason the LAN party was such physical work."
+			},
+			{
+				"section": "3D acceleration and the rise of the GPU",
+				"text": "For most of the decade, the processor drew 3D graphics in software, slowly. That changed when 3dfx Interactive, founded in 1994 by former Silicon Graphics engineers, shipped the Voodoo Graphics chip (the SST-1, named for founders Sellers, Smith, and Tarolli). The first card built on it, Orchid Technology's Righteous 3D, arrived on October 7, 1996. The Voodoo did one thing: 3D rendering, and fast. It had no 2D output of its own, so it sat alongside a separate VGA card, connected by a pass-through cable, and woke up only when a 3D game ran; some boards made an audible click as they switched modes. A typical card carried 4 MB of EDO DRAM at 50 MHz and did texture mapping, Z-buffering, Gouraud shading, and bilinear filtering in hardware. 3dfx paired it with the Glide API, a lean subset of OpenGL tuned to the chip, and games like Tomb Raider looked transformed. At its peak the company held an estimated 80 to 85 percent of the 3D accelerator market. Then Nvidia's GeForce 256 (1999) integrated hardware transform and lighting onto one chip, 3dfx stumbled, and Nvidia bought its assets in December 2000."
+			},
+			{
+				"section": "Dial-up and the early web",
+				"text": "Going online meant tying up the phone line. A dial-up modem turned data into the screechy tones of a handshake, then carried it over an ordinary analog line. Speeds climbed through the decade: 14.4 kbit/s standardized as V.32bis in 1991, with affordable modems shipping from early 1992, then 28.8 in 1994, 33.6 in 1996, which sat near the hard ceiling that quantization noise imposed on analog-to-digital conversion. The 56k generation broke through by exploiting the fact that the phone network was already digital past the local loop, but it arrived split between two incompatible camps, USRobotics' X2 and Rockwell's K56Flex, sold at around $200. The ITU ended the standoff with the V.90 standard, drafted in February 1998 and ratified that September, nicknamed \"V.Last.\" Even then, 56k was a downstream maximum; uploads stayed at 33.6, and noisy rural lines often fell to 21.6, the so-called \"21600 Syndrome.\" Real throughput of 40 to 50 kbit/s shaped the whole early web: small images, sparse pages, and downloads measured in patient minutes."
+			},
+			{
+				"section": "Shareware, CD-ROMs, and the LAN party",
+				"text": "Software found its audience by being copied freely. Under the shareware model, a free partial version circulated by any means and the full game was sold by mail. id Software's Doom is the landmark case: at midnight on December 10, 1993, the team uploaded the first nine-level episode, \"Knee-Deep in the Dead,\" and let players spread it. The full $40 game shipped only by mail order. By an estimate only about one percent of downloaders paid, but that still brought roughly $100,000 a day, and the shareware episodes were distributed well over a million times. Meanwhile storage outgrew the 3.5-inch floppy's 1.44 MB; office suites once shipped on a dozen disks. The CD-ROM, a read-only optical format from Sony and Philips dating to 1985, held about 650 MB, hundreds of times more, and became standard PC equipment by the mid-1990s. With drives fragmenting files across the disk, FAT-era machines slowed over time, and users ran defragmentation tools (Microsoft Defrag arrived in MS-DOS 6.0) to pull each file's pieces back together. And to play together, people hauled beige boxes and CRTs to one room, wired them with Ethernet hubs, fought with static IPs and the IPX protocol, and played Doom, Quake, and StarCraft until dawn. That was the LAN party."
+			}
+		],
+		"vocab": [
+			{
+				"term": "MS-DOS",
+				"def": "Microsoft's command-line disk operating system that ran most PCs before and beneath Windows 95."
+			},
+			{
+				"term": "Windows 95",
+				"def": "The 1995 Microsoft operating system that merged DOS and Windows and introduced the Start menu and taskbar."
+			},
+			{
+				"term": "3dfx Voodoo",
+				"def": "The 1996 add-on board that brought hardware 3D acceleration to consumer PCs and defined early gaming graphics."
+			},
+			{
+				"term": "Dial-up Modem",
+				"def": "A device that carried data as audible tones over an ordinary phone line, topping out near 56 kbit/s."
+			},
+			{
+				"term": "Shareware",
+				"def": "A distribution model where a free partial version was freely copied to entice purchase of the full registered version."
+			},
+			{
+				"term": "LAN Party",
+				"def": "A gathering where people hauled their PCs to one location and wired them together for multiplayer games."
+			},
+			{
+				"term": "CRT",
+				"def": "Cathode ray tube; the deep glass display that fired electron beams at colored phosphors behind the glass."
+			},
+			{
+				"term": "CD-ROM",
+				"def": "A read-only optical disc holding about 650 MB, used to distribute software after floppies ran out of room."
+			},
+			{
+				"term": "Defragmentation",
+				"def": "Rearranging a disk's file fragments into contiguous order so the drive head seeks less."
+			},
+			{
+				"term": "Beige Box",
+				"def": "The generic putty-colored tower or desktop case that nearly every PC shipped in during the era."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "DOS Days",
+				"url": "https://www.dosdays.co.uk/",
+				"kind": "archive"
+			},
+			{
+				"title": "WinWorld operating systems library",
+				"url": "https://winworldpc.com/library/operating-systems",
+				"kind": "archive"
+			},
+			{
+				"title": "PCjs machines",
+				"url": "https://www.pcjs.org/",
+				"kind": "archive"
+			},
+			{
+				"title": "Fabien Sanglard: Doom renderer",
+				"url": "https://fabiensanglard.net/doomIphone/doomClassicRenderer.php",
+				"kind": "article"
+			}
+		]
 	},
 	{
 		"slug": "rust-for-linux",
@@ -811,7 +1312,24 @@
 				"def": "A self-contained area of the kernel (filesystems, DRM, networking) with its own maintainers and merge process."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "Rust for Linux project",
+				"url": "https://rust-for-linux.com/",
+				"kind": "docs"
+			},
+			{
+				"title": "Kernel Rust documentation",
+				"url": "https://docs.kernel.org/rust/",
+				"kind": "docs"
+			},
+			{
+				"title": "Rust-for-Linux tree",
+				"url": "https://github.com/Rust-for-Linux/linux",
+				"kind": "source"
+			}
+		]
 	},
 	{
 		"slug": "spi-bus",
@@ -918,12 +1436,164 @@
 				"def": "The current Linux terminology for the old master/slave roles; the controller drives SCLK and CS, the peripheral responds."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "Linux SPI summary",
+				"url": "https://docs.kernel.org/spi/spi-summary.html",
+				"kind": "docs"
+			},
+			{
+				"title": "Linux SPI driver API",
+				"url": "https://docs.kernel.org/driver-api/spi.html",
+				"kind": "docs"
+			},
+			{
+				"title": "SparkFun SPI tutorial",
+				"url": "https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all",
+				"kind": "guide"
+			},
+			{
+				"title": "Total Phase CPOL and CPHA guide",
+				"url": "https://www.totalphase.com/blog/2014/12/cpol-cpha-bitrate-configured-host-adapter-spi-slave-mode/",
+				"kind": "guide"
+			}
+		]
+	},
+	{
+		"slug": "warhammer-40k",
+		"title": "Warhammer 40,000 and the Necrons",
+		"domain": "fiction",
+		"tags": [
+			"warhammer",
+			"necrons",
+			"grimdark",
+			"games-workshop",
+			"tabletop",
+			"wargame",
+			"fiction",
+			"science-fiction"
+		],
+		"source": "Cross-checked against Wikipedia (Warhammer 40,000), Warhammer 40k Wiki/Lexicanum/Wahapedia, Wargamer, and Warhammer Community; Necron lore reflects current Games Workshop canon.",
+		"related": [
+			"neuromancer"
+		],
+		"sections": [
+			{
+				"section": "The grimdark far future",
+				"text": "Warhammer 40,000 is a tabletop miniatures wargame published by Games Workshop. It first appeared in 1987 as Warhammer 40,000: Rogue Trader, and it has run through ten editions, with an eleventh arriving in June 2026. Players collect, assemble, and paint small models of soldiers, tanks, and monsters, then move them across a table and resolve battles with dice and a rulebook. Around that game sits one of the deepest fictional settings in science fiction, sustained by codex army books, novels, and video games. The official tagline reads: \"In the grim darkness of the far future, there is only war.\" The phrase did real work; it gave English the word grimdark, now used well outside the hobby. The setting is roughly the year 40,000, the close of the 41st Millennium. It is deliberately hopeless. Reason has decayed into superstition, science into ritual, and the galaxy is host to daemons, mutation, and constant death. Rick Priestley, who built the original setting, has cited Tolkien, H. P. Lovecraft, Frank Herbert's Dune, Milton's Paradise Lost, and the British comic 2000 AD as influences."
+			},
+			{
+				"section": "The Imperium and the God-Emperor",
+				"text": "The setting's central faction is the Imperium of Man, a galaxy-spanning human empire and a paranoid, authoritarian theocracy. It is ruled in name by the Emperor of Mankind, the most powerful human psyker ever born, who united Earth in the late 30th Millennium and set out to reclaim the galaxy for humanity. That project collapsed in civil war. Betrayed and mortally wounded by his favored son Horus during the Horus Heresy, the Emperor has spent more than ten thousand years interred in the Golden Throne, a life-support machine that keeps his soul anchored to a withered body and consumes a thousand psykers' souls a day. He is worshipped as a god. His will projects across the galaxy as the Astronomican, a psychic beacon by which ships navigate. His greatest soldiers are the Adeptus Astartes, the Space Marines, eight-foot bioengineered warriors grown from his genetic material. In the modern timeline a vast warp storm called the Great Rift has split the Imperium in two, and the resurrected primarch Roboute Guilliman now leads its defense."
+			},
+			{
+				"section": "Chaos and the Warp",
+				"text": "The Warp, also called the Immaterium, is a parallel dimension of pure psychic energy that underlies all reality. Every emotion and thought of every sentient creature ripples into it. Over aeons those currents congealed into the Chaos Gods, the Ruinous Powers: Khorne, god of blood and rage; Tzeentch, of change and sorcery; Nurgle, of disease and decay; and Slaanesh, of excess. They are sustained by mortal feeling and so are utterly single-minded. They wage an eternal rivalry called the Great Game, and at times unite under Chaos Undivided to bring down the Imperium. Their servants are daemons, made from a fragment of a god's own power. The Warp matters twice over. It is the home of Chaos, and it is the only route between the stars, since ships translate into it to cross the galaxy. The Warp was not always cruel; aeons of war twisted a once-calmer realm into a nightmare. That souring is tied to the Necrons' own history."
+			},
+			{
+				"section": "The Necrontyr and the War in Heaven",
+				"text": "Before the Necrons there were the Necrontyr, a flesh-and-blood species born under a sickly, radiation-spewing star. Their lives were short and cancer-ridden, and the whole culture grew obsessed with death and dynastic hierarchy. They built a vast star-empire, then tore at it through endless infighting. To unite the dynasties, their rulers found a common foe: the Old Ones, the galaxy's most ancient and powerful race, whose mastery of the Warp the Necrontyr envied and resented. The war they started, the War in Heaven, was one of the bloodiest in galactic history, fought roughly sixty million years before the 41st Millennium. It went catastrophically. The Old Ones' command of the Warp and their living weapons broke the Necrontyr again and again, driving them to the galaxy's fringe to nurse their hatred. There, exiled and desperate, they encountered beings of pure energy living on the surfaces of stars. The Necrontyr named them the C'tan, the star-gods, and made a bargain that would unmake them."
+			},
+			{
+				"section": "The C'tan and biotransference",
+				"text": "The Necrontyr forged bodies of necrodermis, living metal, so the C'tan could take material form. Fed and embodied, the star-gods turned on their makers and terrorized them into service. Then the C'tan offered a final pact, championed by the one later called the Deceiver: physical immortality. Through biotransference, the Necrontyr would shed their dying flesh and have their minds poured into living-metal shells like the C'tan's own. Vast bio-foundries were built; the Cryptek Illuminor Szeras turned the C'tan's knowledge into a working process; and the population marched in under the orders of their monarch, the Silent King. The C'tan fed on the spiritual residue of an entire species as it was rendered down. The cost was the soul. The Necrontyr were gone, replaced by the soulless, undying Necrons. Most became near-mindless automatons; only nobles and specialists kept full personality. Reborn as machines and led by incarnate C'tan, the Necrons resumed the war and won, breaking the Old Ones. But the anguish poured into the Warp by that war helped twist it toward Chaos, a wound that outlasted every victory."
+			},
+			{
+				"section": "Reanimation protocols and gauss weapons",
+				"text": "Two pieces of Necron technology define how they fight, and both flow from the same principle: matter and energy are theirs to command. Reanimation protocols are auto-repair systems woven through every Necron body. A wounded Necron knits itself back together in emerald sparks: reattaching limbs, reforming a shattered skull, witch-lights flaring back into dead eye-lenses. Damage too severe to repair on the spot triggers a phase-out, teleporting the mind and body to a tomb complex for rebuilding. There is a slow price. Each transference frays the engrams a little more, so a Necron that has died and reformed hundreds of times decays into a hollow automaton with no memory of who it was. Gauss weapons use the very same technology in reverse, breaking the molecular bonds of a target into raw energy that the Necrons can repurpose. A gauss flayer strips a victim apart layer by layer. On the tabletop these traits read as resilience and attrition: units claw wounds back at the end of a turn, and gauss fire shreds heavy armor."
+			},
+			{
+				"section": "Tomb Worlds and the awakening",
+				"text": "Victory left the Necrons hollow and their empire in ruins, and a new power, the Aeldari, was rising. Rather than fight on, the Necrons turned on their C'tan masters; using a device called the Tesseract Labyrinth, they shattered the star-gods into shards and bound those fragments as weapons. Then they withdrew. Across thousands of Tomb Worlds, planets riddled with stasis crypts, the dynasties lay down to sleep, intending to wake after the galaxy's younger races had spent themselves. Szarekh, sick with guilt, freed his subjects from the command protocols that bound them to him and exiled himself into the void between galaxies. The Great Sleep was meant to last until the time was ripe. It did not go cleanly. Stasis decayed, dynasties woke damaged or feral, and by the 41st Millennium the Tomb Worlds are stirring across the galaxy, dynasty by dynasty, just as the Imperium reels from Chaos, Orks, Tyranids, and the rest."
+			},
+			{
+				"section": "Necron lords of the waking dynasties",
+				"text": "The waking Necrons are not faceless. Szarekh, the Silent King, eventually returned from the intergalactic dark in the modern era, having seen a greater threat coming, and once more leads his people. Trazyn the Infinite is the obsessive archivist of the Necron race, a collector who pillages the galaxy for relics and living specimens, freezing famous warriors in stasis for his museum-world of Solemnace; on the battlefield he can snatch a fresh body when his own is destroyed. Imotekh the Stormlord, phaeron of the Sautekh Dynasty, is a brilliant and ruthless general who can call down lightning storms to blind and batter his foes before he strikes. Around them stand specialists like Orikan the Diviner, a chronomancer who reads and bends time, and Illuminor Szeras, the cold engineer of biotransference itself. Together they make the Necrons less a horde than a civilization: ancient, patient, and certain that the galaxy was always theirs to reclaim."
+			}
+		],
+		"vocab": [
+			{
+				"term": "Necrons",
+				"def": "An ancient race of androids in living-metal bodies, once the flesh-and-blood Necrontyr, now slumbering across the galaxy and waking to reconquer it."
+			},
+			{
+				"term": "Necrontyr",
+				"def": "The short-lived, radiation-cursed organic species that built a star-empire, lost the War in Heaven, and became the Necrons through biotransference."
+			},
+			{
+				"term": "C'tan, def: \"Star-gods of pure energy that fed on stellar power and, given necrodermis bodies by the Necrontyr, became their tyrant overlords.\""
+			},
+			{
+				"term": "War in Heaven",
+				"def": "The galaxy-spanning war between the Necrontyr-and-C'tan alliance and the Old Ones, fought roughly sixty million years before the 41st Millennium."
+			},
+			{
+				"term": "Biotransference",
+				"def": "The process that stripped the Necrontyr of flesh and soul and bound their minds into living-metal bodies, creating the Necrons."
+			},
+			{
+				"term": "Reanimation Protocols",
+				"def": "Necron auto-repair systems that knit a damaged body back together or teleport its mind to a tomb for rebuilding."
+			},
+			{
+				"term": "Gauss Weapons",
+				"def": "Necron arms that strip matter apart molecule by molecule, breaking the bonds of an enemy into energy the Necrons can reuse."
+			},
+			{
+				"term": "Tomb World",
+				"def": "A planet honeycombed with stasis crypts where a Necron dynasty slept through the Great Sleep, now waking dynasty by dynasty."
+			},
+			{
+				"term": "The Silent King",
+				"def": "Szarekh, last supreme monarch of the Necrons, who sealed the C'tan pact, shattered the star-gods in penance, and exiled himself before returning in the modern era."
+			},
+			{
+				"term": "Grimdark",
+				"def": "A term coined from the 40k tagline for a bleak, hopeless far-future tone of unending war."
+			},
+			{
+				"term": "The Warp",
+				"def": "A parallel dimension of psychic energy, also called the Immaterium, that is both the source of Chaos and the only medium for faster-than-light travel."
+			},
+			{
+				"term": "Imperium of Man",
+				"def": "The galaxy-spanning, authoritarian human empire of the 41st Millennium, ruled in name by the entombed God-Emperor."
+			}
+		],
+		"manuals": [],
+		"links": [
+			{
+				"title": "Warhammer 40,000 downloads - current dataslates and FAQs",
+				"url": "https://www.warhammer-community.com/en-gb/downloads/warhammer-40000/",
+				"kind": "dataslate"
+			},
+			{
+				"title": "Warhammer 40,000 official site",
+				"url": "https://warhammer40000.com/",
+				"kind": "official"
+			},
+			{
+				"title": "Warhammer Community",
+				"url": "https://www.warhammer-community.com/en-us/",
+				"kind": "official"
+			},
+			{
+				"title": "Warhammer 40,000 overview",
+				"url": "https://en.wikipedia.org/wiki/Warhammer_40,000",
+				"kind": "wiki"
+			},
+			{
+				"title": "Warhammer 40K Necrons reference",
+				"url": "https://warhammer40k.fandom.com/wiki/Necrons",
+				"kind": "wiki"
+			}
+		]
 	},
 	{
 		"slug": "zelda-speedruns",
 		"title": "Zelda Speedrunning",
-		"domain": "zelda",
+		"domain": "games",
 		"tags": [
 			"zelda",
 			"speedrun",
@@ -1009,6 +1679,28 @@
 				"def": "A state where Link's sword stays permanently active without a swing, used as a setup for many other tricks."
 			}
 		],
-		"manuals": []
+		"manuals": [],
+		"links": [
+			{
+				"title": "ZeldaSpeedRuns Ocarina of Time hub",
+				"url": "https://www.zeldaspeedruns.com/oot",
+				"kind": "route"
+			},
+			{
+				"title": "ZeldaSpeedRuns Majora's Mask hub",
+				"url": "https://www.zeldaspeedruns.com/mm",
+				"kind": "route"
+			},
+			{
+				"title": "ZeldaSpeedRuns Majora's Mask routes",
+				"url": "https://www.zeldaspeedruns.com/mm/routes",
+				"kind": "route"
+			},
+			{
+				"title": "TASVideos Ocarina of Time game page",
+				"url": "https://tasvideos.org/2926G",
+				"kind": "route"
+			}
+		]
 	}
 ]

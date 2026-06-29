@@ -1,0 +1,450 @@
+[
+	{
+		"title": "SvelteKit Cloudflare adapter",
+		"url": "https://svelte.dev/docs/kit/adapter-cloudflare",
+		"kind": "docs",
+		"topic": "about-oracle",
+		"topicTitle": "About the Oracle",
+		"domain": "meta"
+	},
+	{
+		"title": "Cloudflare Workers AI",
+		"url": "https://developers.cloudflare.com/workers-ai/",
+		"kind": "docs",
+		"topic": "about-oracle",
+		"topicTitle": "About the Oracle",
+		"domain": "meta"
+	},
+	{
+		"title": "Cloudflare Workers KV",
+		"url": "https://developers.cloudflare.com/kv/",
+		"kind": "docs",
+		"topic": "about-oracle",
+		"topicTitle": "About the Oracle",
+		"domain": "meta"
+	},
+	{
+		"title": "BeaglePlay documentation",
+		"url": "https://docs.beagleboard.org/latest/boards/beagleplay/index.html",
+		"kind": "manual",
+		"topic": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up",
+		"domain": "kernel"
+	},
+	{
+		"title": "TI AM625 product page",
+		"url": "https://www.ti.com/product/AM625",
+		"kind": "datasheet",
+		"topic": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up",
+		"domain": "kernel"
+	},
+	{
+		"title": "TI AM625 datasheet PDF",
+		"url": "https://www.ti.com/lit/ds/symlink/am625.pdf",
+		"kind": "datasheet",
+		"topic": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up",
+		"domain": "kernel"
+	},
+	{
+		"title": "ILI9341 datasheet PDF",
+		"url": "https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf",
+		"kind": "datasheet",
+		"topic": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up",
+		"domain": "kernel"
+	},
+	{
+		"title": "Linux panel-mipi-dbi-spi binding",
+		"url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/display/panel/panel-mipi-dbi-spi.yaml",
+		"kind": "source",
+		"topic": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up",
+		"domain": "kernel"
+	},
+	{
+		"title": "Raft paper PDF",
+		"url": "https://raft.github.io/raft.pdf",
+		"kind": "paper",
+		"topic": "distributed-systems",
+		"topicTitle": "Distributed Systems",
+		"domain": "distsys"
+	},
+	{
+		"title": "Paxos Made Simple PDF",
+		"url": "https://lamport.azurewebsites.net/pubs/paxos-simple.pdf",
+		"kind": "paper",
+		"topic": "distributed-systems",
+		"topicTitle": "Distributed Systems",
+		"domain": "distsys"
+	},
+	{
+		"title": "Eventually Consistent",
+		"url": "https://www.allthingsdistributed.com/2008/12/eventually_consistent.html",
+		"kind": "paper",
+		"topic": "distributed-systems",
+		"topicTitle": "Distributed Systems",
+		"domain": "distsys"
+	},
+	{
+		"title": "Linearizability paper PDF",
+		"url": "https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf",
+		"kind": "paper",
+		"topic": "distributed-systems",
+		"topicTitle": "Distributed Systems",
+		"domain": "distsys"
+	},
+	{
+		"title": "GameCube architecture deep dive",
+		"url": "https://www.copetti.org/writings/consoles/gamecube/",
+		"kind": "guide",
+		"topic": "gamecube",
+		"topicTitle": "The Nintendo GameCube",
+		"domain": "hardware"
+	},
+	{
+		"title": "RetroRGB GameCube video output",
+		"url": "https://www.retrorgb.com/gamecubeoutput.html",
+		"kind": "guide",
+		"topic": "gamecube",
+		"topicTitle": "The Nintendo GameCube",
+		"domain": "hardware"
+	},
+	{
+		"title": "GC-Forever booting homebrew",
+		"url": "https://www.gc-forever.com/wiki/index.php?title=Booting_homebrew",
+		"kind": "wiki",
+		"topic": "gamecube",
+		"topicTitle": "The Nintendo GameCube",
+		"domain": "hardware"
+	},
+	{
+		"title": "GC-Forever region switch",
+		"url": "https://www.gc-forever.com/wiki/index.php?title=Region_Switch",
+		"kind": "wiki",
+		"topic": "gamecube",
+		"topicTitle": "The Nintendo GameCube",
+		"domain": "hardware"
+	},
+	{
+		"title": "Kernel releases",
+		"url": "https://www.kernel.org/releases.html",
+		"kind": "docs",
+		"topic": "linux-kernel",
+		"topicTitle": "The Linux Kernel",
+		"domain": "kernel"
+	},
+	{
+		"title": "Submitting patches",
+		"url": "https://docs.kernel.org/process/submitting-patches.html",
+		"kind": "docs",
+		"topic": "linux-kernel",
+		"topicTitle": "The Linux Kernel",
+		"domain": "kernel"
+	},
+	{
+		"title": "Linux MAINTAINERS file",
+		"url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/MAINTAINERS",
+		"kind": "source",
+		"topic": "linux-kernel",
+		"topicTitle": "The Linux Kernel",
+		"domain": "kernel"
+	},
+	{
+		"title": "LKML archive",
+		"url": "https://lore.kernel.org/lkml/",
+		"kind": "archive",
+		"topic": "linux-kernel",
+		"topicTitle": "The Linux Kernel",
+		"domain": "kernel"
+	},
+	{
+		"title": "Majora's Mask overview",
+		"url": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Majora%27s_Mask",
+		"kind": "wiki",
+		"topic": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask",
+		"domain": "games"
+	},
+	{
+		"title": "ZeldaDungeon Majora's Mask walkthrough and maps",
+		"url": "https://www.zeldadungeon.net/majoras-mask-walkthrough/",
+		"kind": "guide",
+		"topic": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask",
+		"domain": "games"
+	},
+	{
+		"title": "ZeldaSpeedRuns Majora's Mask hub",
+		"url": "https://www.zeldaspeedruns.com/mm",
+		"kind": "route",
+		"topic": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask",
+		"domain": "games"
+	},
+	{
+		"title": "ZeldaSpeedRuns Majora's Mask routes",
+		"url": "https://www.zeldaspeedruns.com/mm/routes",
+		"kind": "route",
+		"topic": "majoras-mask",
+		"topicTitle": "The Legend of Zelda - Majora's Mask",
+		"domain": "games"
+	},
+	{
+		"title": "Sony Monitor Documentation collection",
+		"url": "https://archive.org/details/SonyMonitorDocumentation",
+		"kind": "manual",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"title": "RetroRGB RGB intro",
+		"url": "https://www.retrorgb.com/rgbintro.html",
+		"kind": "guide",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"title": "RepairFAQ TV and monitor notes",
+		"url": "https://www.repairfaq.org/samnew/tvfaq.htm",
+		"kind": "guide",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"title": "RetroRGB GameCube output",
+		"url": "https://www.retrorgb.com/gamecubeoutput.html",
+		"kind": "guide",
+		"topic": "monitors-pvm",
+		"topicTitle": "Sony PVM and Broadcast Monitors",
+		"domain": "monitors"
+	},
+	{
+		"title": "Neuromancer reference overview",
+		"url": "https://en.wikipedia.org/wiki/Neuromancer",
+		"kind": "wiki",
+		"topic": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary",
+		"domain": "fiction"
+	},
+	{
+		"title": "Sprawl trilogy overview",
+		"url": "https://en.wikipedia.org/wiki/Sprawl_trilogy",
+		"kind": "wiki",
+		"topic": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary",
+		"domain": "fiction"
+	},
+	{
+		"title": "Wired: Neuromancer Speaks",
+		"url": "https://www.wired.com/1995/01/neuromancer-speaks",
+		"kind": "article",
+		"topic": "neuromancer",
+		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary",
+		"domain": "fiction"
+	},
+	{
+		"title": "Bulbapedia: Kanto",
+		"url": "https://bulbapedia.bulbagarden.net/wiki/Kanto",
+		"kind": "map",
+		"topic": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)",
+		"domain": "games"
+	},
+	{
+		"title": "Serebii Pokearth: Kanto",
+		"url": "https://www.serebii.net/pokearth/kanto/",
+		"kind": "map",
+		"topic": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)",
+		"domain": "games"
+	},
+	{
+		"title": "Glitch City Wiki: MissingNo.",
+		"url": "https://glitchcity.wiki/wiki/MissingNo.",
+		"kind": "wiki",
+		"topic": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)",
+		"domain": "games"
+	},
+	{
+		"title": "Glitch City Wiki: item duplication",
+		"url": "https://glitchcity.wiki/wiki/Item_duplication_glitch",
+		"kind": "guide",
+		"topic": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)",
+		"domain": "games"
+	},
+	{
+		"title": "Nintendo UK: Pokemon Red",
+		"url": "https://www.nintendo.com/en-gb/Games/Game-Boy/Pokemon-Red-Version-266110.html",
+		"kind": "manual",
+		"topic": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)",
+		"domain": "games"
+	},
+	{
+		"title": "DOS Days",
+		"url": "https://www.dosdays.co.uk/",
+		"kind": "archive",
+		"topic": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s",
+		"domain": "hardware"
+	},
+	{
+		"title": "WinWorld operating systems library",
+		"url": "https://winworldpc.com/library/operating-systems",
+		"kind": "archive",
+		"topic": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s",
+		"domain": "hardware"
+	},
+	{
+		"title": "PCjs machines",
+		"url": "https://www.pcjs.org/",
+		"kind": "archive",
+		"topic": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s",
+		"domain": "hardware"
+	},
+	{
+		"title": "Fabien Sanglard: Doom renderer",
+		"url": "https://fabiensanglard.net/doomIphone/doomClassicRenderer.php",
+		"kind": "article",
+		"topic": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s",
+		"domain": "hardware"
+	},
+	{
+		"title": "Rust for Linux project",
+		"url": "https://rust-for-linux.com/",
+		"kind": "docs",
+		"topic": "rust-for-linux",
+		"topicTitle": "Rust for Linux",
+		"domain": "kernel"
+	},
+	{
+		"title": "Kernel Rust documentation",
+		"url": "https://docs.kernel.org/rust/",
+		"kind": "docs",
+		"topic": "rust-for-linux",
+		"topicTitle": "Rust for Linux",
+		"domain": "kernel"
+	},
+	{
+		"title": "Rust-for-Linux tree",
+		"url": "https://github.com/Rust-for-Linux/linux",
+		"kind": "source",
+		"topic": "rust-for-linux",
+		"topicTitle": "Rust for Linux",
+		"domain": "kernel"
+	},
+	{
+		"title": "Linux SPI summary",
+		"url": "https://docs.kernel.org/spi/spi-summary.html",
+		"kind": "docs",
+		"topic": "spi-bus",
+		"topicTitle": "The SPI Bus",
+		"domain": "kernel"
+	},
+	{
+		"title": "Linux SPI driver API",
+		"url": "https://docs.kernel.org/driver-api/spi.html",
+		"kind": "docs",
+		"topic": "spi-bus",
+		"topicTitle": "The SPI Bus",
+		"domain": "kernel"
+	},
+	{
+		"title": "SparkFun SPI tutorial",
+		"url": "https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all",
+		"kind": "guide",
+		"topic": "spi-bus",
+		"topicTitle": "The SPI Bus",
+		"domain": "kernel"
+	},
+	{
+		"title": "Total Phase CPOL and CPHA guide",
+		"url": "https://www.totalphase.com/blog/2014/12/cpol-cpha-bitrate-configured-host-adapter-spi-slave-mode/",
+		"kind": "guide",
+		"topic": "spi-bus",
+		"topicTitle": "The SPI Bus",
+		"domain": "kernel"
+	},
+	{
+		"title": "Warhammer 40,000 downloads - current dataslates and FAQs",
+		"url": "https://www.warhammer-community.com/en-gb/downloads/warhammer-40000/",
+		"kind": "dataslate",
+		"topic": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons",
+		"domain": "fiction"
+	},
+	{
+		"title": "Warhammer 40,000 official site",
+		"url": "https://warhammer40000.com/",
+		"kind": "official",
+		"topic": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons",
+		"domain": "fiction"
+	},
+	{
+		"title": "Warhammer Community",
+		"url": "https://www.warhammer-community.com/en-us/",
+		"kind": "official",
+		"topic": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons",
+		"domain": "fiction"
+	},
+	{
+		"title": "Warhammer 40,000 overview",
+		"url": "https://en.wikipedia.org/wiki/Warhammer_40,000",
+		"kind": "wiki",
+		"topic": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons",
+		"domain": "fiction"
+	},
+	{
+		"title": "Warhammer 40K Necrons reference",
+		"url": "https://warhammer40k.fandom.com/wiki/Necrons",
+		"kind": "wiki",
+		"topic": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons",
+		"domain": "fiction"
+	},
+	{
+		"title": "ZeldaSpeedRuns Ocarina of Time hub",
+		"url": "https://www.zeldaspeedruns.com/oot",
+		"kind": "route",
+		"topic": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning",
+		"domain": "games"
+	},
+	{
+		"title": "ZeldaSpeedRuns Majora's Mask hub",
+		"url": "https://www.zeldaspeedruns.com/mm",
+		"kind": "route",
+		"topic": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning",
+		"domain": "games"
+	},
+	{
+		"title": "ZeldaSpeedRuns Majora's Mask routes",
+		"url": "https://www.zeldaspeedruns.com/mm/routes",
+		"kind": "route",
+		"topic": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning",
+		"domain": "games"
+	},
+	{
+		"title": "TASVideos Ocarina of Time game page",
+		"url": "https://tasvideos.org/2926G",
+		"kind": "route",
+		"topic": "zelda-speedruns",
+		"topicTitle": "Zelda Speedrunning",
+		"domain": "games"
+	}
+]

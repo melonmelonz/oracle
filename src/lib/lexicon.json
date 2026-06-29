@@ -2,28 +2,42 @@
 	{
 		"term": "100%",
 		"def": "A category that requires collecting everything the game tracks as completion, not just reaching the end.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
 	{
+		"term": "3dfx Voodoo",
+		"def": "The 1996 add-on board that brought hardware 3D acceleration to consumer PCs and defined early gaming graphics.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
 		"term": "480i",
 		"def": "Standard-definition interlaced video, 480 visible lines drawn as two alternating fields per frame.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
 	{
 		"term": "480p",
 		"def": "Standard-definition progressive video, 480 lines drawn whole each frame; the GameCube's Progressive Scan output.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
 	{
+		"term": "AM625",
+		"def": "A Texas Instruments Sitara application processor with a quad-core Cortex-A53 cluster and several real-time cores.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
 		"term": "Any%",
 		"def": "A category that finishes the game as fast as possible by any means, glitches included.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
@@ -35,6 +49,13 @@
 		"topicTitle": "Sony PVM and Broadcast Monitors"
 	},
 	{
+		"term": "Arbitrary Code Execution",
+		"def": "Forcing the game to run player-controlled bytes as program code, used to rewrite the game state.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
 		"term": "Asahi",
 		"def": "The community project porting Linux to Apple Silicon Macs; source of the Rust drm/asahi GPU driver, founded by Hector Martin.",
 		"domain": "kernel",
@@ -44,9 +65,23 @@
 	{
 		"term": "ATI/ArtX",
 		"def": "ArtX, a startup founded by ex-SGI engineers, designed Flipper; ATI bought ArtX in 2000, which is why the console carries an ATI badge.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
+	},
+	{
+		"term": "BeaglePlay",
+		"def": "An open-hardware single-board computer from the BeagleBoard.org Foundation built around the TI AM625 SoC.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Beige Box",
+		"def": "The generic putty-colored tower or desktop case that nearly every PC shipped in during the era.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
 	},
 	{
 		"term": "Binder",
@@ -54,6 +89,13 @@
 		"domain": "kernel",
 		"slug": "rust-for-linux",
 		"topicTitle": "Rust for Linux"
+	},
+	{
+		"term": "Biotransference",
+		"def": "The process that stripped the Necrontyr of flesh and soul and bound their minds into living-metal bodies, creating the Necrons.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
 	},
 	{
 		"term": "BM25",
@@ -72,16 +114,23 @@
 	{
 		"term": "Bombers Notebook",
 		"def": "An in-game schedule tracker that records the routines, deadlines, and sidequests of Termina's residents across the cycle.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
 		"term": "Bottle Adventure",
 		"def": "Equipping a non-sword item onto the B button by selecting it on C-Right and pulling the Master Sword.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "C'tan, def: \"Star-gods of pure energy that fed on stellar power and, given necrodermis bodies by the Necrontyr, became their tyrant overlords.\"",
+		"def": "",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
 	},
 	{
 		"term": "CAP Theorem",
@@ -89,6 +138,20 @@
 		"domain": "distsys",
 		"slug": "distributed-systems",
 		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "CD-ROM",
+		"def": "A read-only optical disc holding about 650 MB, used to distribute software after floppies ran out of room.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
+		"term": "Chip Select",
+		"def": "An SPI line the controller asserts low to address one specific peripheral on a shared bus.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
 	},
 	{
 		"term": "Component",
@@ -100,7 +163,7 @@
 	{
 		"term": "Component Video",
 		"def": "An analog video connection splitting the picture into luma and two color-difference channels (YPbPr), capable of carrying progressive scan.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
@@ -131,6 +194,13 @@
 		"domain": "monitors",
 		"slug": "monitors-pvm",
 		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Cortex-A53",
+		"def": "A 64-bit Arm application core designed for power efficiency, used in clusters of up to four on the AM625.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
 	},
 	{
 		"term": "Cosine Similarity",
@@ -168,6 +238,13 @@
 		"topicTitle": "About the Oracle"
 	},
 	{
+		"term": "CRT",
+		"def": "Cathode ray tube; the deep glass display that fired electron beams at colored phosphors behind the glass.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
 		"term": "CS",
 		"def": "Chip Select, also called Slave Select (SS); an active-low line that activates one peripheral on the shared bus.",
 		"domain": "kernel",
@@ -189,9 +266,44 @@
 		"topicTitle": "The SPI Bus"
 	},
 	{
+		"term": "Data/Command",
+		"def": "An extra GPIO on many SPI displays that tells the panel whether incoming bytes are pixel data or a command.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Defragmentation",
+		"def": "Rearranging a disk's file fragments into contiguous order so the drive head seeks less.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
+		"term": "Device Tree",
+		"def": "A data structure that describes hardware to the kernel so drivers can bind without that knowledge being compiled in.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Device Tree Overlay",
+		"def": "A fragment that patches the base device tree to add or enable a peripheral without editing the main file.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Dial-up Modem",
+		"def": "A device that carried data as audible tones over an ordinary phone line, topping out near 56 kbit/s.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
 		"term": "Digital AV Out",
 		"def": "A second video port on the underside of early GameCubes carrying an uncompressed digital Y'CbCr signal; removed on the later DOL-101 revision.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
@@ -226,21 +338,21 @@
 	{
 		"term": "Fierce Deity",
 		"def": "The most powerful transformation, an adult swordsman form usable only in boss battles and earned after trading away all other non-transformation masks.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
 		"term": "Flipper",
 		"def": "The 162 MHz graphics and I/O chip designed by ArtX (acquired by ATI mid-development), with 3 MB of embedded 1T-SRAM as a frame and texture buffer.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
 	{
 		"term": "Frame Perfect",
 		"def": "An input that must land on one exact frame, roughly 1/60th of a second on N64 hardware, to work.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
@@ -252,9 +364,23 @@
 		"topicTitle": "The SPI Bus"
 	},
 	{
+		"term": "Game Freak",
+		"def": "The studio that developed the Generation I Pokemon games, founded by Satoshi Tajiri.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
+		"term": "Gauss Weapons",
+		"def": "Necron arms that strip matter apart molecule by molecule, breaking the bonds of an enemy into energy the Necrons can reuse.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
 		"term": "Gekko",
 		"def": "The GameCube's 486 MHz 32-bit PowerPC CPU, built by IBM from the PowerPC 750CXe (G3) core with custom paired-single floating-point extensions.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
@@ -268,9 +394,16 @@
 	{
 		"term": "Get-Item Manipulation",
 		"def": "Looting a chest's contents without the opening animation by triggering an item delay and then taking damage or swimming.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
+	},
+	{
+		"term": "Grimdark",
+		"def": "A term coined from the 40k tagline for a bleak, hopeless far-future tone of unending war.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
 	},
 	{
 		"term": "Grounding",
@@ -301,16 +434,30 @@
 		"topicTitle": "Distributed Systems"
 	},
 	{
+		"term": "ILI9341",
+		"def": "A single-chip TFT LCD driver for 240 by 320 panels that accepts a 3- or 4-line SPI interface.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
+		"term": "Imperium of Man",
+		"def": "The galaxy-spanning, authoritarian human empire of the 41st Millennium, ruled in name by the entombed God-Emperor.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
 		"term": "Infinite Sword Glitch (ISG)",
 		"def": "A state where Link's sword stays permanently active without a swing, used as a setup for many other tricks.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
 	{
 		"term": "Inverted Song of Time",
 		"def": "The Song of Time played backwards; it slows the clock to one-third speed on the N64 release and half speed in the 3DS remake.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
@@ -322,6 +469,13 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "Kanto",
+		"def": "The region where Generation I is set, home to its 151 Pokemon and eight Gyms.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
 		"term": "kernel Result",
 		"def": "The kernel crate's Result type whose error is the kernel Error enum, used so fallible setup returns errno-style codes instead of panicking.",
 		"domain": "kernel",
@@ -329,11 +483,25 @@
 		"topicTitle": "Rust for Linux"
 	},
 	{
+		"term": "LAN Party",
+		"def": "A gathering where people hauled their PCs to one location and wired them together for multiplayer games.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
 		"term": "Linearizability",
 		"def": "A strong consistency model where each operation appears to take effect instantaneously at one point between its call and return, respecting real-time order.",
 		"domain": "distsys",
 		"slug": "distributed-systems",
 		"topicTitle": "Distributed Systems"
+	},
+	{
+		"term": "Link Cable",
+		"def": "The physical cable joining two Game Boys so players can trade and battle Pokemon.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
 	},
 	{
 		"term": "LKML",
@@ -378,6 +546,13 @@
 		"topicTitle": "The Linux Kernel"
 	},
 	{
+		"term": "Mew Glitch",
+		"def": "A method to obtain Mew in retail Red and Blue by exploiting the Trainer-Fly glitch without an official event.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
 		"term": "Miguel Ojeda",
 		"def": "The kernel developer who leads the Rust for Linux project and maintains its core infrastructure.",
 		"domain": "kernel",
@@ -387,7 +562,7 @@
 	{
 		"term": "miniDVD",
 		"def": "The proprietary 8 cm optical disc the GameCube used, holding about 1.46 GB, manufactured by Matsushita to cut cost and resist copying.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
@@ -397,6 +572,13 @@
 		"domain": "kernel",
 		"slug": "spi-bus",
 		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "MissingNo.",
+		"def": "A glitch Pokemon that appears from undefined data and, on capture or encounter, adds 128 to the sixth bag item.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
 	},
 	{
 		"term": "Monolithic Kernel",
@@ -411,6 +593,27 @@
 		"domain": "kernel",
 		"slug": "spi-bus",
 		"topicTitle": "The SPI Bus"
+	},
+	{
+		"term": "MS-DOS",
+		"def": "Microsoft's command-line disk operating system that ran most PCs before and beneath Windows 95.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
+		"term": "Necrons",
+		"def": "An ancient race of androids in living-metal bodies, once the flesh-and-blood Necrontyr, now slumbering across the galaxy and waking to reconquer it.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
+		"term": "Necrontyr",
+		"def": "The short-lived, radiation-cursed organic species that built a star-empire, lost the War in Heaven, and became the Necrons through biotransference.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
 	},
 	{
 		"term": "Neuromancer (AI)",
@@ -450,7 +653,7 @@
 	{
 		"term": "Owl Statue",
 		"def": "A landmark Link can activate to warp via the Song of Soaring; in international N64 versions it also doubles as a temporary quicksave point.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
@@ -490,9 +693,16 @@
 		"topicTitle": "Rust for Linux"
 	},
 	{
+		"term": "Pokedex",
+		"def": "The in-game catalog of Pokemon that the player fills by seeing and catching each species.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
 		"term": "Progressive Scan",
 		"def": "A display mode that draws every line of each frame in one pass rather than interlacing two fields.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
@@ -518,6 +728,13 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "Reanimation Protocols",
+		"def": "Necron auto-repair systems that knit a damaged body back together or teleport its mind to a tomb for rebuilding.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
 		"term": "Reciprocal Rank Fusion",
 		"def": "A way to merge two ranked lists by rewarding items that rank highly in either, without needing to normalize their scores.",
 		"domain": "meta",
@@ -527,7 +744,7 @@
 	{
 		"term": "Region Lock",
 		"def": "Firmware and hardware checks that tie a console to NTSC-U, NTSC-J, or PAL game discs and refuse others.",
-		"domain": "console",
+		"domain": "hardware",
 		"slug": "gamecube",
 		"topicTitle": "The Nintendo GameCube"
 	},
@@ -560,9 +777,16 @@
 		"topicTitle": "Sony PVM and Broadcast Monitors"
 	},
 	{
+		"term": "RNG Manipulation",
+		"def": "Steering the game's pseudorandom state to force a desired outcome on demand.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
 		"term": "RTA",
 		"def": "Real-time attack; a run timed by a real clock from start to finish, as opposed to in-game or tool-assisted timing.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
@@ -581,6 +805,13 @@
 		"topicTitle": "Rust for Linux"
 	},
 	{
+		"term": "Satoshi Tajiri",
+		"def": "Game Freak founder who conceived Pokemon out of childhood insect collecting.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
 		"term": "Scanline",
 		"def": "One horizontal pass of the electron beam; visible dark gaps between lines define the CRT look.",
 		"domain": "monitors",
@@ -595,11 +826,25 @@
 		"topicTitle": "The SPI Bus"
 	},
 	{
+		"term": "Serial Console",
+		"def": "A text terminal exposed over a UART, giving boot logs and a login shell before any network or display works.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
 		"term": "Shadow Mask",
 		"def": "A perforated metal plate behind the screen with one hole per triangular phosphor triad, the older alternative to aperture grille.",
 		"domain": "monitors",
 		"slug": "monitors-pvm",
 		"topicTitle": "Sony PVM and Broadcast Monitors"
+	},
+	{
+		"term": "Shareware",
+		"def": "A distribution model where a free partial version was freely copied to entice purchase of the full registered version.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
 	},
 	{
 		"term": "Simstim",
@@ -609,9 +854,16 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "Single-Board Computer",
+		"def": "A complete computer on one board running a full operating system, distinct from a bare-metal microcontroller.",
+		"domain": "kernel",
+		"slug": "beagleplay",
+		"topicTitle": "The BeaglePlay and SPI Display Bring-up"
+	},
+	{
 		"term": "Song of Time",
 		"def": "The ocarina melody that sends Link back to the dawn of the first day and saves progress on the Nintendo 64 version.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
@@ -639,7 +891,7 @@
 	{
 		"term": "Stale Reference Manipulation (SRM)",
 		"def": "A use-after-free exploit where the game keeps writing to a freed actor's old memory, letting runners corrupt whatever loads there next.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
@@ -674,7 +926,7 @@
 	{
 		"term": "Termina",
 		"def": "The parallel world Link enters in Majora's Mask, centered on Clock Town with four regions facing the cardinal directions.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
@@ -686,6 +938,13 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "The Silent King",
+		"def": "Szarekh, last supreme monarch of the Necrons, who sealed the C'tan pact, shattered the star-gods in penance, and exiled himself before returning in the modern era.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
 		"term": "The Sprawl",
 		"def": "The Boston-Atlanta Metropolitan Axis, a continuous domed megacity along the US east coast.",
 		"domain": "fiction",
@@ -693,16 +952,30 @@
 		"topicTitle": "Neuromancer and the Cyberpunk Vocabulary"
 	},
 	{
+		"term": "The Warp",
+		"def": "A parallel dimension of psychic energy, also called the Immaterium, that is both the source of Chaos and the only medium for faster-than-light travel.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
 		"term": "Three-Day Cycle",
 		"def": "A repeating 72-hour loop, about 54 minutes of real time, that resets when the moon falls or the Song of Time is played.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "majoras-mask",
 		"topicTitle": "The Legend of Zelda - Majora's Mask"
 	},
 	{
+		"term": "Tomb World",
+		"def": "A planet honeycombed with stasis crypts where a Necron dynasty slept through the Great Sleep, now waking dynasty by dynasty.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
 		"term": "Tool-Assisted Speedrun (TAS)",
 		"def": "A run built with slowdown, save states, and frame-by-frame input, used to find theoretical limits rather than to compete with human runs.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	},
@@ -735,6 +1008,27 @@
 		"topicTitle": "Sony PVM and Broadcast Monitors"
 	},
 	{
+		"term": "Version Exclusive",
+		"def": "A Pokemon catchable in only one version of a paired release, pushing players to trade.",
+		"domain": "games",
+		"slug": "pokemon-gen1",
+		"topicTitle": "Pokemon Generation I (Red, Green, Blue)"
+	},
+	{
+		"term": "War in Heaven",
+		"def": "The galaxy-spanning war between the Necrontyr-and-C'tan alliance and the Old Ones, fought roughly sixty million years before the 41st Millennium.",
+		"domain": "fiction",
+		"slug": "warhammer-40k",
+		"topicTitle": "Warhammer 40,000 and the Necrons"
+	},
+	{
+		"term": "Windows 95",
+		"def": "The 1995 Microsoft operating system that merged DOS and Windows and introduced the Start menu and taskbar.",
+		"domain": "hardware",
+		"slug": "retro-computing",
+		"topicTitle": "Computing in the 1990s and Early 2000s"
+	},
+	{
 		"term": "Wintermute",
 		"def": "One of the two Tessier-Ashpool AIs; a cold, scheming planner that drives the plot toward its own merger.",
 		"domain": "fiction",
@@ -744,7 +1038,7 @@
 	{
 		"term": "Wrong Warp",
 		"def": "Loading a scene transition while the game is confused about the destination, sending Link somewhere unintended, sometimes straight to an ending.",
-		"domain": "zelda",
+		"domain": "games",
 		"slug": "zelda-speedruns",
 		"topicTitle": "Zelda Speedrunning"
 	}

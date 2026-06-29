@@ -16,6 +16,11 @@ interface Manual {
 	kind?: string;
 	year?: string;
 }
+interface Link {
+	title: string;
+	url: string;
+	kind: string;
+}
 interface Topic {
 	slug: string;
 	title: string;
@@ -25,6 +30,7 @@ interface Topic {
 	sections: { section: string; text: string }[];
 	vocab: Vocab[];
 	manuals: Manual[];
+	links: Link[];
 }
 
 export const entries: EntryGenerator = () =>

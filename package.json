@@ -19,6 +19,7 @@
     "@sveltejs/adapter-cloudflare": "^7.0.0",
     "@sveltejs/kit": "^2.21.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@types/three": "^0.185.0",
     "svelte": "^5.33.0",
     "svelte-check": "^4.1.0",
     "typescript": "^5.8.0",
@@ -29,7 +30,8 @@
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",
-    "fuse.js": "^7.4.2"
+    "fuse.js": "^7.4.2",
+    "three": "^0.185.0"
   },
   "allowScripts": {
     "esbuild@0.25.12": true,

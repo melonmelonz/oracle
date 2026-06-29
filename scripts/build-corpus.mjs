@@ -74,7 +74,7 @@ function parseInlineArray(inner) {
  * (vocab, manuals). Returns { meta, body }.
  */
 export function parseFrontmatter(raw) {
-	const meta = { title: null, domain: null, tags: [], vocab: [], manuals: [], related: [], source: null };
+	const meta = { title: null, domain: null, tags: [], vocab: [], manuals: [], links: [], related: [], source: null };
 	const match = raw.match(/^---\n([\s\S]*?)\n---\n?/);
 	if (!match) return { meta, body: raw };
 
@@ -105,7 +105,7 @@ export function parseFrontmatter(raw) {
 		// `key:` with nothing after -> start of a block list
 		const blockKey = line.match(/^([A-Za-z_]+):\s*$/);
 		if (blockKey) {
-			listKey = blockKey[1] === 'vocab' || blockKey[1] === 'manuals' ? blockKey[1] : null;
+			listKey = ['vocab', 'manuals', 'links'].includes(blockKey[1]) ? blockKey[1] : null;
 			if (listKey && !Array.isArray(meta[listKey])) meta[listKey] = [];
 			continue;
 		}
@@ -166,6 +166,7 @@ export function buildArtifacts(files) {
 	const archive = [];
 	const lexicon = [];
 	const manuals = [];
+	const links = [];
 	const seenTerms = new Set(); // lexicon dedupe, first wins
 	let id = 0;
 
@@ -190,7 +191,8 @@ export function buildArtifacts(files) {
 			related: meta.related,
 			sections,
 			vocab: meta.vocab,
-			manuals: meta.manuals
+			manuals: meta.manuals,
+			links: meta.links
 		});
 
 		for (const v of meta.vocab) {
@@ -205,10 +207,18 @@ export function buildArtifacts(files) {
 			if (!m || !m.url) continue;
 			manuals.push({ ...m, topic: slug, topicTitle: title, domain });
 		}
+
+		for (const l of meta.links) {
+			if (!l || !l.url) continue;
+			links.push({ ...l, topic: slug, topicTitle: title, domain });
+		}
 	}
 
 	lexicon.sort((a, b) => a.term.toLowerCase().localeCompare(b.term.toLowerCase()));
-	return { corpus, archive, lexicon, manuals };
+	// A slim topic map for the runtime endpoint (grounded follow-ups), so the
+	// Worker does not import the full archive text.
+	const topics = archive.map((a) => ({ slug: a.slug, title: a.title, domain: a.domain, related: a.related }));
+	return { corpus, archive, lexicon, manuals, links, topics };
 }
 
 // ── Script entry ────────────────────────────────────────────────────────────
@@ -224,16 +234,18 @@ function build() {
 		.sort()
 		.map((file) => ({ file, raw: readFileSync(join(KNOWLEDGE_DIR, file), 'utf-8') }));
 
-	const { corpus, archive, lexicon, manuals } = buildArtifacts(files);
+	const { corpus, archive, lexicon, manuals, links, topics } = buildArtifacts(files);
 
 	mkdirSync(OUT_DIR, { recursive: true });
 	writeFileSync(join(OUT_DIR, 'corpus.json'), JSON.stringify(corpus, null, '\t'));
 	writeFileSync(join(OUT_DIR, 'archive.json'), JSON.stringify(archive, null, '\t'));
 	writeFileSync(join(OUT_DIR, 'lexicon.json'), JSON.stringify(lexicon, null, '\t'));
 	writeFileSync(join(OUT_DIR, 'manuals.json'), JSON.stringify(manuals, null, '\t'));
+	writeFileSync(join(OUT_DIR, 'links.json'), JSON.stringify(links, null, '\t'));
+	writeFileSync(join(OUT_DIR, 'topics.json'), JSON.stringify(topics, null, '\t'));
 
 	console.log(
-		`[corpus] ${corpus.length} chunks, ${archive.length} topics, ${lexicon.length} terms, ${manuals.length} manuals from ${files.length} docs`
+		`[corpus] ${corpus.length} chunks, ${archive.length} topics, ${lexicon.length} terms, ${manuals.length} manuals, ${links.length} links from ${files.length} docs`
 	);
 }
 

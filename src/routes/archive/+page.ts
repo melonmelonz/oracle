@@ -17,14 +17,14 @@ interface Topic {
 }
 
 // The order and labels the domains read in on the index.
-const DOMAIN_ORDER = ['monitors', 'console', 'zelda', 'kernel', 'distsys', 'fiction', 'meta'];
+const DOMAIN_ORDER = ['monitors', 'hardware', 'games', 'kernel', 'distsys', 'fiction', 'meta'];
 const DOMAIN_LABEL: Record<string, string> = {
-	monitors: 'monitors',
-	console: 'consoles',
-	zelda: 'zelda',
+	monitors: 'broadcast monitors',
+	hardware: 'hardware',
+	games: 'games',
 	kernel: 'kernel and rust',
 	distsys: 'distributed systems',
-	fiction: 'fiction',
+	fiction: 'fiction and lore',
 	meta: 'the oracle'
 };
 

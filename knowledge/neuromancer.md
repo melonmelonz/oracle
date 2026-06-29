@@ -15,6 +15,10 @@ vocab:
   - { term: Cowboy, def: "A console cowboy, a freelance hacker who runs the matrix on a custom cyberspace deck." }
 related: [distributed-systems, zelda-speedruns]
 source: "Wikipedia (Neuromancer, William Gibson, Sprawl trilogy), Neuromancer Fandom glossary, LitCharts character analyses; cross-checked for the Burning Chrome coinage and ICE attribution."
+links:
+  - { title: "Neuromancer reference overview", url: "https://en.wikipedia.org/wiki/Neuromancer", kind: wiki }
+  - { title: "Sprawl trilogy overview", url: "https://en.wikipedia.org/wiki/Sprawl_trilogy", kind: wiki }
+  - { title: "Wired: Neuromancer Speaks", url: "https://www.wired.com/1995/01/neuromancer-speaks", kind: article }
 ---
 
 # Neuromancer and the Cyberpunk Vocabulary

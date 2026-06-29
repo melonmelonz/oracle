@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import corpus from '$lib/corpus.json';
-import archive from '$lib/archive.json';
+import topics from '$lib/topics.json';
 import {
 	EMBED_MODEL,
 	CHAT_MODEL,
@@ -29,7 +29,7 @@ interface TopicMeta {
 	related: string[];
 }
 const TOPIC = new Map<string, TopicMeta>(
-	(archive as Array<{ slug: string; title: string; domain: string; related?: string[] }>).map((a) => [
+	(topics as Array<{ slug: string; title: string; domain: string; related?: string[] }>).map((a) => [
 		a.slug,
 		{ title: a.title, domain: a.domain, related: a.related ?? [] }
 	])

@@ -1,6 +1,6 @@
 ---
 title: The Legend of Zelda - Majora's Mask
-domain: zelda
+domain: games
 tags: [zelda, n64, majoras-mask, time-loop, transformation, speedrun, termina]
 vocab:
   - { term: Three-Day Cycle, def: "A repeating 72-hour loop, about 54 minutes of real time, that resets when the moon falls or the Song of Time is played." }
@@ -12,6 +12,11 @@ vocab:
   - { term: Bombers Notebook, def: "An in-game schedule tracker that records the routines, deadlines, and sidequests of Termina's residents across the cycle." }
 related: [zelda-speedruns, gamecube]
 source: "Wikipedia Majora's Mask article; Iwata Asks (Majora's Mask 3D); Zelda Wiki and Zelda Dungeon Wiki entries on the songs, masks, and Termina; speedrun.com leaderboards; Kotaku and ResetEra coverage of the debug-menu route."
+links:
+  - { title: "Majora's Mask overview", url: "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Majora%27s_Mask", kind: wiki }
+  - { title: "ZeldaDungeon Majora's Mask walkthrough and maps", url: "https://www.zeldadungeon.net/majoras-mask-walkthrough/", kind: guide }
+  - { title: "ZeldaSpeedRuns Majora's Mask hub", url: "https://www.zeldaspeedruns.com/mm", kind: route }
+  - { title: "ZeldaSpeedRuns Majora's Mask routes", url: "https://www.zeldaspeedruns.com/mm/routes", kind: route }
 ---
 # The Legend of Zelda - Majora's Mask
 

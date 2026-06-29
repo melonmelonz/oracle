@@ -10,6 +10,9 @@ vocab:
   - { term: Aperture Grille, def: "vertical wires instead of a shadow mask" }
 manuals:
   - { model: "PVM-20M2U", title: "Service Manual", url: "https://example/x", kind: service }
+links:
+  - { title: "Kanto Map", url: "https://example/map", kind: map }
+  - { title: "ILI9341 Datasheet", url: "https://example/ds.pdf", kind: datasheet }
 related: [gamecube, zelda-speedruns]
 source: "test provenance"
 ---
@@ -32,6 +35,8 @@ test('parseFrontmatter reads extended fields', () => {
 	expect(meta.vocab[0]).toEqual({ term: 'Underscan', def: 'image pulled inward leaving a black border' });
 	expect(meta.vocab[1].term).toBe('Aperture Grille');
 	expect(meta.manuals[0]).toMatchObject({ model: 'PVM-20M2U', kind: 'service', url: 'https://example/x' });
+	expect(meta.links).toHaveLength(2);
+	expect(meta.links[0]).toEqual({ title: 'Kanto Map', url: 'https://example/map', kind: 'map' });
 	expect(meta.related).toEqual(['gamecube', 'zelda-speedruns']);
 	expect(meta.source).toBe('test provenance');
 	expect(body).toMatch(/Intro line/);
@@ -68,6 +73,14 @@ test('buildArtifacts emits corpus, archive, lexicon, manuals', () => {
 
 	// manuals: carry their topic
 	expect(a.manuals.find((m) => m.model === 'PVM-20M2U')).toMatchObject({ kind: 'service', topic: 'test-topic' });
+
+	// links: carry their topic + domain + kind
+	expect(a.links).toHaveLength(2);
+	expect(a.links.find((l) => l.kind === 'datasheet')).toMatchObject({
+		title: 'ILI9341 Datasheet',
+		topic: 'test-topic',
+		domain: 'monitors'
+	});
 });
 
 test('lexicon dedupes by lowercased term, first wins', () => {

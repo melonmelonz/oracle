@@ -13,6 +13,10 @@ vocab:
   - { term: Cosine Similarity, def: "The angle-based measure of how aligned two embedding vectors are, used to rank passages by meaning." }
 related: [distributed-systems]
 source: "The architecture of this site: SvelteKit and Cloudflare Workers AI, hybrid retrieval with a cross-encoder reranker."
+links:
+  - { title: "SvelteKit Cloudflare adapter", url: "https://svelte.dev/docs/kit/adapter-cloudflare", kind: docs }
+  - { title: "Cloudflare Workers AI", url: "https://developers.cloudflare.com/workers-ai/", kind: docs }
+  - { title: "Cloudflare Workers KV", url: "https://developers.cloudflare.com/kv/", kind: docs }
 ---
 # About the Oracle
 

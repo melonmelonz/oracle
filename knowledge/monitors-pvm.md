@@ -24,6 +24,11 @@ vocab:
   - { term: PAL, def: "The 625-line, 50 Hz analog color standard used across much of Europe and elsewhere." }
 related: [gamecube, zelda-speedruns]
 source: "Wikipedia (Aperture grille, Component video), RepairFAQ TVFAQ, RetroTechLab and RetroRGB comparisons, AndyNumbers TVL primer, ConsoleMods CRT calibration wiki, Internet Archive Sony service manuals"
+links:
+  - { title: "Sony Monitor Documentation collection", url: "https://archive.org/details/SonyMonitorDocumentation", kind: manual }
+  - { title: "RetroRGB RGB intro", url: "https://www.retrorgb.com/rgbintro.html", kind: guide }
+  - { title: "RepairFAQ TV and monitor notes", url: "https://www.repairfaq.org/samnew/tvfaq.htm", kind: guide }
+  - { title: "RetroRGB GameCube output", url: "https://www.retrorgb.com/gamecubeoutput.html", kind: guide }
 manuals:
   - { model: "Collection", title: "Sony Monitor Documentation (master collection)", url: "https://archive.org/details/SonyMonitorDocumentation", kind: collection }
   - { model: "PVM-20M2U/20M4U", title: "Service Manual", url: "https://archive.org/details/SonyPVM20M220M4ServiceManual", kind: service }

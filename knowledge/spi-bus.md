@@ -18,6 +18,11 @@ vocab:
   - { term: Controller/Peripheral, def: "The current Linux terminology for the old master/slave roles; the controller drives SCLK and CS, the peripheral responds." }
 related: [rust-for-linux, linux-kernel]
 source: "Synthesized from kernel.org SPI driver-api and spi-summary docs, Analog Devices 'Introduction to SPI', Wikipedia SPI, and Rust-for-Linux status reporting (Phoronix, Kangrejos 2021) as of June 2026."
+links:
+  - { title: "Linux SPI summary", url: "https://docs.kernel.org/spi/spi-summary.html", kind: docs }
+  - { title: "Linux SPI driver API", url: "https://docs.kernel.org/driver-api/spi.html", kind: docs }
+  - { title: "SparkFun SPI tutorial", url: "https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all", kind: guide }
+  - { title: "Total Phase CPOL and CPHA guide", url: "https://www.totalphase.com/blog/2014/12/cpol-cpha-bitrate-configured-host-adapter-spi-slave-mode/", kind: guide }
 ---
 # The SPI Bus
 

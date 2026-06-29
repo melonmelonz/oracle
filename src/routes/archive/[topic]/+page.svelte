@@ -79,6 +79,21 @@
 		</section>
 	{/if}
 
+	{#if topic.links.length}
+		<section class="aside">
+			<h2 class="kicker">references</h2>
+			<ul class="links">
+				{#each topic.links as ref}
+					<li>
+						<a class="linkline" href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>
+						<span class="m-kind">{ref.kind}</span>
+					</li>
+				{/each}
+			</ul>
+			<p class="hint">all external links are collected at the <a class="linkline" href="/references">reference desk</a>.</p>
+		</section>
+	{/if}
+
 	<section class="foot">
 		<a class="ask" href={askHref}>ask the oracle about this &rsaquo;</a>
 		{#if related.length}
@@ -147,14 +162,16 @@
 		margin-top: 0.15rem;
 	}
 
-	.manuals {
+	.manuals,
+	.links {
 		list-style: none;
 		margin: 0.9rem 0 0;
 		padding: 0;
 		display: grid;
 		gap: 0.45rem;
 	}
-	.manuals li {
+	.manuals li,
+	.links li {
 		display: flex;
 		align-items: baseline;
 		gap: 0.6rem;

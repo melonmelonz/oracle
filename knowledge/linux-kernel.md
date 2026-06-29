@@ -14,6 +14,11 @@ vocab:
   - { term: LKML, def: "The Linux Kernel Mailing List, the main forum where patches are posted, reviewed, and argued over in public." }
 related: [rust-for-linux, distributed-systems]
 source: "kernel.org release and process docs; Documentation/process/submitting-patches.rst; MAINTAINERS; LWN; Wikipedia kernel version history; stable-kernel EOL announcements (Kroah-Hartman/Levin)"
+links:
+  - { title: "Kernel releases", url: "https://www.kernel.org/releases.html", kind: docs }
+  - { title: "Submitting patches", url: "https://docs.kernel.org/process/submitting-patches.html", kind: docs }
+  - { title: "Linux MAINTAINERS file", url: "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/MAINTAINERS", kind: source }
+  - { title: "LKML archive", url: "https://lore.kernel.org/lkml/", kind: archive }
 ---
 
 # The Linux Kernel

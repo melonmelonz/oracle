@@ -1,6 +1,6 @@
 ---
 title: The Nintendo GameCube
-domain: console
+domain: hardware
 tags: [gamecube, nintendo, gekko, flipper, minidvd, component-video, 480p, homebrew, region-lock, pvm]
 vocab:
   - { term: Gekko, def: "The GameCube's 486 MHz 32-bit PowerPC CPU, built by IBM from the PowerPC 750CXe (G3) core with custom paired-single floating-point extensions." }
@@ -15,6 +15,11 @@ vocab:
   - { term: Region Lock, def: "Firmware and hardware checks that tie a console to NTSC-U, NTSC-J, or PAL game discs and refuse others." }
 related: [monitors-pvm, zelda-speedruns, majoras-mask]
 source: "Wikipedia (GameCube, GameCube technical specifications, GameCube controller, WaveBird, Nintendo optical discs), copetti.org GameCube Architecture, RetroRGB GameCube video output, GC-Forever Wiki (Region Switch, Booting homebrew), Hackaday."
+links:
+  - { title: "GameCube architecture deep dive", url: "https://www.copetti.org/writings/consoles/gamecube/", kind: guide }
+  - { title: "RetroRGB GameCube video output", url: "https://www.retrorgb.com/gamecubeoutput.html", kind: guide }
+  - { title: "GC-Forever booting homebrew", url: "https://www.gc-forever.com/wiki/index.php?title=Booting_homebrew", kind: wiki }
+  - { title: "GC-Forever region switch", url: "https://www.gc-forever.com/wiki/index.php?title=Region_Switch", kind: wiki }
 ---
 # The Nintendo GameCube
 

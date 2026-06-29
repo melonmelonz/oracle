@@ -16,6 +16,11 @@ vocab:
   - { term: Two-Phase Commit, def: "An atomic-commit protocol (prepare then commit) that blocks if the coordinator fails after votes are collected." }
 related: [linux-kernel, neuromancer]
 source: "Lamport 1978/1998; Herlihy and Wing 1990 (linearizability); Fischer, Lynch, Paterson 1985 (FLP); Brewer's CAP conjecture 2000 and 2012 clarification, Gilbert and Lynch 2002 proof; Ongaro and Ousterhout, In Search of an Understandable Consensus Algorithm, USENIX ATC 2014; Vogels, Eventually Consistent 2008."
+links:
+  - { title: "Raft paper PDF", url: "https://raft.github.io/raft.pdf", kind: paper }
+  - { title: "Paxos Made Simple PDF", url: "https://lamport.azurewebsites.net/pubs/paxos-simple.pdf", kind: paper }
+  - { title: "Eventually Consistent", url: "https://www.allthingsdistributed.com/2008/12/eventually_consistent.html", kind: paper }
+  - { title: "Linearizability paper PDF", url: "https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf", kind: paper }
 ---
 
 # Distributed Systems

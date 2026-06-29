@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import AsciiPortrait from '$lib/components/AsciiPortrait.svelte';
+	import Monitor3D from '$lib/components/Monitor3D.svelte';
 	import Answer from '$lib/components/Answer.svelte';
 	import SourceCard from '$lib/components/SourceCard.svelte';
 	import SignalPath from '$lib/components/SignalPath.svelte';
@@ -126,7 +126,7 @@
 
 <main>
 	<section class="hero" class:compact={status !== 'idle'}>
-		<AsciiPortrait state={screenState} />
+		<Monitor3D phase={screenState} />
 
 		<div class="id">
 			<span class="name">oracle</span>

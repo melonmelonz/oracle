@@ -15,6 +15,10 @@ vocab:
   - { term: Subsystem, def: "A self-contained area of the kernel (filesystems, DRM, networking) with its own maintainers and merge process." }
 related: [linux-kernel, spi-bus]
 source: "Wikipedia Rust for Linux; Phoronix; The Register (2024-09 and 2025-02); rust-for-linux.com pin-init and Nova pages; docs.kernel.org/gpu/nova; corrode.dev Krummrich interview"
+links:
+  - { title: "Rust for Linux project", url: "https://rust-for-linux.com/", kind: docs }
+  - { title: "Kernel Rust documentation", url: "https://docs.kernel.org/rust/", kind: docs }
+  - { title: "Rust-for-Linux tree", url: "https://github.com/Rust-for-Linux/linux", kind: source }
 ---
 
 # Rust for Linux

@@ -1,6 +1,6 @@
 ---
 title: Zelda Speedrunning
-domain: zelda
+domain: games
 tags: [zelda, speedrun, ocarina-of-time, majoras-mask, glitches, n64]
 vocab:
   - { term: Any%, def: "A category that finishes the game as fast as possible by any means, glitches included." }
@@ -15,6 +15,11 @@ vocab:
   - { term: Infinite Sword Glitch (ISG), def: "A state where Link's sword stays permanently active without a swing, used as a setup for many other tricks." }
 related: [majoras-mask, gamecube]
 source: "ZeldaSpeedRuns.com glitch documentation (SRM Overview, Bottle Adventure pages), Kotaku and TheGamer record reporting, TASVideos submission notes, speedrun.com category pages; record times reflect milestones reported through the early 2020s and continue to fall."
+links:
+  - { title: "ZeldaSpeedRuns Ocarina of Time hub", url: "https://www.zeldaspeedruns.com/oot", kind: route }
+  - { title: "ZeldaSpeedRuns Majora's Mask hub", url: "https://www.zeldaspeedruns.com/mm", kind: route }
+  - { title: "ZeldaSpeedRuns Majora's Mask routes", url: "https://www.zeldaspeedruns.com/mm/routes", kind: route }
+  - { title: "TASVideos Ocarina of Time game page", url: "https://tasvideos.org/2926G", kind: route }
 ---
 
 # Zelda Speedrunning

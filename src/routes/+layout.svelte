@@ -16,7 +16,8 @@
 		{ href: '/', label: 'ask' },
 		{ href: '/archive', label: 'archive' },
 		{ href: '/lexicon', label: 'lexicon' },
-		{ href: '/manuals', label: 'manuals' }
+		{ href: '/manuals', label: 'manuals' },
+		{ href: '/references', label: 'refs' }
 	];
 
 	const path = $derived(page.url.pathname);
