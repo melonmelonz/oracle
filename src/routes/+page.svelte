@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import Monitor3D from '$lib/components/Monitor3D.svelte';
+	import ManualViewer from '$lib/components/ManualViewer.svelte';
 	import Answer from '$lib/components/Answer.svelte';
 	import SourceCard from '$lib/components/SourceCard.svelte';
 	import SignalPath from '$lib/components/SignalPath.svelte';
@@ -200,22 +201,21 @@
 			{#if status === 'spent' && (references.manuals.length || references.links.length)}
 				<div class="shelf">
 					<div class="shelf-head">on the shelf/ &middot; from the cited pages</div>
-					<ul class="shelf-list">
-						{#each references.manuals as m}
-							<li>
-								<a class="linkline" href={m.url} target="_blank" rel="noopener noreferrer"
-									>{m.model}{#if m.title} &middot; {m.title}{/if}</a
-								>
-								<span class="k">manual</span>
-							</li>
-						{/each}
-						{#each references.links as l}
-							<li>
-								<a class="linkline" href={l.url} target="_blank" rel="noopener noreferrer">{l.title}</a>
-								<span class="k">{l.kind}</span>
-							</li>
-						{/each}
-					</ul>
+					{#if references.manuals.length}
+						<div class="shelf-manuals">
+							{#each references.manuals as m}<ManualViewer manual={m} />{/each}
+						</div>
+					{/if}
+					{#if references.links.length}
+						<ul class="shelf-list">
+							{#each references.links as l}
+								<li>
+									<a class="linkline" href={l.url} target="_blank" rel="noopener noreferrer">{l.title}</a>
+									<span class="k">{l.kind}</span>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 			{/if}
 
@@ -445,6 +445,9 @@
 		text-transform: uppercase;
 		color: var(--amber-dim);
 		margin-bottom: 0.7rem;
+	}
+	.shelf-manuals {
+		margin-bottom: 0.6rem;
 	}
 	.shelf-list {
 		list-style: none;
